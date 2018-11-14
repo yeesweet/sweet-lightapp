@@ -1,0 +1,238 @@
+<template>
+  <view class="mine">
+    <image src="http://i2.tiimg.com/652563/e0d1f37b53035890.png" class="slide-image"  mode="widthFix" />
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+  import {
+    USER_TOKEN,
+    API,
+  } from "../utils/constant"
+  import api from '../api/api';
+  import tip from '../utils/tip'
+  import util from '../utils/util'
+  import BottomLoadMore from "../components/common/bottomLoadMore"
+  export default class hot extends wepy.page {
+    config = {
+      'navigationBarTitleText': '我的',
+      'navigationBarTextStyle': 'white',
+      'navigationBarBackgroundColor': '#fd4444',
+      'backgroundTextStyle':'dark',
+    };
+    components = {
+      bottomLoadMore: BottomLoadMore,
+    };
+    props = {
+
+    };
+    data = {
+      // topImage:'../images/Sharp-goods-banner.png',
+      showLoading: true,//是否显示 底部loading
+      preventRepeatReuqest: false,//防止重复加载
+      isIpx: wepy.$instance.globalData.isIpx?true:false,
+      screenW: wepy.$instance.globalData.screenW,
+      screenH: wepy.$instance.globalData.screenH,
+      tabIndex:0,
+      tabs:[{name:'男性用品'},{name:'女性用品'},{name:'男性用品'},{name:'延时助情'},{name:'丰胸缩阴'},{name:'SM调教'},{name:'情趣服饰'},{name:'润滑液'},],
+      list:[{commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
+        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
+        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
+        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
+        {commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
+        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
+        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
+        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
+        {commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
+        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
+        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
+        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
+        {commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
+        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
+        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
+        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
+      ],
+
+      curPage:1,
+      allPage:1,
+      getListIndex:0,
+
+      viewMode:2,
+      sortType:2,
+      isShowNavMenu:false,
+      scrollTop:false
+    };
+    //监听屏幕滚动 判断上下滚动
+    onPageScroll(ev) {
+      var _this = this;
+      //当滚动的top值最大或最小时，为什么要做这一步是因为在手机实测小程序的时候会发生滚动条回弹，所以为了处理回弹，设置默认最大最小值
+      // console.log('ev.scrollTop:'+ev.scrollTop);
+      if (ev.scrollTop <= 0) {
+        ev.scrollTop = 0;
+      } else if (ev.scrollTop > wx.getSystemInfoSync().windowHeight) {
+        ev.scrollTop = wx.getSystemInfoSync().windowHeight;
+      }
+      //判断浏览器滚动条上下滚动
+      if (ev.scrollTop > this.data.scrollTop || ev.scrollTop == wx.getSystemInfoSync().windowHeight) {
+        //向下滚动
+      } else {
+        //向上滚动
+      }
+      //给scrollTop重新赋值
+      setTimeout(function () {
+        _this.setData({
+          scrollTop: ev.scrollTop
+        })
+      }, 0)
+    };
+    methods = {
+      goShare(){
+        wepy.navigateTo({
+          url:'/pages/share'
+        })
+      },
+      backTop(){
+        if (wx.pageScrollTo) {
+          wx.pageScrollTo({
+            scrollTop: 0
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+          })
+        }
+      },
+      sortBySale(){
+        let _this = this;
+        _this.sortType = 2;
+
+      },
+      sortByPrice(){
+        let _this = this;
+        _this.sortType = 3;
+      },
+      changeViewMode(){
+        let _this = this;
+        if(_this.viewMode==1){
+          _this.viewMode = 2;
+        }else{
+          _this.viewMode = 1;
+        }
+      },
+      gotoIndex(){
+        wepy.switchTab({
+          url:'/pages/index'
+        })
+      },
+      gotoCategory(){
+        wepy.switchTab({
+          url:'/pages/hot'
+        })
+      },
+      openNavMenu(){
+        let _this =  this;
+        _this.isShowNavMenu = true;
+      },
+      closeNavMenu(){
+        let _this =  this;
+        _this.isShowNavMenu = false;
+      }
+
+    };
+    async getList(){
+      let _this=this;
+      //tip.loading();
+      return;
+      let getData=await wepy.request({
+        url: API+'/commodity/list', //仅为示例，并非真实的接口地址
+        data: {
+          curPage:_this.curPage,
+          memberId:wepy.getStorageSync('token')
+        },
+        method:'POST',
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        success: function(res) {
+          tip.loaded();
+          let getList=res.data.data.list || [];
+          if(_this.curPage == 1){
+            _this.list=getList;
+            _this.curPage=res.data.data.pageNumber;
+            _this.allPage=res.data.data.pageSize;
+          }else if(_this.curPage >1){
+            _this.list.push(res.data.data.list);
+          }
+          _this.$apply();
+          console.log(_this.allPage);
+        }
+      })
+    }
+    onLoad(option) {
+      // let _this = this;
+      // _this.$apply();
+      // util.upDateToken(0,function(){
+      //   _this.getList();
+      // })
+    }
+    onTabItemTap(){
+      console.log('点击了列表')
+    }
+    onShow() {
+      let that = this;
+      that.curPage = 1;
+      that.$apply();
+      // util.upDateToken(0,function(){
+      //   that.getList();
+      // })
+    }
+    //加载更多
+    onReachBottom(res) {
+      let _this=this;
+      if(_this.curPage<_this.allPage){
+        _this.curPage=_this.curPage+1;
+        _this.$apply();
+        _this.getList();
+      }
+      console.log(res);
+    }
+    onShareAppMessage(){
+      return {
+        title: '夜来香',
+        path: '/pages/index',
+        success: function(res) {
+          // 转发成功
+        },
+        fail: function(res) {
+          // 转发失败
+        }
+      }
+    }
+    onPullDownRefresh(){
+
+    }
+  }
+</script>
+<style lang="less">
+page{
+  min-height: 100%;
+  background-color: #f0f0f0;
+}
+
+  .mine{
+    min-width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100%;
+
+    image{
+      width:100%;
+    }
+
+
+  }
+
+
+</style>

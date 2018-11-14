@@ -1,0 +1,206 @@
+<style type="less">
+    .picOne{
+      display:block;
+    }
+    swiper{
+        height:100%;
+      }
+      image{
+        width:100%;
+        height:100%;
+      }
+      .slide-image{
+        width:100%;
+      }
+      swiper-item{
+        text-align: center;
+      }
+      .swiper .wx-swiper-dots.wx-swiper-dots-horizontal{
+        margin-bottom: 2rpx;
+      }
+
+      .swiper .wx-swiper-dot{
+        width:12rpx;
+        display: inline-flex;
+        height: 12rpx;
+        margin-left: 0rpx;
+        border-radius: 0rpx;
+        justify-content:space-between;
+      }
+      .swiper .wx-swiper-dot::before{
+        content: '';
+        flex-grow: 1;
+        background:#dadada;
+        border-radius: 0rpx;
+      }
+      .swiper .wx-swiper-dot-active::before{
+        background:rgba(0,0,0,0.8);
+        border-radius: 0rpx;
+      }
+      .productTag{
+      font-size:22rpx;
+      height:48rpx;
+      line-height:48rpx;
+      position:absolute;
+      top:0;
+      left:0;
+      padding:0rpx 20rpx;
+      border-radius:23rpx;
+      background:#333;
+      color:#fff;
+      display:block;
+      white-space: nowrap;
+      .productArrow{
+        width:0rpx;
+        height:0rpx;
+        border-top:24rpx solid transparent;
+        border-bottom:24rpx solid transparent;
+        border-radius:10rpx;
+        position: absolute;
+        top:0rpx;
+        .productCircle{
+          position: absolute;
+          top:-15rpx;
+          width:14rpx;
+          height:14rpx;
+          padding:8rpx;
+          border-radius:30rpx;
+         /* background:rgba(255,255,255,0.8);
+          background:rgba(255,255,255,0.8);*/
+
+        }
+        .productCircleInside{
+          width:100%;
+          height:100%;
+          display:block;
+          border-radius:14rpx;
+          background:rgba(0,0,0,0.8);
+          box-shadow: 0 0 0 8rpx rgba(255, 255, 255, 0.8);
+          /*animation: shadow 2s ease-in-out infinite;*/
+        }
+      }
+      .productArrowLeft{
+        border-right:24rpx solid #333;
+        left:-15rpx;
+        .productCircle{
+          left:-35rpx;
+        }
+      }
+      .productArrowRight{
+        border-left:24rpx solid #333;
+        right:-15rpx;
+        .productCircle{
+          right:-35rpx;
+        }
+      }
+    }
+    .productTagLeft{
+      border-bottom-left-radius:15rpx;
+      border-top-left-radius:15rpx;
+      border-bottom-right-radius:24rpx;
+      border-top-right-radius:24rpx;
+      .productArrowRight{
+        display:none;
+      }
+
+    }
+    .productTagRight{
+      border-bottom-left-radius:24rpx;
+      border-top-left-radius:24rpx;
+      border-bottom-right-radius:15rpx;
+      border-top-right-radius:15rpx;
+      .productArrowLeft{
+        display:none;
+      }
+    }
+    .collectionBtn,.downBtn{
+      position: absolute;
+      display:block;
+      right:120rpx;
+      bottom:20rpx;
+      width:60rpx;
+      height:60rpx;
+      border-radius:4rpx;
+      background:rgba(0,0,0,0.7);
+      .collectionImage,.downImage{
+        display:block;
+        width:30rpx;
+        margin:15rpx 0 0 15rpx;
+      }
+    }
+    .downBtn{
+      right:30rpx;
+      bottom:20rpx;
+    }
+</style>
+<template>
+<view class="picOne" wx:if="{{proWrapItem.length==1}}" style="height:{{picHeight}}px;">
+    <image src="{{proWrapItem[0].pic_url}}" mode="aspectFit" class="slide-image" />
+    <block wx:for="{{proWrapItem[0].tag}}" wx:key="key"><!-- maskWidth-->
+        <view style="transform: translateX({{item.location_x*picHeight}}px) translateY({{item.location_y*picHeight}}px) translateZ(0px) scale(1); transform-origin: center center 0px; will-change: auto;" class="productTag {{item.location_x*picHeight < picHeight/2 ? 'productTagLeft' : 'productTagLeft'}}">
+        {{item.tag_name}}
+        <view class="productArrow productArrowLeft">
+            <icon class="productCircle" ><text class="productCircleInside"></text></icon>
+        </view>
+        <view class="productArrow productArrowRight">
+            <icon class="productCircle" ><text class="productCircleInside"></text></icon>
+        </view>
+        </view>
+    </block>
+</view>
+<swiper class="swiper" wx:if="{{proWrapItem.length>1}}" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="true" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" current="{{swiperIndex}}" circular="true" bindchange="swiper">
+    <block wx:for="{{proWrapItem}}"  wx:key="key">
+        <swiper-item data-imgLink="{{item.pic_url}}" >
+        <image src="{{item.pic_url}}" mode="aspectFit" class="slide-image" />
+        <block wx:for="{{item.tag}}" wx:key="key"><!-- maskWidth-->
+            <view style="transform: translateX({{item.location_x*picHeight}}px) translateY({{item.location_y*picHeight}}px) translateZ(0px) scale(1); transform-origin: center center 0px; will-change: auto;" class="productTag {{item.location_x*picHeight < picHeight/2 ? 'productTagLeft' : 'productTagLeft'}}">
+            {{item.tag_name}}
+            <view class="productArrow productArrowLeft">
+                <icon class="productCircle" ><text class="productCircleInside"></text></icon>
+            </view>
+            <view class="productArrow productArrowRight">
+                <icon class="productCircle" ><text class="productCircleInside"></text></icon>
+            </view>
+            </view>
+        </block>
+        </swiper-item>
+    </block>
+</swiper>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Swipercontent extends wepy.component {
+
+    components = {
+
+    };
+    props = {
+      proWrapItem:[],
+      picHeight:0,
+      swiperIndex:0
+    }
+    data = {
+        autoplay: false,
+        interval: 3000,
+        duration: 300,
+        gotoBuy:false,
+        indicatorActiveColor: "#fff"
+    }
+    onLoad() {
+        let that = this;
+        //console.log(that.proWrapItem)
+    }
+    computed = {
+
+    }
+    methods = {
+     swiper(e){
+        //console.log(e);
+        //this.swiperIndex=e.detail.current;
+        //this.$emit('getswiper', 0);
+        this.$emit('getswiper', e.detail.current);
+        }
+    };
+
+}
+</script>

@@ -1,0 +1,343 @@
+<template>
+  <view class='car-page'>
+    <view class='car-space'></view>
+    <view class='car-goods-box'>
+      <!--<view class='car-item'>-->
+        <!--<image src='/images/unselect.png' class='car-btn'></image>-->
+        <!--<view class='car-title'>商铺名称</view>-->
+      <!--</view>-->
+      <view class='car-item'>
+        <view>
+          <image src='/images/select.png' class='car-btn'></image>
+        </view>
+        <view>
+          <image src="http://47.95.213.244/pics/commodity/test/1538110633783.jpeg" class='car-goods-image'></image>
+        </view>
+        <view class='car-title-box'>
+          <view class='goods-title'>
+            <view>曼诺 10频震动发音加温凯特口交杯飞机杯</view>
+          </view>
+          <view class='goods-pro'>
+            <view>规格：黑色</view>
+          </view>
+          <view class='goods-price-btn'>
+            <view class='goods-price'>
+              ¥239.00
+            </view>
+            <view class='goods-btn'>
+              <view class='btn-image-box border-right'>
+                <image src='/images/sub.png'></image>
+              </view>
+              <input class='goods-num' type='number' value='2'/>
+              <view class='btn-image-box border-left'>
+                <image src='/images/plus.png'></image>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='car-item'>
+        <view>
+          <image src='/images/select.png' class='car-btn'></image>
+        </view>
+        <view>
+          <image src="http://47.95.213.244/pics/commodity/test/1538109907602.jpeg" class='car-goods-image'></image>
+        </view>
+        <view class='car-title-box'>
+          <view class='goods-title'>
+            <view>万乐 小蛮腰口阴双穴真人叫床飞机杯</view>
+          </view>
+          <view class='goods-pro'>
+            <view>规格：加强版</view>
+          </view>
+          <view class='goods-price-btn'>
+            <view class='goods-price'>
+              ¥159.00
+            </view>
+            <view class='goods-btn'>
+              <view class='btn-image-box border-right'>
+                <image src='/images/sub.png'></image>
+              </view>
+              <input class='goods-num' type='number' value='1'/>
+              <view class='btn-image-box border-left'>
+                <image src='/images/plus.png'></image>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <view class="bar">
+      <view class="checkbox">
+        <image src='/images/select.png' class='car-btn'></image>
+        <text>全选</text>
+      </view>
+      <view class="bar-content">
+        <view class="sum-price">
+          <view class="sum">总计：<text>¥{{sumPrice}}</text></view>
+          <view class="discount">共节省0元</view>
+        </view>
+        <view class="checkou-btn" @tap="switchCheckout">去结算</view>
+      </view>
+
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+
+  export default class hot extends wepy.page {
+    config = {
+      'navigationBarTitleText': '购物车',
+      'navigationBarTextStyle': 'white',
+      'navigationBarBackgroundColor': '#fd4444',
+      'backgroundTextStyle': 'dark',
+    };
+    components = {};
+    props = {};
+    data = {
+      avatarUrl: '../images/index-Head-portrait.png',
+      nickName: "登录",
+      bShowBind: false,
+      sumPrice:637.00,
+      showImgList: [],
+      shoppingcartData: {
+        buyNum: 3,
+        saleAmount: 328,
+        preferentialAmount: 13,
+        buyAmount: 315,
+        isPostageFree: 1,
+        rePurTofreightAmount: '再买XX元可以免运费',
+        orderAmountLimit: '最小成单金额',
+        lackOrderAmount: '成单不足金额',
+        commodities: [
+          {
+            id: "rowId",
+            addDate: "加2018-10-23 09:36:20",
+            addCartPrice:'加车价格',
+            buyStatus: 1,
+            num: '商品数量',
+            commodityNo: '商品编码',
+            commodityName: "商品名称",
+            sellPoint: "卖点测试文本",
+            defaultPic: "商品图片",
+            commodityDesc: "商品描述",
+            brandName: "品牌名称",
+            itemNo: "规格",
+            salePrice: '销售价',
+            marketPrice: '市场价',
+            costPrice: '成本价',
+            stock: '库存',
+            propNo: "属性编码",
+            propName: "属性名称",
+            status: 2,
+            showDate: "上架时间 2018-08-07 07:01:19",
+            downDate: "下架时间 2018-09-28 08:47:29",
+            salesQuantity: 32,
+          }
+        ],
+        abateCommodities: [],
+        linkBuy:1,
+      },
+    };
+    switchCheckout(){
+      wepy.navigateTo({
+        url:'/pages/checkout?commodityskuid=123&commodityid=1000324'
+      })
+    }
+    //监听屏幕滚动 判断上下滚动
+    onPageScroll(ev) {
+
+    };
+
+    onLoad(option) {
+
+    };
+  }
+</script>
+<style lang="less">
+  .bar{
+    height: 106rpx;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    position: fixed;
+    bottom:0rpx;
+    .checkbox{
+      margin-left: 30rpx;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .bar-content{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      background-color: #fff;
+      height: 100%;
+      .sum-price{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        height: 100%;
+        margin-right: 10rpx;
+        .sum{
+          color: #333333;
+          font-size: 28rpx;
+          line-height: 32rpx;
+          text{
+            color:#ff4444;
+            font-size: 26rpx;
+          }
+        }
+        .discount{
+          color: #b3b3b3;
+          font-size: 20rpx;
+          line-height: 32rpx;
+        }
+      }
+      .checkou-btn{
+        height: 100%;
+        width: 250rpx;
+        background-color: #ff4444;
+        color: #fff;
+        font-size: 32rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+  }
+  /* pages/car/carDetail.wxss */
+  .car-goods-box{
+    padding-left: 30rpx;
+    color: #333333;
+    font-size: 30rpx;
+    background-color: #ffffff;
+  }
+  .car-space{
+    height: 20rpx;
+    width: 100%;
+    background-color: #e8e8ed;
+  }
+  .car-item{
+    padding-top: 30rpx;
+    padding-bottom: 30rpx;
+    border-bottom: 2rpx solid #eeeeee;
+    display: flex;
+    align-items: center;
+
+  }
+  .car-btn{
+    height: 40rpx;
+    width: 40rpx;
+  }
+  .car-goods-image{
+    height: 200rpx;
+    width: 200rpx;
+    margin-left: 20rpx;
+  }
+  .car-title{
+    margin-left: 20rpx;
+
+
+  }
+  .car-title-box{
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    font-size:26rpx;
+    color: #333333;
+    line-height: 26rpx;
+    height: 200rpx;
+    vertical-align: top;
+  }
+  .goods-title{
+    view{
+      font-size:26rpx;
+      color: #333333;
+      line-height: 26rpx;
+    }
+    height:80rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    display:box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    word-break:break-word;
+  }
+  .goods-pro{
+    margin-top: 10rpx;
+
+    height: 26rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    display:box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    word-break:break-word;
+    view{
+      color: #b3b3b3;
+      font-size: 20rpx;
+    }
+  }
+  .goods-price-btn{
+    height: 100rpx;
+    display: flex;
+    align-items: center;
+    font-size: 35rpx;
+
+  }
+  .goods-price{
+    color: #e4393c;
+    flex: 1;
+  }
+  .goods-btn{
+    display: flex;
+    flex: 1;
+    height: 60rpx;
+    align-items: center;
+    border: 1rpx solid #999999;
+    justify-content: center;
+    border-radius: 10rpx;
+  }
+  .btn-image-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+
+  }
+  .goods-btn image{
+    display: inline-block;
+    height: 40rpx;
+    width: 40rpx;
+  }
+  .border-right{
+    border-right: 1rpx solid #999999;
+  }
+  .border-left{
+    border-left: 1rpx solid #999999;
+  }
+
+  .goods-num{
+
+    text-align: center;
+    font-size: 35rpx;
+    flex: 1.5;
+  }
+
+
+
+</style>

@@ -1,0 +1,126 @@
+<style lang="less">
+ .container{
+
+  padding-top: 200rpx;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  box-sizing:border-box;
+}
+.allowImg{
+  width:230rpx;
+  height:230rpx;
+}
+.text{
+  font-family:PingFangSC-Regular;
+  font-size:28krpx;
+  color:#999999;
+  letter-spacing:0;
+  line-height:28px;
+  text-align:center;
+}
+.getUserInfoBtn{
+  height: 80rpx;
+  line-height: 80rpx;
+  background:#111111;
+  border-radius:4px;
+  color:#fff;
+  display:block;
+  width:48%;
+  margin:30px auto;
+  font-family:PingFangSC-Regular;
+  font-size:32rpx;
+  letter-spacing:0;
+  text-align:center;
+}
+</style>
+<template>
+    <view class="container">
+      <text class="text">精彩内容，即将开启，需要您的授权哦</text>
+      <button class="getUserInfoBtn" open-type="getUserInfo" bindgetuserinfo="userInfoHandler" >点击授权</button>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class authorize extends wepy.page {
+        config = {
+            'navigationBarTitleText': '微信授权',
+            'navigationBarTextStyle': 'black',
+            'navigationBarBackgroundColor': '#fff'
+        };
+        components = {
+        };
+
+        data = {
+        };
+
+        methods = {
+          userInfoHandler(e){
+            var _this = this
+            wx.getUserInfo({
+              success: function(res) {
+                console.log(res.userInfo);
+                _this.avatarUrl=res.userInfo.avatarUrl;
+                _this.nickName=res.userInfo.nickName;
+                _this.$apply();//member/updateUser
+                wepy.request({
+                  url: API+'/member/updateUser', //仅为示例，并非真实的接口地址
+                  data: {
+                    avatar:res.userInfo.avatarUrl,
+                    openId:wepy.getStorageSync('openid'),
+                    nickName:res.userInfo.nickName
+                    //mobile:'18600000000'
+                  },
+                  method:'POST',
+                  header: {
+                    'content-type': 'application/json' // 默认值
+                  },
+                  success: function(getres) {
+                    let getVideo=res.data;
+                    console.log(getres);
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                    if(getVideo.info.returnCode == 200){
+                      wepy.setStorageSync('avatar',res.userInfo.avatarUrl);
+                      wepy.setStorageSync('nickName',res.userInfo.nickName);
+                    }else{
+                      tip.alert(getVideo.info.returnMessage);
+                    }
+                  },
+                  fail:function(){
+                    tip.confirm('系统出小差了',false);
+                  }
+                })
+              }
+            })
+          }
+        };
+
+        onLoad() {
+          let that = this;
+          //return false;
+        }
+
+        onShow() {
+
+        }
+
+    }
+</script>

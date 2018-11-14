@@ -1,0 +1,121 @@
+<style lang='less'>
+    @import 'style/base.less';
+    @import 'style/weui.wxss';
+</style>
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+  import {
+    USERID,
+    USERSESSION,
+    USER_INFO,
+    USER_CODE,
+    USER_TOKEN,
+  } from './utils/constant';
+  import api from './api/api';
+  import tip from './utils/tip';
+  export default class extends wepy.app {
+      config = {
+          'pages': [
+              'pages/index',
+              'pages/indexelse',
+              'pages/category',
+              'pages/list',
+              'pages/indexd',
+              'pages/peopleshow',
+              'pages/hot',
+              'pages/order',
+              'pages/mine',
+              'pages/video',
+              'pages/detail',
+              'pages/checkout',
+              'pages/address',
+              'pages/settle',
+              'pages/pay',
+              'pages/payresult',
+              'pages/card',
+              'pages/authorize',
+              'pages/share',
+              'pages/shoppingcart',
+            // 'pages/testlist',
+              'pages/invite'
+          ],
+          'window': {
+              'backgroundTextStyle': 'light',
+              'navigationBarBackgroundColor': '#3b3a40',
+              'navigationBarTitleText': 'WeChat',
+              'navigationBarTextStyle': 'black',
+              'onReachBottomDistance':50
+          },
+          'tabBar': {
+              'color': '#333',
+              'selectedColor': '#333',
+              'backgroundColor': '#ffffff',
+              'borderStyle': 'black',
+              'font-size': '44rpx',
+              'list': [
+                {
+                  'pagePath': 'pages/index',
+                  'text': '首页',
+                  'iconPath': 'images/foot_icon_hone_normal.png',
+                  'selectedIconPath': 'images/foot_icon_hone_pressed.png'
+                }, {
+                  'pagePath': 'pages/category',
+                  'text': '分类',
+                  'iconPath': 'images/foot_icon_class_normal.png',
+                  'selectedIconPath': 'images/foot_icon_class_pressed.png'
+                }, {
+                  'pagePath': 'pages/shoppingcart',
+                  'text': '购物车',
+                  'iconPath': 'images/foot_icon_shop_normal.png',
+                  'selectedIconPath': 'images/foot_icon_shop_pressed.png'
+                }, {
+                  'pagePath': 'pages/mine',
+                  'text': '我的',
+                  'iconPath': 'images/foot_icon_mine_normal.png',
+                  'selectedIconPath': 'images/foot_icon_mine_pressed.png'
+                }
+              ]
+          }
+      };
+
+      globalData = {
+          userInfo: null,
+          appid: 'wxe5b141d276f17ce9',
+          secret: '65b400045254475aee5e3a1451346072',
+          isIpx: false,
+          screenH:0,
+          screenW:0
+      }
+      onLaunch () {
+        //wepy.setStorageSync('token','10000');//wepy.getStorageSync('token');
+        // wx.getSystemInfo({
+        //     success: (res) => {
+        //         console.log(res)
+        //         this.globalData.screenH = res.windowHeight;
+        //         this.globalData.screenW = res.windowWidth;
+        //         if(res.model.indexOf('iPhone X')>=0){
+        //           this.globalData.isIpx = true;
+        //         }else{
+        //           this.globalData.isIpx = false;
+        //         }
+        //         if(res.system.indexOf('Android')>=0){
+        //           this.globalData.isAndroid = true;
+        //         }else{
+        //           this.globalData.isAndroid = false;
+        //         }
+        //     }
+        // })
+        // let that = this;
+        // let userId = wepy.getStorageSync(USERID) || {};
+        // let userSession = wepy.getStorageSync(USERSESSION) || {};
+        // if (wepy.getStorageSync(USERSESSION) === '' && wepy.getStorageSync(USERID) === '') {
+        //     //that.uniteLogin();
+        // }
+      }
+  }
+
+</script>
+
+
+

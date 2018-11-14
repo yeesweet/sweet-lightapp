@@ -1,0 +1,525 @@
+<template>
+  <view class="nav-path" wx:if="{{isShowNavMenu}}">
+    <view class="path">
+    </view>
+    <view class="nav-menu">
+      <block>
+        <view class="menu home-btn" @tap="gotoIndex">
+          <text>购物首页</text>
+          <view @tap="backTop"><image src="../images/btn_cover_home.png"/> </view>
+        </view>
+      </block>
+      <block>
+        <view class="menu category-btn" @tap="gotoCategory">
+          <text>分类/搜索</text>
+          <view @tap="backTop"><image src="../images/btn_cover_class.png"/> </view>
+        </view>
+      </block>
+      <block>
+        <view class="close-area" class="menu close-btn" @tap="closeNavMenu">
+          <text>关闭</text>
+          <view ><image src="../images/btn_cover_close.png"/> </view>
+        </view>
+      </block>
+    </view>
+
+  </view>
+  <view class="hot">
+    <view class="tab">
+      <view @tap="sortBySale" wx:if="{{sortType!=2}}"><text class="sale-num blur-item">销量</text></view>
+      <view wx:else><text class="sale-num focus-item">销量</text></view>
+      <view @tap="sortByPrice" wx:if="{{sortType!=3}}"><text class="price blur-item">价格</text></view>
+      <view wx:else><text class="price focus-item">价格</text></view>
+      <view class="change-btn" @tap="changeViewMode" wx:if="{{viewMode==1}}"><image src="../images/tab_icon_show1.png"/> </view>
+      <view class="change-btn" @tap="changeViewMode" wx:if="{{viewMode==2}}"><image src="../images/tab_icon_show2.png"/> </view>
+    </view>
+
+    <view class="bottom-nav" wx:if="{{!isShowNavMenu}}">
+      <view class="back-top-btn" @tap="backTop" wx:if="{{scrollTop>500}}"><image src="../images/btn_back_top.png"/> </view>
+      <view class="nav-btn" @tap="openNavMenu"><image src="../images/btn_sus_nav.png"/> </view>
+    </view>
+
+    <view class="weui-panel__bd weui-panel__hot" wx:if="{{list.length>0 && viewMode==1}}">
+      <block wx:for="{{list}}" wx:key="key">
+        <navigator url="/pages/detail?proid={{item.commodityNo}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image mode="aspectFill"  class="weui-media-box__thumb" src="{{item.defaultPic}}" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg info-area">
+            <view class="weui-media-box__desc name">{{item.commodityName}}</view>
+            <view class="postageFree desc" >充电互动发音，双震动，双层吸盘</view>
+            <view class="weui-media-box__title price"><text>￥</text>{{item.salePrice}}</view>
+          </view>
+
+        </navigator>
+      </block>
+    </view>
+
+    <view class="list2" wx:elif="{{list.length>0 && viewMode==2}}">
+      <block wx:for="{{list}}" wx:key="key">
+        <navigator  url="/pages/detail?proid={{item.commodityNo}}" class="commodity">
+          <image src="{{item.defaultPic}}"/>
+          <view class="text">
+            <text class="name">{{item.commodityName}}</text>
+            <text class="price">¥{{item.salePrice}}</text>
+          </view>
+
+        </navigator>
+      </block>
+    </view>
+    <!--加载更多时动画-->
+    <!-- <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore> -->
+
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+  import {
+    USER_TOKEN,
+    API,
+  } from "../utils/constant"
+  import api from '../api/api';
+  import tip from '../utils/tip'
+  import util from '../utils/util'
+  import BottomLoadMore from "../components/common/bottomLoadMore"
+  export default class hot extends wepy.page {
+    config = {
+      'navigationBarTitleText': '商品列表',
+      'navigationBarTextStyle': 'white',
+      'navigationBarBackgroundColor': '#fd4444',
+      'backgroundTextStyle':'dark',
+    };
+    components = {
+      bottomLoadMore: BottomLoadMore,
+    };
+    props = {
+
+    };
+    data = {
+      // topImage:'../images/Sharp-goods-banner.png',
+      showLoading: true,//是否显示 底部loading
+      preventRepeatReuqest: false,//防止重复加载
+      isIpx: wepy.$instance.globalData.isIpx?true:false,
+      screenW: wepy.$instance.globalData.screenW,
+      screenH: wepy.$instance.globalData.screenH,
+      list:[{commodityNo:10002897,defaultPic:'http://47.95.213.244/pics/commodity/test/1538110633783.jpeg',commodityName:'曼诺 10频震动发音加温凯特口交杯飞机杯 ',salePrice:'239'},
+        {commodityNo:10002908,defaultPic:'http://47.95.213.244/pics/commodity/test/1538109907602.jpeg',commodityName:'万乐 小蛮腰口阴双穴真人叫床飞机杯 ',salePrice:'159'},
+        {commodityNo:10002907,defaultPic:'http://47.95.213.244/pics/commodity/test/1538109063315.jpeg',commodityName:'雷霆 头等舱高速活塞全自动抽插互动发声飞机杯',salePrice:'479'},
+        {commodityNo:10002906,defaultPic:'http://47.95.213.244/pics/commodity/test/1537927464253.jpeg',commodityName:'嘉媚乐 丰盈美胸紧致增大精油15ml',salePrice:'479'},
+
+      ],
+
+      curPage:1,
+      allPage:1,
+      getListIndex:0,
+      paramId:'',
+      type:2,
+      viewMode:1,
+      sortType:2,
+      isShowNavMenu:false,
+      scrollTop:false
+    };
+    //监听屏幕滚动 判断上下滚动
+    onPageScroll(ev) {
+      var _this = this;
+      //当滚动的top值最大或最小时，为什么要做这一步是因为在手机实测小程序的时候会发生滚动条回弹，所以为了处理回弹，设置默认最大最小值
+      // console.log('ev.scrollTop:'+ev.scrollTop);
+      if (ev.scrollTop <= 0) {
+        ev.scrollTop = 0;
+      } else if (ev.scrollTop > wx.getSystemInfoSync().windowHeight) {
+        ev.scrollTop = wx.getSystemInfoSync().windowHeight;
+      }
+      //判断浏览器滚动条上下滚动
+      if (ev.scrollTop > this.data.scrollTop || ev.scrollTop == wx.getSystemInfoSync().windowHeight) {
+        //向下滚动
+      } else {
+        //向上滚动
+      }
+      //给scrollTop重新赋值
+      setTimeout(function () {
+        _this.setData({
+          scrollTop: ev.scrollTop
+        })
+      }, 0)
+    };
+    methods = {
+      goShare(){
+        wepy.navigateTo({
+          url:'/pages/share'
+        })
+      },
+      backTop(){
+        if (wx.pageScrollTo) {
+          wx.pageScrollTo({
+            scrollTop: 0
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+          })
+        }
+      },
+      sortBySale(){
+        let _this = this;
+        _this.sortType = 2;
+
+      },
+      sortByPrice(){
+        let _this = this;
+        _this.sortType = 3;
+      },
+      changeViewMode(){
+        let _this = this;
+        if(_this.viewMode==1){
+          _this.viewMode = 2;
+        }else{
+          _this.viewMode = 1;
+        }
+      },
+      gotoIndex(){
+        wepy.switchTab({
+          url:'/pages/index'
+        })
+      },
+      gotoCategory(){
+        wepy.switchTab({
+          url:'/pages/hot'
+        })
+      },
+      openNavMenu(){
+        let _this =  this;
+        _this.isShowNavMenu = true;
+      },
+      closeNavMenu(){
+        let _this =  this;
+        _this.isShowNavMenu = false;
+      }
+
+    };
+    async getList(){
+      let _this=this;
+      //tip.loading();
+      return;
+      let getData=await wepy.request({
+        url: API+'/commodity/getCommodityList', //仅为示例，并非真实的接口地址
+        data: {
+          type:_this.type,
+          paramId:_this.paramId
+        },
+        method:'POST',
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        success: function(res) {
+          tip.loaded();
+          if(res.data.message == 'success'){
+            let getList=res.data.data || [];
+            if(_this.curPage == 1){
+              _this.list=getList;
+              // _this.curPage=res.data.data.pageNumber;
+              // _this.allPage=res.data.data.pageSize;
+            }else if(_this.curPage >1){
+              _this.list.push(res.data.data.list);
+            }
+            _this.$apply();
+            console.log(_this.allPage);
+          }
+
+        }
+      })
+    }
+    onLoad(option) {
+      let _this = this;
+      _this.paramId=option.paramId;
+      _this.$apply()
+    }
+    onTabItemTap(){
+      console.log('点击了列表')
+    }
+    onShow() {
+      let that = this;
+      that.curPage = 1;
+      that.$apply();
+      // util.upDateToken(0,function(){
+      //   that.getList();
+      // })
+    }
+    //加载更多
+    onReachBottom(res) {
+      let _this=this;
+      if(_this.curPage<_this.allPage){
+        _this.curPage=_this.curPage+1;
+        _this.$apply();
+        _this.getList();
+      }
+      console.log(res);
+    }
+    onShareAppMessage(){
+      return {
+        title: '夜来香',
+        path: '/pages/index',
+        success: function(res) {
+          // 转发成功
+        },
+        fail: function(res) {
+          // 转发失败
+        }
+      }
+    }
+    onPullDownRefresh(){
+
+    }
+  }
+</script>
+<style lang="less">
+  .nav-path{
+    position: fixed;
+    z-index: 40;
+    min-width: 100%;
+    min-height: 100%;
+    top:0;
+    left:0;
+    .path{
+      background-color: black;
+      opacity:0.5;
+      position: absolute;
+      top:0px;
+      left:0px;
+      min-width: 100%;
+      min-height: 100%;
+
+    }
+    .nav-menu{
+      position: absolute;
+      bottom: 30rpx;
+      right:20rpx;
+      display: flex;
+      flex-direction:column;
+      align-items:flex-end;
+      .menu{
+        display: flex;
+        margin-top:20rpx;
+        text{
+          display: block;
+          height:82rpx;
+          line-height: 82rpx;
+          text-align: right;
+          vertical-align: middle;
+          color:#fff;
+          font-size: 28rpx;
+        }
+        view{
+          width:82rpx;
+          height:82rpx;
+          right:0rpx;
+          margin-left:20rpx;
+          image{
+            width:82rpx;
+            height:82rpx;
+
+          }
+        }
+      }
+    }
+  }
+
+  .hot{
+    min-width: 100%;
+    min-height: 100%;
+    .tab{
+      position: fixed;
+      top: 0px;
+      display: flex;
+      z-index: 20;
+
+      view{
+        width:250rpx;
+        height:86rpx;
+        background-color: #fff;
+        .focus-item{
+          color: #ff0000;
+        }
+        .blur-item{
+          color: #999999;
+        }
+        text{
+          display: block;
+          width:250rpx;
+          height:86rpx;
+          line-height: 86rpx;
+          vertical-align: middle;
+          text-align: center;
+        }
+      }
+      .change-btn{
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        image{
+          width: 34rpx;
+          height:34rpx;
+        }
+      }
+
+    }
+    .bottom-nav{
+      position: fixed;
+      width:82rpx;
+      height:auto;
+      bottom: 24rpx;
+      right:16rpx;
+      display: flex;
+      flex-direction:column;
+      z-index: 21;
+      .back-top-btn{
+        width:82rpx;
+        height:82rpx;
+        margin-bottom:12rpx;
+        image{
+          width:82rpx;
+          height:82rpx;
+        }
+      }
+      .nav-btn{
+        width:82rpx;
+        height:82rpx;
+        image{
+          width:82rpx;
+          height:82rpx;
+        }
+      }
+    }
+
+
+
+    .weui-cell_active{
+      opacity:0.8;
+    }
+    .weui-panel__hot{
+      background:#fff;
+      margin-top:106rpx;
+      .weui-media-box__hd_in-appmsg{
+        width:252rpx;
+        height:252rpx;
+        margin-right:20rpx;
+      }
+      .weui-media-box{
+        padding:20rpx;
+        position: relative;
+      }
+      .weui-media-box:first-child{
+        padding-top:30rpx;
+      }
+      .weui-media-box__desc{
+        color:#808080;
+        line-height:45rpx;
+        font-size: 30rpx;
+        margin:-50rpx 0 15rpx;
+      }
+      .weui-media-box__title{
+        font-weight:bold;
+        color:#fd4444;
+        font-size: 28rpx;
+        text{
+          font-size:26rpx;
+          font-weight:normal;
+        }
+      }
+      .weui-media-box:before {
+        left:0;
+        height:2rpx;
+        background:#f6f6f6;
+        border:0 none;
+      }
+      .postageFree{
+        font-size:24rpx;
+        position: absolute;
+        line-height:28rpx;
+        top:130rpx;
+        right:20rpx;
+        padding:4rpx 21rpx;
+        /*background:#f85497;*/
+        color:#fff;
+        /*border-radius:10rpx;*/
+      }
+    }
+
+    .info-area{
+      display: flex;
+      flex-direction:column;
+      width:460rpx;
+      height: 252rpx;
+      .name{
+        /*position: absolute;*/
+        top:16rpx;
+        font-size: 30rpx;
+        color: #333;
+        margin: 0px;
+      }
+      .desc{
+        /*position: absolute;*/
+        top:26rpx;
+        left:0rpx;
+        color: #b2b2b2;
+        margin: 0px;
+        padding:0px;
+        position: relative;
+      }
+      .price{
+        position: absolute;
+        bottom:36rpx;
+
+
+      }
+    }
+
+    .list2{
+      display: flex;
+      flex-wrap:wrap ;
+      padding: 0;
+      margin: 0;
+      background:#fff;
+      margin-top:106rpx;
+      .commodity{
+        width:375rpx;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction:column;
+        image{
+          width:375rpx;
+          height: 375rpx;
+          margin: 0;
+          padding: 0;
+        }
+        .text{
+          width: 375rpx;
+          height: 135rpx;
+          display: flex;
+          flex-direction:column;
+          justify-content:space-between;
+          padding: 18rpx 20rpx;
+          .name{
+            width:335rpx;
+            font-size: 28rpx;
+            line-height: 33rpx;
+            color:#333333;
+
+          }
+          .price{
+            font-size: 32rpx;
+            line-height: 37rpx;
+            color: #fd4444;
+
+          }
+        }
+      }
+    }
+
+  }
+
+
+</style>

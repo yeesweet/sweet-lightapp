@@ -1,0 +1,502 @@
+<style lang="less">
+page{
+  background:#fff;
+}
+.order{
+  background:#f6f6f6;
+  .weui-panel__hot{
+    background:#fff;
+    font-size:24rpx;
+    margin:0 0 15rpx;
+    border-radius:10rpx;
+    color:#666;
+    .weui-media-box__hd_in-appmsg{
+      width:155rpx;
+      height:155rpx;
+      margin-right:30rpx;
+    }
+    .weui-media-box{
+      padding:30rpx;
+      padding-left:226rpx;
+      position: relative;
+      margin-top:-1rpx;
+       z-index:9;
+    }
+
+    .weui-media-box:first-child{
+      padding-top:30rpx;
+    }
+    .weui-media-box__desc{
+      color:#808080;
+      line-height:45rpx;
+      margin:-10rpx 0 15rpx;
+    }
+    .weui-media-box__title{
+      font-size: 30rpx;
+      color:#8c8c8c;
+      overflow: hidden;
+      text-align: left;
+
+    }
+    .weui-media-box:before {
+      left:0;
+      height:2rpx;
+      background:#f6f6f6;
+      border:0 none;
+    }
+    .proPrice{
+      display:block;
+      font-size: 38rpx;
+      color:#f85497;
+      font-weight:bold;
+      padding-top: 26rpx;
+      text{
+        font-size:26rpx;
+        font-weight:normal;
+      }
+    }
+    .proImg{
+      position: absolute;
+      top:30rpx;
+      left:30rpx;
+    }
+    .weui-media-box__bd_in-appmsg{
+      position: relative;
+      padding:0 0 56rpx;
+      .gotobuy{
+        width:222rpx;
+        height:58rpx;
+        display:block;
+        background:#f85497;
+        line-height:58rpx;
+        text-align: center;
+        border-radius:10rpx;
+        color:#fff;
+        font-size: 28rpx;
+        position: absolute;
+        bottom:56rpx;
+        right:48rpx;
+        image{
+          width:40rpx;
+          vertical-align: middle;
+        }
+      }
+      .videoM{
+        padding:0 20rpx;
+        width:182rpx;
+        overflow: hidden;
+        image{
+          width:40rpx;
+          float:left;
+          margin-top:10rpx;
+          margin-right:10rpx;
+          vertical-align: middle;
+        }
+        .txet{
+          float:right;
+        }
+      }
+      .noTap{
+        background:#ddd;
+      }
+    }
+    .orderTitle{
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+      padding:30rpx 30rpx 0;
+      background:#fff;
+      z-index:10;
+      .rightText{
+        color:#999;
+        float:right;
+        font-size:28rpx;
+        line-height:48rpx;
+      }
+      .leftText{
+        color:#999;
+        float:left;
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+      }
+    }
+    .logistics{
+      padding:10rpx 30rpx 0;
+      color:#999;
+      text-align:right;
+      overflow: hidden;
+      position: relative;
+    }
+    .payNumber{
+      padding:0 0 35rpx;
+      margin:0 130rpx;
+      position: relative;
+      .payOver,.sendPro,.packPro{
+        display:block;
+        position: relative;
+        width:66rpx;
+        padding:0 14rpx;
+        background:#fff;
+        image{
+          display:block;
+          width:66rpx;
+          height:66rpx;
+        }
+        text{
+          display:block;
+          text-align:center;
+          color:#f85497;
+          padding-top:8rpx;
+        }
+      }
+      .packPro{
+        margin:0 auto;
+      }
+      .lineLeft,.lineRight{
+        display:block;
+        height:1rpx;
+        background:#fdabb9;
+        width:50%;
+        position: absolute;
+        top:35rpx;
+      }
+      .lineOver{
+        background:#fe5977;
+      }
+      .lineLeft{
+        left:0;
+      }
+      .lineRight{
+        right:0;
+      }
+      .payOver,.sendPro{
+        position: absolute;
+        top:0;
+      }
+      .payOver{
+        left:0;
+      }
+      .sendPro{
+        right:0;
+      }
+    }
+  }
+}
+.nothingWrap{
+  padding-top:200rpx;
+  image{
+    width:462rpx;
+    margin:0 auto;
+    display:block;
+  }
+}
+</style>
+<template>
+<view class="nothingWrap" wx:if="{{list.length<=0}}">
+  <image mode="widthFix" src="../images/Empty-.png"></image>
+</view>
+<view class="order" wx:if="{{list.length>0}}"><!-- wx:if="{{item.logisticsCompany != null && item.logisticsNumber != null}}"-->
+    <block wx:for="{{list}}" wx:key="key">
+    <view class="weui-panel__bd weui-panel__hot">
+      <view class="orderTitle"><text class="leftText">{{item.orderNumber}}</text><text class="rightText">{{item.createTimeString}}</text></view>
+      <view class="logistics" wx:if="{{item.logisticsCompany != null && item.logisticsNumber != null && item.status == 2}}" ><text>{{item.logisticsCompany}}：</text>{{item.logisticsNumber}}</view>
+      <view class="weui-media-box weui-media-box_appmsg">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg proImg">
+            <image mode="aspectFill"  class="weui-media-box__thumb" src="{{item.midImage}}" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__desc">{{item.shortName}}</view>
+            <view class="weui-media-box__title">{{item.color}} {{item.size}}<view class="proPrice"><text>￥</text>{{item.orderPrice}}</view></view>
+            <view class="gotobuy" data-ordernumber="{{item.orderNumber}}" wx:if="{{item.status == 0 }}" @tap="gotopay" >去支付</view>
+            <view class="gotobuy videoM {{item.isUploadVideo == 1 ? 'noTap' : ''}}" wx:if="{{item.status != 0 }}" data-index="{{index}}" data-uploadvideo="{{item.isUploadVideo}}" data-orderid="{{item.orderId}}" @tap="videoMake"><image mode="widthFix" src="../images/video-.png"></image><text>拍买家秀</text></view>
+        </view>
+      </view>
+      <view class="payNumber">
+        <view class="lineLeft {{item.status == 1 ? 'lineOver' : ''}}"></view>
+        <view class="lineRight {{item.status == 2 ? 'lineOver' : ''}}"></view>
+        <view class="payOver"><image mode="widthFix" src="{{item.status == 1 || item.status == 2 ? '../images/Check-out.png' : '../images/Check-out-.png'}}"></image><text>结账</text></view>
+        <view class="packPro"><image mode="widthFix" src="{{item.status == 2 ? '../images/pack.png' : '../images/pack-.png'}}"></image><text>打包</text></view>
+        <view class="sendPro"><image mode="widthFix" src="{{item.status == 2 ? '../images/Deliver-goods.png' : '../images/Deliver-goods-.png'}}"></image><text>发货</text></view>
+      </view>
+    </view>
+    </block>
+</view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class order extends wepy.page {
+        config = {
+            'navigationBarTitleText': '买过',
+            'navigationBarTextStyle': 'black',
+            'navigationBarBackgroundColor': '#fff',
+            'backgroundTextStyle':'dark',
+        };
+        components = {
+
+        };
+        props = {
+
+        };
+        data = {
+          list:[],
+          listIndex:0,
+        };
+        async saveVideo(getVideoUrl,getVideoId) {
+          let _this = this;
+          let getData=await wepy.request({
+            url: API+'/video/add', //仅为示例，并非真实的接口地址
+            data: {
+              orderId:getVideoId,
+              videoUrl:getVideoUrl,
+              memberId:wepy.getStorageSync('token')
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                tip.success('视频上传成功',500);
+                _this.list[_this.listIndex].isUploadVideo=1;
+                _this.$apply();
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        methods = {
+          gotopay(e){
+            let getordernumber=e.currentTarget.dataset.ordernumber;
+            this.runRequestPayment(getordernumber);
+          },
+          videoMake(e){
+            let _this = this;
+            let getId=e.currentTarget.dataset.orderid;
+            let uploadvideo=e.currentTarget.dataset.uploadvideo;
+            _this.listIndex=e.currentTarget.dataset.index;
+            _this.$apply();
+            console.log(_this.index)
+            if(uploadvideo == 1){
+              tip.alert('你已上传过同一美艳秀了呦',false);
+              return false;
+            }
+            wx.chooseVideo({
+                sourceType: ['album','camera'],
+                maxDuration: 15,
+                camera: 'back',
+                success: function(res) {
+                  console.log(res.tempFilePath)//thumbTempFilePath
+                  console.log(res)
+                  let getVideoSrc=res.tempFilePath;
+                  if(getVideoSrc.indexOf('.mp4') <= 0){
+                    tip.alert('不可以，只支持手机拍摄呢',false);
+                    return false;
+                  }
+                  if(res.duration > 15){
+                    tip.confirm('15秒以内的展现才是小仙女哦',false);;
+                    return false;
+                  }
+                  wx.showLoading({
+                    title: '上传中',
+                  })
+                  const uploadTask = wx.uploadFile({
+                    url: API+'/upload/video',
+                    filePath: res.tempFilePath,
+                    name: 'file',
+                    success: function(res) {
+                      console.log(res);
+                      if(res.statusCode == 200){
+                        let getVideo=res.data;
+                        getVideo=JSON.parse(getVideo);
+                        getVideo=getVideo.list || [];
+                        if(getVideo[0] != ''){
+                          _this.saveVideo(getVideo[0],getId);
+                        }
+                      }else{
+                        tip.confirm(getVideo.info.returnMessage,false);
+                      }
+                      //console.log(res)
+                      wx.hideLoading();
+                    },
+                    fail:function(){
+                      wx.hideLoading();
+                      tip.confirm('系统出小差了',false);
+                    }
+                  })
+                  uploadTask.onProgressUpdate((res) => {
+                    console.log('上传进度', res.progress)
+                    console.log('已经上传的数据长度', res.totalBytesSent)
+                    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+                  })
+                }
+            })
+          }
+        };
+        runRequestPayment(getOrderNumber){
+          let _this=this;
+          wepy.request({
+            url: API+'/weChatPay/pay', //仅为示例，并非真实的接口地址
+            data: {
+              orderNumber:getOrderNumber,
+              openid:wepy.getStorageSync('openid')
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              wx.requestPayment({
+                'timeStamp': getData.timeStamp,
+                'nonceStr': getData.nonceStr,
+                'package': getData.package,
+                'signType': "MD5",
+                'paySign': getData.sign,
+                'success':function(res){
+                  //_this.checkoutOrder(getOrderNumber)
+                  tip.loading();
+                  setTimeout(() => {
+                    wepy.navigateTo({
+                      url:'/pages/pay?getorder='+getOrderNumber
+                    })
+                    tip.loaded();
+                  }, 3000);
+
+                },
+                'fail':function(res){
+                  console.log(res)
+                  //tip.alert('支付失败');
+                  tip.loading();
+                  setTimeout(() => {
+                    wepy.navigateTo({
+                      url:'/pages/pay?getorder='+getOrderNumber
+                    })
+                    tip.loaded();
+                  }, 3000);
+                }
+              })
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        checkoutOrder(getOrderId) {
+          let _this = this;
+          wepy.request({
+            url: API+'/order/searchOrderStatus', //仅为示例，并非真实的接口地址
+            data: {
+              orderNumber:getOrderId
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                //tip.confirm('支付成功',false);
+                if(getData.data.status == 1){
+                  tip.alert('支付成功');
+                  wepy.navigateTo({
+                    url:'/pages/pay?paystatus=1'
+                  })
+                }else{
+                  tip.alert('支付失败');
+                  wepy.navigateTo({
+                    url:'/pages/pay?paystatus=0'
+                  })
+                }
+                _this.$apply();
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        async getOrderList(){
+          let _this=this;
+          tip.loading();
+          let getData=await wepy.request({
+            url: API+'/order/orderList', //仅为示例，并非真实的接口地址
+            data: {
+              curPage:1,
+              status:-2,//-2.全部 0.待支付 1.已支付 2.已发货 3.已收获 4.已评价 5.退货中 6.已退货
+              memberId:wepy.getStorageSync('token')
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getVideo=res.data;
+              console.log(res);
+              tip.loaded();
+              if(getVideo.info.returnCode == 200){
+                let getList=typeof getVideo.data.list != 'undefined' ? getVideo.data.list : [];
+                _this.list=getList;
+                // _this.allPage=getVideo.data.pageSize;
+                _this.$apply();
+              }else{
+                tip.confirm('系统出小差了',false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        onLoad(option) {
+          let _this = this;
+          _this.$apply()
+          //_this.getOrderList();
+        }
+        onShow() {
+          this.getOrderList();
+        }
+        //加载更多
+        onReachBottom() {
+
+        };
+        onShareAppMessage(){
+          return {
+            title: '爱享秀',
+            path: '/pages/index',
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        }
+        onPullDownRefresh(){
+
+        }
+    }
+</script>

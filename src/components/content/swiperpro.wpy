@@ -1,0 +1,82 @@
+<style type="less">
+    swiper{
+        height:100%;
+      }
+      image{
+        width:100%;
+        height:100%;
+      }
+      .slide-image{
+        width:100%;
+      }
+      swiper-item{
+        text-align: center;
+      }
+      .swiper .wx-swiper-dots.wx-swiper-dots-horizontal{
+        margin-bottom: 2rpx;
+      }
+
+      .swiper .wx-swiper-dot{
+        width:12rpx;
+        display: inline-flex;
+        height: 12rpx;
+        margin-left: 0rpx;
+        border-radius: 0rpx;
+        justify-content:space-between;
+      }
+      .swiper .wx-swiper-dot::before{
+        content: '';
+        flex-grow: 1;
+        background:#dadada;
+        border-radius: 0rpx;
+      }
+      .swiper .wx-swiper-dot-active::before{
+        background:rgba(0,0,0,0.8);
+        border-radius: 0rpx;
+      }
+
+</style>
+<template>
+<image wx:if="{{proWrapItem.length == 1}}" src="{{proWrapItem[0].img_path}}" mode="aspectFit" class="slide-image" />
+<swiper class="swiper" wx:if="{{proWrapItem.length>1}}" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="true" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiper" current="{{swiperIndex}}" circular="false" >
+    <block wx:for="{{proWrapItem}}"  wx:key="key">
+        <swiper-item data-imgLink="{{item.img_path}}" >
+        <image src="{{item.img_path}}" mode="aspectFit" class="slide-image" />
+        </swiper-item>
+    </block>
+</swiper>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Swiperpro extends wepy.component {
+
+    components = {
+
+    };
+    props = {
+      proWrapItem:[],
+      picHeight:0,
+      swiperIndex:0
+    }
+    data = {
+        autoplay: false,
+        interval: 3000,
+        duration: 300,
+        gotoBuy:false,
+        indicatorActiveColor: "#fff"
+    }
+    onLoad() {
+        let that = this;
+        console.log(that.swiperIndex)
+    }
+    computed = {
+
+    }
+    methods = {
+      swiper(e){
+        this.$emit('getswiperpro', e.detail.current);
+      }
+    };
+
+}
+</script>

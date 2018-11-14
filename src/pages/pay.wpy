@@ -1,0 +1,122 @@
+<template>
+<view class="page">
+    <view class="weui-msg">
+        <view class="weui-msg__icon-area" wx:if="{{payResult == 1}}">
+            <icon type="success" size="93"></icon>
+        </view>
+        <view class="weui-msg__icon-area" wx:if="{{payResult == 0}}">
+            <icon type="warn" size="93"></icon>
+        </view>
+        <view class="weui-msg__text-area">
+            <view class="weui-msg__title">{{payResult == 1 ? '支付成功' : '支付失败'}}</view>
+            <!-- <view class="weui-msg__desc">{{payResult == 1 ? '支付成功' : '支付失败'}}<navigator open-type="navigate" url="/pages/index" class="weui-msg__link">首页</navigator></view> -->
+        </view>
+        <view class="weui-msg__opr-area">
+            <view class="weui-btn-area">
+                <button @tap="gotoindex" class="weui-btn" type="primary" wx:if="{{payResult == 1}}">首页</button>
+                <button @tap="gotoback" class="weui-btn" type="primary" wx:if="{{payResult == 0}}">结算页</button>
+            </view>
+        </view>
+        <!-- <view class="weui-msg__extra-area">
+            <view class="weui-footer">
+                <view class="weui-footer__links">
+                    <navigator url="" class="weui-footer__link">底部链接文本</navigator>
+                </view>
+                <view class="weui-footer__text">Copyright © 2008-2016 weui.io</view>
+            </view>
+        </view> -->
+    </view>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import 'wepy-async-function';
+  import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+  export default class pay extends wepy.page {
+      config = {
+          'navigationBarTitleText': '支付结果',
+          'navigationBarTextStyle': 'black',
+          'navigationBarBackgroundColor': '#fff'
+      };
+      components = {};
+      data = {
+        payResult:1,
+        getorder:'',
+      };
+      methods = {
+        gotoindex(){
+          wx.switchTab({
+            url: '/pages/index'
+          })
+        },
+        gotoback(){
+          wx.navigateBack({
+              delta: 1
+          })
+        }
+      };
+      checkoutOrder(getOrderId) {
+        let _this = this;
+        wepy.request({
+          url: API+'/order/searchOrderStatus', //仅为示例，并非真实的接口地址
+          data: {
+            orderNumber:getOrderId
+          },
+          method:'POST',
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          success: function(res) {
+            let getData=res.data;
+            console.log(res);
+            if(getData.info.returnCode == 200){
+              //tip.confirm('支付成功',false);
+              if(getData.data.status == 1){
+                tip.alert('支付成功');
+                this.payResult = 1;
+                wx.setNavigationBarTitle({
+                  title: '支付成功'
+                })
+              }else{
+                this.payResult = 0;
+                tip.alert('支付失败');
+                wx.setNavigationBarTitle({
+                  title: '支付失败'
+                })
+                // wepy.navigateTo({
+                //   url:'/pages/pay?paystatus=0'
+                // })
+              }
+              _this.$apply();
+            }else{
+              tip.confirm(getData.info.returnMessage,false);
+            }
+          },
+          fail:function(){
+            tip.confirm('获取失败',false);
+          }
+        })
+      };
+      onLoad(option) {
+        this.payResult=option.paystatus || 0;
+        this.getorder=option.getorder;
+        this.$apply();
+        this.checkoutOrder(option.getorder);
+      };
+      onShow() {
+
+      };
+
+  }
+</script>

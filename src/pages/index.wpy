@@ -1,0 +1,1385 @@
+<style lang="less">
+page{
+  background:#fff;
+  .indexMask{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+  }
+  .hidden{
+    display:none;;
+  }
+
+  .content{
+    overflow-x: hidden;
+    width:750rpx;
+    padding-bottom: 0rpx;
+    .btn{
+      width:187.5rpx;
+      height:75rpx;
+    }
+    .slide-image{
+      width:100%;
+      /*height:13.301rem;*/
+    }
+
+    .swiper image {
+      width: 100%;
+      height: auto;
+    }
+
+    .icon-modle{
+      display: flex;
+      flex-direction:column;
+      /*justify-content: center;*/
+      /*align-items:center;*/
+      padding-top: 30rpx;
+      padding-bottom: 30rpx;
+      .icon5{
+        display: flex;
+        justify-content:space-around;
+        padding:10rpx;
+        background-color: #fff;
+        .icon{
+          display: flex;
+          flex-direction:column;
+          justify-content: center;
+          align-items:center;
+
+          image{
+            width:86rpx;
+            height:86rpx;
+            margin-top:15rpx;
+            margin-bottom:5rpx;
+          }
+          text{
+            font-size: 24rpx;
+            vertical-align: bottom;
+            text-align: center;
+            line-height: 54rpx;
+
+          }
+
+        }
+      }
+
+      .icon4{
+        display: flex;
+        justify-content:space-around;
+        padding:10rpx;
+        background-color: #fff;
+        .icon{
+          display: flex;
+          flex-direction:column;
+          justify-content: center;
+          align-items:center;
+
+          image{
+            width:182.5rpx;
+            height:182.5rpx;
+            margin-top:15rpx;
+            margin-bottom:5rpx;
+          }
+          text{
+            font-size: 24rpx;
+            vertical-align: bottom;
+            text-align: center;
+            line-height: 54rpx;
+
+          }
+
+        }
+      }
+
+
+    }
+
+    .modle1{
+      display: flex;
+      flex-direction:column;
+      margin: top:20rpx;
+      .title{
+        display: block;
+        font-size: 30rpx;
+        hieght:96rpx;
+        line-height: 96rpx;
+        width:100%;
+        background-color: #f0f0f0;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .modle1-view{
+        margin: 0px;
+        padding: 0px;
+        width:100%;
+        height:375rpx;
+        display: flex;
+        image{
+          width:375rpx;
+          height:375rpx;
+          padding:0;
+          margin: 0;
+        }
+        .modle1-right{
+          padding:0;
+          margin: 0;
+          width:375rpx;
+          height:375rpx;
+          image{
+            width:375rpx;
+            height:187.5rpx;
+            padding:0;
+            margin: 0;
+            float: left;
+          }
+        }
+
+      }
+    }
+
+    .modle2{
+      display: flex;
+      .modle1-view{
+        margin: 0px;
+        padding: 0px;
+        width:100%;
+        display: flex;
+        image{
+          width:50%;
+          padding:0;
+          margin: 0;
+        }
+
+
+      }
+    }
+
+    .model3{
+      display: flex;
+      flex-direction:column;
+      margin: top:20rpx;
+      .title{
+        display: block;
+        font-size: 30rpx;
+        hieght:96rpx;
+        line-height:96rpx;
+        width:100%;
+        background-color: #f0f0f0;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .modle1-view{
+        display: flex;
+        padding: 0;
+        margin: 0;
+        image{
+          width:375rpx;
+          /*height: 10rem;*/
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+    }
+
+    .model3{
+      display: flex;
+      flex-direction:column;
+      margin: top:20rpx;
+      .title{
+        display: block;
+        font-size: 30rpx;
+        hieght:96rpx;
+        line-height:96rpx;
+        width:100%;
+        background-color: #f0f0f0;
+        text-align: center;
+        vertical-align: middle;
+      }
+      image{
+        width:100%;
+        /*height:8.5333rem;*/
+      }
+    }
+
+    .model4{
+      display: flex;
+      flex-direction:column;
+      margin: top:20rpx;
+      .title{
+        display: block;
+        font-size: 30rpx;
+        hieght:96rpx;
+        line-height: 96rpx;
+        width:100%;
+        background-color: #f0f0f0;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .modle1-view{
+        display: flex;
+        padding: 0;
+        margin: 0;
+        image{
+          width:250rpx;
+          /*height: 5.3333rem;*/
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+    }
+
+    .modle-list{
+      display: flex;
+      flex-direction:column;
+      margin: top:20rpx;
+      .title{
+        display: block;
+        font-size: 30rpx;
+        hieght:96rpx;
+        line-height: 96rpx;
+        width:100%;
+        background-color: #f0f0f0;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .model-view{
+        display: flex;
+        flex-wrap:wrap ;
+        padding: 0;
+        margin: 0;
+        .commodity{
+          width:375rpx;
+          height: auto;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction:column;
+          image{
+            width:375rpx;
+            height:375rpx;
+            margin: 0;
+            padding: 0;
+          }
+          .text{
+            width:375rpx;
+            height:135rpx;
+            display: flex;
+            flex-direction:column;
+            justify-content:space-between;
+            padding: 17.5rpx 20rpx;
+            .name{
+              width:335rpx;
+              font-size: 28rpx;
+              line-height: 33rpx;
+              color:#333333;
+
+            }
+            .price{
+              font-size: 32rpx;
+              line-height: 37rpx;
+              color: #fd4444;
+
+            }
+          }
+        }
+      }
+
+    }
+
+    .icon-swiper{
+      height:430rpx;
+
+    }
+
+
+
+
+
+  }
+
+  .bottom-nav{
+    position: fixed;
+    width:82rpx;
+    height:82rpx;
+    bottom: 24rpx;
+    right:16rpx;
+    display: flex;
+    flex-direction:column;
+    z-index: 21;
+    .back-top-btn{
+      width:82rpx;
+      height:82rpx;
+      image{
+        width:82rpx;
+        height:82rpx;
+      }
+    }
+  }
+}
+
+
+
+</style>
+<template>
+  <view class="content" >
+    <!--<button class="btn" @tap="hideTest">我就是个普通按钮</button>-->
+    <view class="bottom-nav" wx:if="{{scrollTop>200}}">
+      <view class="back-top-btn" @tap="backTop" ><image src="../images/btn_back_top.png"/> </view>
+    </view>
+    <view wx:if="{{moduleList.length>0}}">
+      <block wx:for="{{moduleList}}" wx:key="{{moduleList}}" wx:for-item="cmsBoard">
+        <view class="modle" wx:if="{{cmsBoard.moduleStyle == 101}}">
+          <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}"  duration="{{duration}}" bindchange="bindChange" style="height:{{imgHeightArr[current]}}rpx;">
+            <block wx:for="{{cmsBoard.moduleDetails}}" wx:key="{{cmsBoard.moduleDetails}}" wx:for-item="item" wx:for-index="swiperIndex">
+              <swiper-item>
+                <navigator url="/pages/list?type=2" class="showImg">
+                  <image src="{{item.imgUrl}}" class="slide-image" data-id='{{swiperIndex}}' data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}" mode="widthFix" bindload="imageLoad" @tap="switchAction"/>
+                </navigator>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+
+        <view class="modle icon-modle" wx:elif="{{cmsBoard.moduleStyle == 108}}">
+          <swiper indicator-dots="{{indicatorDots}}" duration="{{duration}}" class="icon-swiper" wx:if="{{cmsBoard.pages>1}}">
+            <block wx:for="{{cmsBoard.pages}}"  wx:key="{{cmsBoard.pages}}"  wx:for-item="pageIndex" wx:for-index="pageIndex">
+              <swiper-item>
+                <view class="modle icon-modle " >
+                  <block wx:for="{{cmsBoard.rows}}"  wx:key="{{cmsBoard.rows}}"  wx:for-item="rowIndex" wx:for-index="rowIndex">
+                    <view class="icon{{cmsBoard.cols}}">
+                      <block wx:for="{{cmsBoard.cols}}"  wx:key="{{cmsBoard.cols}}"  wx:for-item="colIndex" wx:for-index="colIndex">
+                        <view class="icon"  data-sub-Type="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].subType}}" data-common-Id="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].commonId}}" mode="widthFix" bindload="imageLoad" @tap="switchAction">
+                          <image src="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].imgUrl}}" />
+                          <text wx:if="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].name!=''}}">{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].name}}</text>
+                        </view>
+                      </block>
+
+                    </view>
+                  </block>
+                </view>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+
+        <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 1}}">
+          <view class="modle1">
+            <text class="title" wx:if="{{cmsBoard.boardName!=''}}">{{cmsBoard.boardName}}</text>
+            <view class="modle1-view">
+              <image src="{{cmsBoard.moduleDetails[0].imgUrl}}" data-sub-Type="{{cmsBoard.moduleDetails[0].subType}}" data-common-Id="{{cmsBoard.moduleDetails[0].commonId}}"  @tap="switchAction"/>
+              <view class="modle1-right">
+                <image src="{{cmsBoard.moduleDetails[1].imgUrl}}" data-sub-Type="{{cmsBoard.moduleDetails[1].subType}}" data-common-Id="{{cmsBoard.moduleDetails[1].commonId}}"  @tap="switchAction"/>
+                <image src="{{cmsBoard.moduleDetails[2].imgUrl}}" data-sub-Type="{{cmsBoard.moduleDetails[2].subType}}" data-common-Id="{{cmsBoard.moduleDetails[2].commonId}}"  @tap="switchAction"/>
+              </view>
+            </view>
+          </view>
+
+        </view>
+        <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 2}}">
+          <view class="modle2">
+            <view class="modle1-view">
+              <block wx:for="{{cmsBoard.moduleDetails}}"  wx:key="{{cmsBoard.moduleDetails}}"  wx:for-item="item" wx:for-index="index">
+                <image src="{{item.imgUrl}}" mode="widthFix" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction"/>
+              </block>
+            </view>
+          </view>
+        </view>
+        <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 8}}">
+          <view class="modle2">
+            <view class="modle1-view">
+              <block wx:for="{{cmsBoard.moduleDetails}}"  wx:key="{{cmsBoard.moduleDetails}}"  wx:for-item="item" wx:for-index="index">
+                <image src="{{item.imgUrl}}" mode="widthFix" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction"/>
+              </block>
+            </view>
+          </view>
+        </view>
+
+        <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 3}}" >
+          <view class="model3" data-sub-Type="{{cmsBoard.moduleDetails[0].subType}}" data-common-Id="{{cmsBoard.moduleDetails[0].commonId}}"  @tap="switchAction">
+            <!--<text class="title">生活情趣·Life Interest</text>-->
+            <image src="{{cmsBoard.moduleDetails[0].imgUrl}}" mode="widthFix"/>
+          </view>
+        </view>
+
+        <view class="modle" wx:elif="{{msBoard.moduleStyle == 4}}" >
+          <view class="model4">
+            <text class="title" wx:if="{{cmsBoard.boardName!=''}}">{{cmsBoard.boardName}}</text>
+            <view class="modle1-view">
+              <block wx:for="{{cmsBoard.list}}"  wx:key="{{cmsBoard.list}}"  wx:for-item="item" wx:for-index="index">
+                <image src="{{item.imgUrl}}" mode="widthFix" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction"/>
+              </block>
+            </view>
+          </view>
+        </view>
+
+        <!--<view class="modle" wx:elif="{{msBoard.moduleStyle == 16}}">-->
+          <!--<view class="modle-list">-->
+            <!--<text class="title" wx:if="{{cmsBoard.boardName!=''}}">{{cmsBoard.boardName}}</text>-->
+            <!--<view class="model-view">-->
+              <!--<block wx:for="{{cmsBoard.list}}"  wx:key="{{cmsBoard.list}}"  wx:for-item="item" wx:for-index="index">-->
+              <!--<view class="commodity" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction">-->
+                <!--<image src="{{item.imgUrl}}"/>-->
+                <!--<view class="text">-->
+                  <!--<text class="name">{{item.commodityName}} </text>-->
+                  <!--<text class="price">{{item.salePrice}}</text>-->
+                <!--</view>-->
+              <!--</view>-->
+              <!--</block>-->
+            <!--</view>-->
+          <!--</view>-->
+        <!--</view>-->
+      </block>
+    </view>
+    <!--<view class="modle" >-->
+      <!--<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}"  duration="{{duration}}" bindchange="bindChange" style="height:{{imgHeightArr[current]}}rpx;">-->
+          <!--<block wx:for="{{imgUrls}}" wx:key="{{imgUrls}}">-->
+            <!--<swiper-item>-->
+              <!--<navigator url="/pages/list?type=2" class="showImg">-->
+                <!--<image src="{{item}}" class="slide-image" data-id='{{index}}' mode="widthFix" bindload="imageLoad"/>-->
+              <!--</navigator>-->
+            <!--</swiper-item>-->
+          <!--</block>-->
+      <!--</swiper>-->
+    <!--</view>-->
+    <!--<view class="modle icon-modle" wx:if="{{isShow}}" @tap="switchList">-->
+      <!--<view class="icon5">-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/6884730b9472028d.png" />-->
+          <!--<text>男用玩具</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/609a0f1f24959cd1.png" />-->
+          <!--<text>女用玩具</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/d6090c5ab0c2ecaf.png" />-->
+          <!--<text>男用喷剂</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/6825678f18e7cde2.png" />-->
+          <!--<text>女用喷剂</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/5f8d33148dbbc76c.png" />-->
+          <!--<text>情趣内衣</text>-->
+        <!--</view>-->
+      <!--</view>-->
+
+      <!--<view class="icon5">-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/a8176bcbff55190a.png" />-->
+          <!--<text>套套天堂</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/d2859ff358e1009a.png" />-->
+          <!--<text>情趣润滑</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/378eab4a6acb8e1d.png" />-->
+          <!--<text>9.9元包邮</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/3fb98f5bc704f91c.png" />-->
+          <!--<text>积分商城</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/480ce076ae838d30.png" />-->
+          <!--<text>全部</text>-->
+        <!--</view>-->
+      <!--</view>-->
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{isShow}}">-->
+      <!--<view class="modle2">-->
+        <!--<view class="modle1-view">-->
+          <!--<image src="http://47.95.213.244/pics/commodity/test/1538110633783.jpeg" mode="widthFix"/>-->
+          <!--<image src="http://47.95.213.244/pics/commodity/test/1538110633783.jpeg" mode="widthFix"/>-->
+        <!--</view>-->
+      <!--</view>-->
+    <!--</view>-->
+    <view class="modle" wx:if="{{isShow}}">
+      <view class="modle1">
+        <text class="title">延时助情</text>
+        <view class="modle1-view">
+          <image src="http://i2.tiimg.com/652563/603053cc763de345.png"/>
+          <view class="modle1-right">
+            <image src="http://i2.tiimg.com/652563/23beca1c9570ea68.jpg"/>
+            <image src="http://i2.tiimg.com/652563/09271cd163b040b2.jpg"/>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <!--<view class="modle icon-modle" wx:if="{{isShow}}" @tap="switchList">-->
+      <!--<view class="icon4">-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/d922e77c470568a6.png" />-->
+          <!--<text>锁精环</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/479eed791d83052b.png" />-->
+          <!--<text>雷霆锁精环</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/4330e9a306828daf.png" />-->
+          <!--<text>雷霆飞机杯</text>-->
+        <!--</view>-->
+        <!--<view class="icon">-->
+          <!--<image src="http://i2.tiimg.com/652563/4bd53de5a0fba6ee.png" />-->
+          <!--<text>音乐跳蛋</text>-->
+        <!--</view>-->
+
+      <!--</view>-->
+
+
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{isShow}}" @tap="switchList">-->
+      <!--<view class="model3">-->
+        <!--<text class="title">模块3</text>-->
+        <!--<view class="modle1-view">-->
+          <!--<image src="http://i1.fuimg.com/652563/7c121a026e5266a8.jpg" mode="widthFix"/>-->
+          <!--<image src="http://i1.fuimg.com/652563/53763d3dc5df4fc3.jpg" mode="widthFix"/>-->
+
+        <!--</view>-->
+      <!--</view>-->
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{isShow}}" @tap="switchList">-->
+      <!--<view class="model3">-->
+        <!--<text class="title">生活情趣·Life Interest</text>-->
+        <!--<image src="http://i2.tiimg.com/652563/dd598162626e4588.png" mode="widthFix"/>-->
+
+      <!--</view>-->
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{isShow}}" @tap="switchList">-->
+      <!--<view class="model4">-->
+        <!--<text class="title">性感尤物</text>-->
+        <!--<view class="modle1-view">-->
+          <!--<image src="http://i1.fuimg.com/652563/a92559c252e4373d.jpg"  mode="widthFix"/>-->
+
+          <!--<image src="http://i1.fuimg.com/652563/7580e55771b7c262.jpg"  mode="widthFix"/>-->
+          <!--<image src="http://i1.fuimg.com/652563/1cbbc727d8e0cfa8.jpg"  mode="widthFix"/>-->
+        <!--</view>-->
+      <!--</view>-->
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{isShow}}">-->
+      <!--<view class="model3">-->
+        <!--&lt;!&ndash;<text class="title">生活情趣·Life Interest</text>&ndash;&gt;-->
+        <!--<image src="http://i2.tiimg.com/652563/567be9497f8a823e.png" mode="widthFix"/>-->
+
+      <!--</view>-->
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{isShow}}" @tap="switchProDetail">-->
+      <!--<view class="modle-list">-->
+        <!--&lt;!&ndash;<text class="title">商品列表</text>&ndash;&gt;-->
+        <!--<view class="model-view">-->
+          <!--<view class="commodity">-->
+            <!--<image src="http://47.95.213.244/pics/commodity/test/1538110633783.jpeg"/>-->
+            <!--<view class="text">-->
+              <!--<text class="name">曼诺 10频震动发音加温凯特口交杯飞机杯 </text>-->
+              <!--<text class="price">239.00</text>-->
+            <!--</view>-->
+
+          <!--</view>-->
+          <!--<view class="commodity">-->
+            <!--<image src="http://47.95.213.244/pics/commodity/test/1538109907602.jpeg"/>-->
+            <!--<view class="text">-->
+              <!--<text class="name">万乐 小蛮腰口阴双穴真人叫床飞机杯 </text>-->
+              <!--<text class="price">159.00</text>-->
+            <!--</view>-->
+          <!--</view>-->
+
+          <!--<view class="commodity">-->
+            <!--<image src="http://47.95.213.244/pics/commodity/test/1538109063315.jpeg"/>-->
+            <!--<view class="text">-->
+              <!--<text class="name">雷霆 头等舱高速活塞全自动抽插互动发声飞机杯</text>-->
+              <!--<text class="price">479.00</text>-->
+            <!--</view>-->
+          <!--</view>-->
+
+          <!--<view class="commodity">-->
+            <!--<image src="http://47.95.213.244/pics/commodity/test/1537927464253.jpeg"/>-->
+            <!--<view class="text">-->
+              <!--<text class="name">韩式震动叫床飞机杯，三国美女发声</text>-->
+              <!--<text class="price">158.00</text>-->
+            <!--</view>-->
+
+          <!--</view>-->
+
+        <!--</view>-->
+
+
+      <!--</view>-->
+
+    <!--</view>-->
+    <!--<view class="modle" wx:if="{{false}}" @tap="switchList">-->
+      <!--<swiper indicator-dots="{{indicatorDots}}" duration="{{duration}}" class="icon-swiper">-->
+        <!--<block wx:for="{{iconScreenArr}}" wx:key="{{item}}">-->
+          <!--<swiper-item>-->
+            <!--<view class="modle icon-modle " >-->
+              <!--<view class="icon5">-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+              <!--</view>-->
+
+              <!--<view class="icon5">-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+                <!--<view class="icon">-->
+                  <!--<image src="{{item.imgUrl}}" />-->
+                  <!--<text>{{item.name}}</text>-->
+                <!--</view>-->
+              <!--</view>-->
+            <!--</view>-->
+          <!--</swiper-item>-->
+        <!--</block>-->
+      <!--</swiper>-->
+    <!--</view>-->
+
+
+
+
+
+
+  </view>
+
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class index extends wepy.page {
+        config = {
+            'navigationBarTitleText': '十点趣动',
+            'navigationBarTextStyle': 'white',
+            'navigationBarBackgroundColor': '#fd4444',
+            'backgroundTextStyle':'dark'
+        };
+        components = {
+
+
+        };
+        props = {
+
+        };
+        data = {
+          screenH:wepy.$instance.globalData.screenH,
+          screenW:wepy.$instance.globalData.screenW,
+          videoId:'',
+          videoSrc:'',
+          videoClickCount:0,
+          getList:[],
+          getListIndex:0,
+          commodityId:'',
+          curPage:1,
+          allPage:1,
+          cover: "cover",
+          portraitUrl:'../images/index-Head-portrait.png',
+          giftShow:false,
+          indexscreenH:wepy.$instance.globalData.screenH,
+          indexWrapHeight:wepy.$instance.globalData.screenH,
+          windowHeight:wepy.$instance.globalData.screenH,
+          shareShow:false,
+          shareShowPay:false,
+          layoutData:'',
+          proImgHeight:100,
+          getProInfo:{},
+          getColor:[],
+          getColorIndex:0,
+          getSizeIndex:-1,
+          proId:'',
+          proColor:'',
+          proSize:'',
+          getSize:[],
+          getSkuId:'',
+          getProImg:'',
+          userid:'',
+          moveY:'',
+          getVideoStatus:true,
+          scrollStatus:true,
+          proType:'',
+          mutedStatus:false,
+          isAndroid:true,
+          videoArr:[],
+
+
+//轮播图
+          imgUrls: [
+            'http://i2.tiimg.com/652563/ab11586ccfdf57e9.png',
+            'http://i4.fuimg.com/652563/8f4c9595894de849.png',
+          ],
+          current:0,
+          imgHeightArr:[],
+          indicatorDots: true,//是否显示面板指示点
+          autoplay: true,  //是否自动切换
+          interval: 5000,   //轮播间隔
+          duration: 1000 ,   //滑动间隔
+          imgwidth: 750,
+          newImgUrls: [
+            'https://i1.ygimg.cn/pics/mobile/homepage/2018/07/1531383616226.jpg',
+            'https://i1.ygimg.cn/pics/mobile/homepage/2018/07/1531383601422.jpg',
+            'https://i1.ygimg.cn/pics/mobile/homepage/2018/07/1531385201261.jpg'
+          ],
+          isShow:true,
+          scrollTop:0,
+
+          iconScreenArr:[{name:'男性用品',imgUrl:'http://i2.tiimg.com/652563/bef328e53e3ee474.png'},{name:'女性用品',imgUrl:'http://i2.tiimg.com/652563/98f2a96fb6777b5f.png'}],
+
+          name:'',
+          moduleList:[],
+          pageType:1,
+          pageManagerId:'',
+        };
+        imageLoad (e) {//获取图片真实宽度
+          let imgwidth = e.detail.width;
+          let imgheight = e.detail.height;
+            //宽高比
+          let ratio = imgwidth / imgheight;
+          console.log(imgwidth, imgheight);
+          //计算的高度值
+          let viewHeight = 750 / ratio;
+          imgheight = viewHeight;
+          let imgHeightArr = this.data.imgHeightArr;
+          //把每一张图片的对应的高度记录到数组里
+          imgHeightArr[e.target.dataset.id] = imgheight;
+          console.log('imgHeightArr', imgHeightArr);
+          this.setData({
+            imgHeightArr: imgHeightArr
+          })
+        }
+        bindChange (e) {
+          // console.log(e.detail.current)
+          this.setData({ current: e.detail.current })
+        }
+        //检验是否显示title
+        isShowTitle(title){
+          if(typeof title == 'string' && title.length>0){
+            return true;
+          }
+          return false;
+        }
+        async colorSelectF(getColor){
+          let _this=this;
+          _this.proColor=getColor;
+          let getData=await wepy.request({
+            url: API+'/commoditysku/size', //仅为示例，并非真实的接口地址
+            data: {
+              commodityId:_this.proId,
+              color:getColor
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              if(getData.info.returnCode == 200){
+                let getSize=typeof getData.data.sizeList != 'undefined' ? getData.data.sizeList : [];
+                _this.getSize=getSize;
+                //_this.getSizeIndex=0;
+                _this.$apply();
+                //_this.sizeSelectF(_this.getSize[0]);
+              }
+            }
+          })
+        }
+        async sizeSelectF(proSize){
+          let _this=this;
+          _this.proSize=proSize;
+          let getData=await wepy.request({
+            url: API+'/commoditysku/detail', //仅为示例，并非真实的接口地址
+            data: {
+              commodityId:_this.proId,
+              color:_this.proColor,
+              size:proSize
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              console.log(res)
+              let getData=res.data;
+              if(getData.info.returnCode == 200){
+                let getSkuId=getData.data.commoditysku.skuId
+                _this.getSkuId=getSkuId;
+                _this.$apply();
+                console.log(_this.getSkuId)
+              }
+            }
+          })
+        };
+        async getPro(getId){
+          let _this=this;
+          let getData=await wepy.request({
+            url: API+'/commodity/detail', //仅为示例，并非真实的接口地址
+            data: {
+              commodityId:getId
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              _this.getProInfo=res.data.data.detail || {};
+              let getImgArr=res.data.data.detail.descImage || '';
+              _this.getProImg=getImgArr != "" ? getImgArr.split(',') : '';
+              _this.getColor=res.data.data.colorList || [];
+              _this.$apply()
+              if(_this.proType == 'getcolor'){
+                _this.showPro();
+              }else if(_this.proType == 'getdetail'){
+                _this.showProDetail()
+              }
+              console.log(_this.getColor[0])
+              if(_this.getColor.length>0){
+                _this.colorSelectF(_this.getColor[0]);
+              }
+
+            }
+          })
+        };
+        showPro(){
+          if(this.getColor.length <=0){
+            return false;
+          }
+          this.layoutData="showPro";
+          this.$apply();
+        };
+        showProDetail(){
+          this.giftShow=true;
+          this.$apply();
+        };
+
+      async getPageData(){
+        let _this=this;
+        let data = {type:_this.pageType,}
+        if(_this.pageType!=1){
+          data.pageManagerId = _this.pageManagerId;
+        }
+        console.log('getPageData data',data)
+        let getData=await wepy.request({
+          url: API+'/getPageManager', //仅为示例，并非真实的接口地址
+          data:data,
+          method:'GET',
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          success: function(res) {
+            console.log('getPageData res',res)
+            let getData=res.data;
+            if(getData.message == 'success'){
+              // let getSize=typeof getData.data.sizeList != 'undefined' ? getData.data.sizeList : [];
+              _this.moduleList=getData.data.moduleList;
+              _this.name = getData.name;
+              //_this.getSizeIndex=0;
+              _this.$apply();
+              console.log('_this.moduleList',_this.moduleList)
+              //_this.sizeSelectF(_this.getSize[0]);
+            }
+          }
+        })
+      };
+
+        methods = {
+          switchList(){
+            wepy.navigateTo({
+              url:'/pages/list?type=2'
+            })
+          },
+          switchProDetail(){
+            wepy.navigateTo({
+              url:'/pages/detail?proid=1000298'
+            })
+          },
+          //统一跳转处理
+          switchAction(event){
+            let subType = event.currentTarget.dataset.subType;
+            let commonId = event.currentTarget.dataset.commonId;
+            if(subType==1007){
+              wepy.navigateTo({
+                url:'/pages/detail?proid='+commonId
+              })
+            }else if(subType==5){
+              wepy.navigateTo({
+                url:'/pages/list?type=2&paramId='+commonId
+              })
+            }else if(subType==1026){
+              //到二级页
+              wepy.navigateTo({
+                url:'/pages/indexelse?type=1026&subject_id='+commonId
+              })
+            }
+          },
+          hideTest(){
+            if(this.isShow){
+              this.isShow=false;
+            }else{
+              this.isShow=true;
+            }
+          },
+          sizeSelect(e){
+            let _this=this;
+            let getSize=e.currentTarget.dataset.size;
+            _this.getSizeIndex=e.currentTarget.dataset.index;
+            this.$apply();
+            _this.sizeSelectF(getSize);
+          },
+          async colorSelect(e){
+            let _this=this;
+            let getColor=e.currentTarget.dataset.getcolor;
+            _this.getColorIndex=e.currentTarget.dataset.index;
+            _this.getSizeIndex=0;
+            this.$apply();
+            _this.colorSelectF(getColor);
+          },
+          changeProVideo(){
+            let _this=this;
+            console.log(_this.getListIndex+'---'+_this.getList.length)
+            if(_this.getListIndex<_this.getList.length && _this.getVideoStatus){
+              console.log(_this.getListIndex)
+              _this.getVideoStatus=false;
+              _this.indexWrapHeight=_this.windowHeight;
+              _this.$apply();
+              _this.getVideoInfo();
+            }
+          },
+          changeVideo(e){
+            //console.log('lower');
+            let _this=this;
+            if(_this.getListIndex > 0 && _this.getVideoStatus){
+              console.log(_this.getListIndex)
+              _this.getVideoStatus=false;
+              _this.indexWrapHeight=_this.windowHeight;
+              _this.getVideoInfoBack();
+            }
+          },
+          touchS(e){
+            let _this=this;
+            this.moveY=e.changedTouches[0].pageY;
+            _this.$apply();
+            console.log(e)
+          },
+          touchM(e){
+            console.log(e)
+            let _this=this;
+            this.moveY=e.changedTouches[0].pageY;
+            let getY=this.moveY-e.changedTouches[0].clientY;
+            // console.log(e.changedTouches[0].clientY+'---'+this.moveY)
+            console.log(getY)
+            if(getY>3 && _this.getVideoStatus){
+              if(_this.getListIndex<_this.getList.length){
+                _this.getVideoStatus=false;
+                _this.$apply();
+                _this.getVideoInfo();
+              }
+            }
+          },
+          offShowImg(){
+            this.layoutData="";
+            this.shareShowPay=false;
+            this.indexscreenH=this.screenH;
+            this.$apply();
+          },
+          indexShareClick(){
+            // if(this.shareShow){
+            //   this.shareShow=false;
+            //   this.indexscreenH=this.screenH;
+            // }else{
+            //   this.shareShow=true;
+            //   this.indexscreenH=this.screenH-111;
+            // }
+            // this.$apply();
+            wepy.navigateTo({
+              url:'/pages/share'
+            })
+          },
+          gotopay(){
+            let _this=this;
+            if(this.shareShowPay){
+              this.shareShowPay=false;
+              this.indexscreenH=this.screenH;
+            }else{
+              this.shareShowPay=true;
+              this.indexscreenH=this.screenH-300;
+            }
+            this.proType="getcolor";
+            this.$apply();
+            this.getPro(_this.proId);
+            console.log(_this.proId);
+          },
+          goSettle(){
+            let _this=this;
+            console.log(_this.getSkuId);
+            console.log(_this.proId);
+            if(_this.getSize.length<=0){
+              tip.confirm('尺码为空',false);
+              return false;
+            }
+            if(_this.getSkuId == ''){
+              tip.confirm('请选择尺码',false);
+              return false;
+            }
+            if(_this.getSkuId != ''){
+              wepy.navigateTo({
+                url:'/pages/settle?commodityskuid='+_this.getSkuId+'&commodityid='+_this.proId
+              })
+            }
+          },
+          shareClose(){
+            this.shareShow=false;
+            this.indexscreenH=this.screenH;
+            this.$apply();
+          },
+          buyGift(){
+            this.proType="getdetail";
+            this.$apply();
+            this.getPro(this.proId);
+          },
+          buyGiftClose(){
+            this.giftShow=false;
+            this.$apply();
+          },
+          gotoIndexd(){
+            console.log('indexd：'+this.userid)
+            wx.navigateTo({
+              url: '/pages/indexd?userid='+this.userid
+            })
+          },
+          gotoDeatil(){
+            let _this=this;
+            wx.navigateTo({
+              url: '/pages/detail?proid='+_this.commodityId,
+            })
+          },
+          async tapGood(){
+            let _this=this;
+            let getData=await wepy.request({
+              url: API+'/video/addCount', //仅为示例，并非真实的接口地址
+              data: {
+                	// "browseCount":1,
+                  // "shareCount":0,
+                  "clickCount":1,
+                  "id":_this.videoId
+              },
+              method:'POST',
+              header: {
+                  'content-type': 'application/json' // 默认值
+              },
+              success: function(res) {
+                let getVideo=res.data;
+                if(getVideo.info.returnCode == 200){
+                  _this.videoClickCount=_this.videoClickCount+1;
+                  _this.$apply();
+                }else{
+                  tip.confirm(getVideo.info.returnMessage,false);
+                }
+              },
+              fail:function(){
+                tip.confirm('系统出小差了',false);
+              }
+            })
+          },
+          upper(){
+            console.log('upper');
+            let _this=this;
+            console.log(_this.getListIndex);
+            _this.getListIndex=_this.getListIndex <= 0 ? 0 : _this.getListIndex-1;
+            _this.$apply();
+            _this.getVideoInfo();
+          },
+          lower(){
+            console.log('lower');
+            let _this=this;
+            console.log(_this.getListIndex)
+            if(_this.getListIndex<_this.getList.length){
+              _this.$apply();
+              _this.getVideoInfo();
+            }
+          },
+          backTop(){
+            if (wx.pageScrollTo) {
+              wx.pageScrollTo({
+                scrollTop: 0
+              })
+            } else {
+              wx.showModal({
+                title: '提示',
+                content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+              })
+            }
+          }
+        };
+        onReachTop(){
+          console.log('top')
+        }
+        onReady() {
+          //this.videoContext = wx.createVideoContext('myVideo');
+        };
+        onHide(){
+          // this.videoContext.pause();
+          // this.videoSrc="";
+          // this.mutedStatus=true;
+          // this.$apply();
+        }
+
+        onunload(option){
+          // this.videoContext.pause();
+          // this.videoSrc="";
+          // this.mutedStatus=true;
+          // this.$apply();
+
+        };
+        onPageScroll(ev){
+          return;
+          let _this=this;
+          // console.log('--onPageScroll--')
+          // console.log(_this.getListIndex)
+          // console.log(_this.getVideoStatus)
+
+
+          //当滚动的top值最大或最小时，为什么要做这一步是因为在手机实测小程序的时候会发生滚动条回弹，所以为了处理回弹，设置默认最大最小值
+
+          // console.log('scrollTop:'+_this.scrollTop);
+          if (ev.scrollTop <= 0) {
+            ev.scrollTop = 0;
+          } else if (ev.scrollTop > wx.getSystemInfoSync().windowHeight) {
+            ev.scrollTop = wx.getSystemInfoSync().windowHeight;
+          }
+          //判断浏览器滚动条上下滚动
+          if (ev.scrollTop > this.data.scrollTop || ev.scrollTop == wx.getSystemInfoSync().windowHeight) {
+            //向下滚动
+          } else {
+            //向上滚动
+          }
+          // 给scrollTop重新赋值
+          setTimeout(function () {
+            // console.log('ev.scrollTop:'+ev.scrollTop);
+            _this.setData({
+              scrollTop : ev.scrollTop
+            })
+            // console.log(' setData scrollTop:'+_this.scrollTop);
+          }, 0)
+
+
+          // if(_this.isAndroid){
+          //   return false;
+          // }
+          // if(_this.getListIndex<_this.getList.length && _this.getVideoStatus && ev.scrollTop>5){
+          //   _this.getVideoStatus=false;
+          //   _this.indexWrapHeight=_this.windowHeight;
+          //   _this.$apply();
+          //   _this.getVideoInfo();
+          // }
+        };
+        getLoadVideo(){
+          let getThis=this.videoArr;
+          this.getListIndex=this.getListIndex <=0 ? 0 : this.getListIndex-1;
+          this.$apply();
+          this.videoArr=this.getList[this.getListIndex];
+          this.videoId=this.getList[this.getListIndex].id;
+          this.commodityId=this.getList[this.getListIndex].commodityId;
+          this.proId=this.getList[this.getListIndex].commodityId;
+          this.videoSrc=this.getList[this.getListIndex].videoUrl;
+          this.videoClickCount=this.getList[this.getListIndex].clickCount;
+          this.portraitUrl=this.getList[this.getListIndex].avatar || '../images/My-head.png';
+          this.userid=this.getList[this.getListIndex].memberId || '';
+          this.getListIndex=  this.getListIndex >= this.getList.length ? this.getListIndex :  this.getListIndex+1;
+          this.$apply();
+        };
+        getVideoInfo(){
+          return;
+          let _this=this;
+          if(_this.getListIndex>_this.getList.length-1){
+            _this.curPage=_this.curPage+1;
+            _this.$apply();
+            console.log('最大数')
+            _this.getVideoList();
+          }else{
+            _this.videoArr=_this.getList[_this.getListIndex];
+            _this.videoId=_this.getList[_this.getListIndex].id;
+            _this.commodityId=_this.getList[_this.getListIndex].commodityId;
+            _this.proId=_this.getList[_this.getListIndex].commodityId;
+            _this.videoSrc=_this.getList[_this.getListIndex].videoUrl;
+            _this.videoClickCount=_this.getList[_this.getListIndex].clickCount;
+            _this.portraitUrl=_this.getList[_this.getListIndex].avatar || '../images/My-head.png';
+            _this.userid=_this.getList[_this.getListIndex].memberId || '';
+            _this.getListIndex=  _this.getListIndex >= _this.getList.length ? _this.getListIndex :  _this.getListIndex+1;
+            _this.$apply();
+            setTimeout(() => {
+              _this.getVideoStatus=true;
+              _this.$apply();
+            },1000);
+          }
+        };
+         getVideoInfoBack(){
+          let _this=this;
+          console.log('--getVideoInfoBack--')
+          console.log(_this.getListIndex)
+          if(_this.getListIndex < 2 && !_this.getVideoStatus ){
+            _this.getVideoStatus=true;
+            _this.$apply();
+            return false;
+          }
+          _this.getListIndex= _this.getListIndex-2;
+          _this.$apply();
+          _this.videoArr=_this.getList[_this.getListIndex];
+          _this.videoId=_this.getList[_this.getListIndex].id;
+          _this.commodityId=_this.getList[_this.getListIndex].commodityId;
+          _this.proId=_this.getList[_this.getListIndex].commodityId;
+          _this.videoSrc=_this.getList[_this.getListIndex].videoUrl;
+          _this.portraitUrl=_this.getList[_this.getListIndex].avatar;
+          _this.videoClickCount=_this.getList[_this.getListIndex].clickCount;
+          _this.userid=_this.getList[_this.getListIndex].memberId || '';
+          _this.getListIndex=_this.getListIndex+1;
+          _this.$apply();
+          console.log(_this.getListIndex)
+          setTimeout(() => {
+            _this.getVideoStatus=true;
+            _this.$apply();
+          },1000);
+        };
+        async getVideoList(){
+          return;
+          let _this=this;
+          tip.loading();
+          let getData=await wepy.request({
+            url: API+'/video/list', //仅为示例，并非真实的接口地址
+            data: {
+              curPage:_this.curPage
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getVideo=res.data;
+              tip.loaded();
+              if(getVideo.info.returnCode == 200){
+                let getList=typeof getVideo.data.list != 'undefined' ? getVideo.data.list : [];
+                if(getList.length>0){
+                  //console.log(getList)
+                  _this.getList=getList;
+                  _this.getListIndex=0;
+                  // _this.allPage=getVideo.data.pageSize;
+                  _this.getVideoStatus=true;
+                  _this.$apply();
+                  _this.getVideoInfo();
+                }else if(getList.length <= 0){
+                  _this.getList=getList;
+                  _this.getListIndex=0;
+                  _this.$apply();
+                  tip.alert('视频为空',false);
+                }
+              }else{
+                tip.confirm('系统出小差了',false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        async onLoad(option) {
+          if(typeof option == 'object' && option && typeof option.pageManagerId == 'string'  && typeof option.pageManagerId != ''){
+            this.pageManagerId = option.pageManagerId;
+            this.type = 1026;
+            this.$apply();
+          }
+          console.log('onLoad')
+          this.getPageData();
+          return;
+          let _this = this;
+          // util.upDateToken(0,function(){
+          //   _this.getVideoList();
+          // })
+          wx.getSystemInfo({
+            success: (res) => {
+              this.screenH = res.windowHeight;
+              this.screenW = res.windowWidth;
+              this.indexscreenH = res.windowHeight;
+              if(res.model.indexOf('iPhone X')>=0){
+                this.isIpx = true;
+              }else{
+                this.isIpx = false;
+              }
+              this.$apply();
+            }
+          })
+          this.isAndroid=wepy.$instance.globalData.isAndroid;
+          //_this.portraitUrl=wepy.getStorageSync('avatar') == '' ? _this.portraitUrl : wepy.getStorageSync('avatar');
+          _this.$apply();
+          util.upDateToken(0,function(){
+            _this.getVideoList();
+          })
+        }
+        onShow() {
+          let _this = this;
+          this.mutedStatus=false;
+          this.layoutData="";
+          this.shareShowPay=false;
+          this.indexscreenH=this.screenH;
+          this.$apply();
+          if(this.videoArr != ''){
+            this.getLoadVideo();
+          }
+
+        }
+        onShareAppMessage(){
+          let _this=this;
+          return {
+            title: '夜来香',
+            url: '/pages/index',
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        }
+    }
+</script>

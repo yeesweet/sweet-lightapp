@@ -1,0 +1,287 @@
+<template>
+  <view class="address">
+    <view class="nothingWrap" wx:if="{{addressList.length<=0}}" style="width:{{screenW}}px;height:{{screenH}}px;">
+      <image mode="widthFix" src="../images/Empty-.png"></image>
+      <view class="addAddress" @tap="add">新增地址</view>
+    </view>
+    <repeat for="{{addressList}}" key="item" index="index" item="item">
+      <view class="list_box" data-id="{{item.addressId}}" @tap="addressSelect">
+        <view class="user_info" >
+          <text class="name">{{item.name}} {{item.phone}}</text>
+          <text class="phone">{{item.province}} {{item.city}} {{item.street}} {{item.detail}}</text>
+        </view>
+        <view class="manageAddress">
+          <view class="defalutAddress"><image mode="widthFix" src="{{item.defaultStatus == 0 ? '../images/round.png' : '../images/round-check.png'}}"></image>默认</view>
+          <view class="delAddress" data-index="{{index}}" data-id="{{item.addressId}}" @tap.stop="delAddress"><image mode="widthFix" src="../images/delete.png"></image></view>
+          <view class="editAddress" @tap.stop="edit" data-id="{{item.addressId}}"><image mode="widthFix" src="../images/edit.png"></image></view>
+        </view>
+      </view>
+    </repeat>
+  </view>
+  <view class="add_wrap" wx:if="{{addressList.length>0}}">
+    <view class="button type_red" @tap="add">新增地址</view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import tip from '../utils/tip'
+import api from "../api/api";
+import {
+  USER_SPECICAL_INFO,
+  ADDRESS_ID,
+  API,
+} from '../utils/constant';
+export default class AddressList extends wepy.component {
+  props = {
+    addressList: {
+      default: [],
+      type: Object
+    }
+  }
+  components = {
+
+  }
+
+  data = {
+    receiverInfo:{},
+    type: "",
+    addressSelect:false,
+    screenH:0,
+    screenW:0
+  }
+  removePics(dx,thisArrary) {
+    if (isNaN(dx) || dx > thisArrary.length) { return false; }
+    for (var i = 0, n = 0; i < thisArrary.length; i++) {
+        if (thisArrary[i] != thisArrary[dx]) {
+            thisArrary[n++] = thisArrary[i]
+        }
+    }
+    thisArrary.length -= 1;
+    return thisArrary;
+  };
+  async delUserAddress(id,getIndex) {
+    let _this = this;
+    let getData=await wepy.request({
+      url: API+'/address/deleteAddress', //仅为示例，并非真实的接口地址
+      data: {
+        addressId:id,
+        //memberId:wepy.getStorageSync('token'),
+      },
+      method:'POST',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function(res) {
+        let getData=res.data;
+        console.log(res);
+        if(getData.info.returnCode == 200){
+          // _this.$emit('currentPage', 0);
+          // _this.$emit('refreshAddList', 'hehe');
+          _this.addressList=_this.removePics(getIndex,_this.addressList);
+          _this.$emit('currentPage', 0);
+          _this.$emit('refreshAddList', 'hehe');
+          _this.$apply();
+        }else{
+          tip.confirm(getData.info.returnMessage,false);
+        }
+      },
+      fail:function(){
+        tip.confirm('获取失败',false);
+      }
+    })
+  }
+  methods = {
+    addressSelect(e){
+      let id = e.currentTarget.dataset.id;
+      if(this.addressSelect){
+        var pages = getCurrentPages();
+        var prePage = pages[pages.length - 2];
+        prePage.getAddressId(id);
+        wx.navigateBack({
+          delta: 1
+        })
+        //this.$emit('backToSettle',id);
+      }
+    },
+    async delAddress(e){
+      let _this = this;
+      let id = e.currentTarget.dataset.id;
+      let index = e.currentTarget.dataset.index;
+      let getText=await tip.confirm('是否要删除地址么',true);
+      if(getText){
+        _this.delUserAddress(id,index);
+      }
+    },
+    add() {
+      //0 列表 1新增 2编辑
+      this.$emit('currentPage', 1);
+    },
+    edit(e) {
+      var id = e.currentTarget.dataset.id;
+      //0 列表 1新增 2编辑
+      this.$emit('currentPage', 2,id);
+    },
+    refreshList(val){
+      if (val==undefined) return;
+      console.log("val.....",val);
+      this.addressList = val;
+      this.$apply();
+    },
+    selectSet(val){
+      this.addressSelect=val;
+      console.log(val)
+      this.$apply();
+    },
+    setOrgType (type) {
+      this.type=type;
+    },
+
+    tapSelAddress(e) {
+      if (this.type!="order") {
+        return;
+      }
+      var id = e.currentTarget.dataset.id;
+      console.log("id=="+id);
+      wepy.setStorageSync(ADDRESS_ID,id);
+      wepy.redirectTo({
+        url: "/pages/comfire_order?from=selAdd"
+      })
+    }
+  }
+
+  onLoad() {
+    this.screenH = wepy.$instance.globalData.screenH;
+    this.screenW = wepy.$instance.globalData.screenW;
+    this.$apply();
+  }
+}
+
+</script>
+<style lang="less">
+.nothingWrap{
+  padding-top:200rpx;
+  box-sizing:border-box;
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  image{
+    width:462rpx;
+    margin:0 auto;
+    display:block;
+  }
+}
+.addAddress{
+  width:50%;
+  display:block;
+  height:88rpx;
+  line-height:88rpx;
+  text-align:center;
+  background:#ff5778;
+  color:#fff;
+  margin:0 auto;
+  border-radius:15rpx;
+}
+.address {
+  padding: 12rpx;
+  padding-bottom:95rpx;
+  height:100%;
+  .list_box {
+    display:block;
+    border-radius:10rpx;
+    position: relative;
+    overflow: hidden;
+    background:#fff;
+    padding: 40rpx 0rpx 20rpx 85rpx;
+    border-top: 1px solid #efefef;
+    margin-bottom: 12rpx;
+    background:#fff url(https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/Address-bar.png) left bottom repeat-x;
+    background-size:725rpx auto;
+    // .arrow {
+    //   height: 150rpx;
+    //   line-height: 150rpx;
+    //   width: 150rpx;
+    //   text-align: center;
+    //   color: #9a9a9a;
+    // }
+    .user_info {
+      padding-right:130rpx;
+      position: relative;
+      color:#666;
+      text{
+        display:block;
+        font-size: 28rpx;
+      }
+    }
+    .user_info:after{
+      content: '';
+      display:block;
+      position: absolute;
+      width:24rpx;
+      height:24rpx;
+      border-top: 2rpx solid #666;
+      border-right: 2rpx solid #666;
+      top:50%;
+      right:40rpx;
+      margin-top:-8rpx;
+      transform:rotate(45deg);
+      transform:translate(0 -50%)
+    }
+    .active_address {
+      margin-top: 20rpx;
+    }
+    .defult {
+      color: #f85497;
+    }
+  }
+  .address_list:first-child{
+    border-top:0 none;
+  }
+}
+
+.add_wrap {
+  display: block;
+  width: 95%;
+  left: 0;
+  right: 0;
+  position: absolute;
+  bottom: 20rpx;
+  margin: 0 auto;
+}
+.title{
+  display:block;
+  padding-top:20rpx;
+}
+.manageAddress{
+  position: relative;
+  overflow: hidden;
+  padding-top:40rpx;
+  font-size: 24rpx;
+  color:#666;
+  view{
+    padding:0;
+    color:#666;
+  }
+  .defalutAddress{
+    display:block;
+    padding-left: 0;
+    float: left;
+    image{
+      width:28rpx;
+      vertical-align: middle;
+      margin-right:10rpx;
+    }
+  }
+  .delAddress,.editAddress{
+    display:block;
+    padding:0 20rpx;
+    float: right;
+    image{
+      width:32rpx;
+      vertical-align: middle;
+    }
+  }
+}
+
+</style>

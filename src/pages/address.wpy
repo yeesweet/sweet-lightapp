@@ -1,0 +1,157 @@
+<!--地址管理-->
+<template>
+  <view class="{{currentPage==0?'':'hidden'}}">
+    <addressList :list.sync="addressList" @currentPage.user="getCurrentPage"></addressList>
+  </view>
+  <view class="{{currentPage==1?'':'hidden'}}">
+    <addressAdd @currentPage.user="getCurrentPage"></addressAdd>
+  </view>
+  <view class="{{currentPage==2?'':'hidden'}}">
+    <addressEdit @currentPage.user="getCurrentPage" ></addressEdit>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import AddressList from "../components/address_list";
+import AddressAdd from "../components/address_add";
+import AddressEdit from "../components/address_edit";
+import api from "../api/api";
+import tip from '../utils/tip';
+import {
+  USER_SPECICAL_INFO,
+  API,
+} from '../utils/constant';
+export default class address extends wepy.page {
+  config = {
+    'navigationBarTitleText': '地址管理',
+    'navigationBarTextStyle': 'black',
+    'navigationBarBackgroundColor': '#fff',
+    'backgroundTextStyle':'dark',
+  }
+  data = {
+    select:false,
+    addressList: [
+    ],
+    receiverInfo:{},
+    //显示当前组件 0 列表 1新增 2编辑
+    currentPage: 0,
+    type: "" //哪个页面跳转过来的
+  }
+
+  async getUserAddress(phone,code) {
+    let that = this;
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let _this=this;
+    let getData=await wepy.request({
+      url: API+'/address/addressList', //仅为示例，并非真实的接口地址
+      data: {
+        memberId:wepy.getStorageSync('token')
+      },
+      method:'POST',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function(res) {
+        let getData=res.data;
+        console.log(res);
+        if(getData.info.returnCode == 200){
+          let getList=typeof getData.data.list != 'undefined' ? getData.data.list : [];
+          _this.addressList=getList;
+          console.log(getList)
+          _this.$apply();
+          _this.$invoke("addressList","refreshList", _this.addressList);
+          _this.$invoke("addressList","selectSet", _this.select);
+        }else{
+          tip.confirm('获取失败',false);
+        }
+      },
+      fail:function(){
+        tip.confirm('获取失败',false);
+      }
+    })
+  }
+
+  async receiverInf(id) {
+    console.log('id:'+id)
+    let _this=this;
+    let getData=await wepy.request({
+      url: API+'/address/addressDetail', //仅为示例，并非真实的接口地址
+      data: {
+        addressId:id
+      },
+      method:'POST',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function(res) {
+        let getData=res.data;
+        console.log(res);
+        if(getData.info.returnCode == 200){
+          _this.receiverInfo=getData.data;
+          _this.$apply();
+          _this.$invoke("addressEdit","refresh", _this.receiverInfo);
+          _this.$invoke("addressEdit","refresh", _this.receiverInfo);
+        }else{
+          tip.confirm('获取失败',false);
+        }
+      },
+      fail:function(){
+        tip.confirm('获取失败',false);
+      }
+    })
+
+  }
+
+  components = {
+    addressList: AddressList,
+    addressAdd: AddressAdd,
+    addressEdit: AddressEdit
+  }
+
+  onLoad(option) {
+    this.currentPage = 0;
+    this.select=option.select || false;
+    this.$apply();
+    this.getUserAddress();
+    this.type = (option.type==undefined?"":option.type);
+    //this.$invoke("addressList","setOrgType", this.type);
+    //this.$invoke("addressList","refreshList",this.addressList);
+  }
+
+  onShow(){
+    let that = this;
+    //this.getUserAddress();
+  }
+  computed = {
+
+  }
+  methods = {
+    getCurrentPage(cur,id) {
+      this.currentPage = cur;
+      if (cur!=1&&cur!=0) {
+        this.receiverInf(id);
+      }
+    }
+  }
+  onUnload() {
+    // if (this.currentPage !== 0) {
+    //   wx.navigateTo({
+    //     url: "/pages/address"
+    //   })
+    // }
+  }
+  events = {
+    refreshAddList(msg){
+        this.getUserAddress();
+    }
+  }
+
+}
+
+</script>
+<style lang="less">
+.hidden {
+  display: none;
+}
+
+</style>

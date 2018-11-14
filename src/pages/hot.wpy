@@ -1,0 +1,205 @@
+<template>
+  <view class="hot">
+    <view class="viewImage">
+      <image @tap="goShare" mode="widthFix" src="{{topImage}}" ></image>
+    </view>
+    <view class="weui-panel__bd weui-panel__hot" wx:if="{{list.length>0}}">
+      <block wx:for="{{list}}" wx:key="key">
+      <navigator url="/pages/detail?proid={{item.commodityId}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image mode="aspectFill"  class="weui-media-box__thumb" src="{{item.minImage}}" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__desc">{{item.commodityName}}</view>
+              <view class="weui-media-box__title"><text>￥</text>{{item.price}}</view>
+          </view>
+          <view class="postageFree">包邮</view>
+      </navigator>
+      </block>
+    </view>
+    <!--加载更多时动画-->
+    <!-- <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore> -->
+
+  </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    import BottomLoadMore from "../components/common/bottomLoadMore"
+    export default class hot extends wepy.page {
+        config = {
+            'navigationBarTitleText': '橱窗',
+            'navigationBarTextStyle': 'black',
+            'navigationBarBackgroundColor': '#fff',
+            'backgroundTextStyle':'dark',
+        };
+        components = {
+          bottomLoadMore: BottomLoadMore,
+        };
+        props = {
+
+        };
+        data = {
+          topImage:'../images/Sharp-goods-banner.png',
+          showLoading: true,//是否显示 底部loading
+          preventRepeatReuqest: false,//防止重复加载
+          isIpx: wepy.$instance.globalData.isIpx?true:false,
+          screenW: wepy.$instance.globalData.screenW,
+          screenH: wepy.$instance.globalData.screenH,
+          list:[],
+          curPage:1,
+          allPage:1,
+          getListIndex:0
+        };
+        methods = {
+          goShare(){
+            wepy.navigateTo({
+              url:'/pages/share'
+            })
+          }
+        };
+        async getList(){
+          let _this=this;
+          //tip.loading();
+          let getData=await wepy.request({
+            url: API+'/commodity/list', //仅为示例，并非真实的接口地址
+            data: {
+              curPage:_this.curPage,
+              memberId:wepy.getStorageSync('token')
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              tip.loaded();
+              let getList=res.data.data.list || [];
+              if(_this.curPage == 1){
+                _this.list=getList;
+                _this.curPage=res.data.data.pageNumber;
+                _this.allPage=res.data.data.pageSize;
+              }else if(_this.curPage >1){
+                _this.list.push(res.data.data.list);
+              }
+              _this.$apply();
+              console.log(_this.allPage);
+            }
+          })
+        }
+        onLoad(option) {
+          let _this = this;
+          _this.$apply();
+          // util.upDateToken(0,function(){
+          //   _this.getList();
+          // })
+        }
+        onTabItemTap(){
+          console.log('点击了橱窗')
+        }
+        onShow() {
+          let that = this;
+          that.curPage = 1;
+          that.$apply();
+          util.upDateToken(0,function(){
+            that.getList();
+          })
+        }
+        //加载更多
+        onReachBottom(res) {
+          let _this=this;
+          if(_this.curPage<_this.allPage){
+            _this.curPage=_this.curPage+1;
+            _this.$apply();
+            _this.getList();
+          }
+          console.log(res);
+        }
+        onShareAppMessage(){
+          return {
+            title: '爱享秀',
+            path: '/pages/index',
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        }
+        onPullDownRefresh(){
+
+        }
+    }
+</script>
+<style lang="less">
+.hot{
+  .viewImage{
+    padding:11rpx;
+    position: relative;
+    background:#fff;
+    image{
+      width:100%;
+      border-radius:20rpx;
+    }
+  }
+  .weui-cell_active{
+    opacity:0.8;
+  }
+  .weui-panel__hot{
+    background:#fff;
+    margin-top:20rpx;
+    .weui-media-box__hd_in-appmsg{
+      width:220rpx;
+      height:220rpx;
+      margin-right:30rpx;
+    }
+    .weui-media-box{
+      padding:20rpx;
+      position: relative;
+    }
+    .weui-media-box:first-child{
+      padding-top:30rpx;
+    }
+    .weui-media-box__desc{
+      color:#808080;
+      line-height:45rpx;
+      font-size: 30rpx;
+      margin:-50rpx 0 15rpx;
+    }
+    .weui-media-box__title{
+      font-weight:bold;
+      color:#f85497;
+      font-size: 38rpx;
+      text{
+        font-size:26rpx;
+        font-weight:normal;
+      }
+    }
+    .weui-media-box:before {
+      left:0;
+      height:2rpx;
+      background:#f6f6f6;
+      border:0 none;
+    }
+    .postageFree{
+      font-size:24rpx;
+      position: absolute;
+      line-height:28rpx;
+      bottom:20rpx;
+      right:20rpx;
+      padding:4rpx 21rpx;
+      background:#f85497;
+      color:#fff;
+      border-radius:10rpx;
+    }
+  }
+
+}
+</style>

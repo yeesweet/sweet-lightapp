@@ -1,0 +1,535 @@
+<style lang="less">
+page{
+  background:#f6f6f6;
+  .settle{
+    display: block;
+    padding:10rpx;
+    .view_active{
+      opacity:0.8;
+    }
+    .section{
+      padding:30rpx 25rpx;
+      background:#fff;
+      border-radius:10rpx;
+    }
+    .sectionAddress{
+      background:#fff url(https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/Address-bar.png) left bottom repeat-x;
+      background-size:725rpx auto;
+    }
+    .cardView{
+      font-size:30rpx;
+      position: relative;
+      overflow: hidden;
+      text{
+        float:right;
+        padding-right: 50rpx;
+        color:#f85497;
+      }
+    }
+    .addressInfo{
+      padding:30rpx 100rpx 30rpx 65rpx;
+      color:#8c8c8c;
+      position: relative;
+      background:#fff url(https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/myself-location.png) left center no-repeat;
+      background-size:28rpx auto;
+      text{
+        display:block;
+      }
+    }
+    .addressInfo:after,.cardView:after {
+      content: '';
+      display:block;
+      position: absolute;
+      width:24rpx;
+      height:24rpx;
+      border-top: 2rpx solid #666;
+      border-right: 2rpx solid #666;
+      top:50%;
+      right:30rpx;
+      margin-top:-8rpx;
+      transform:rotate(45deg);
+    }
+    .weui-panel__hot{
+      background:#fff;
+      margin:15rpx 0;
+      border-radius:10rpx;
+      .weui-media-box__hd_in-appmsg{
+        width:165rpx;
+        height:165rpx;
+        margin-right:30rpx;
+      }
+      .weui-media-box{
+        padding:30rpx;
+        position: relative;
+      }
+      .weui-media-box:first-child{
+        padding-top:30rpx;
+      }
+      .weui-media-box__desc{
+        color:#808080;
+        line-height:45rpx;
+        margin:-10rpx 0 15rpx;
+      }
+      .weui-media-box__title{
+        font-size: 30rpx;
+        color:#8c8c8c;
+        overflow: hidden;
+        text-align: left;
+      }
+      .weui-media-box:before {
+        left:0;
+        height:2rpx;
+        background:#f6f6f6;
+        border:0 none;
+      }
+      .proPrice{
+        float: right;
+        font-size: 38rpx;
+        color:#f85497;
+        font-weight:bold;
+        text{
+          font-size:26rpx;
+          font-weight:normal;
+        }
+      }
+    }
+    .fixWrap{
+      width:100%;
+      position:fixed;
+      bottom:0;
+      left:0;
+      border-top:1rpx solid #d4929a;
+      .postageFree{
+        font-size:24rpx;
+        display: inline-block;
+        line-height:28rpx;
+        padding:4rpx 21rpx;
+        background:#ffe8ee;
+        color:#f85497;
+        border-radius:10rpx;
+      }
+      .videoBtn,.buyBtn{
+        float: left;
+        height:95rpx;
+        line-height:95rpx;
+        text-align:center;
+      }
+      .videoBtn{
+        width:64%;
+        color:#f85497;
+        background:#fff;
+        .proPriceAll{
+          font-size: 38rpx;
+          display:inline-block;
+          font-weight:bold;
+          color:#f85497;
+          text{
+            font-size:26rpx;
+            font-weight:normal;
+          }
+        }
+        .proPriceAllMoney{
+          font-size:28rpx;
+          color:#f85497;
+          display:inline-block;
+          padding:0 0 0 10rpx;
+        }
+        .hidden{
+          display:none;
+        }
+      }
+      .buyBtn{
+        background:#f85497;
+        color:#fff;
+        width:36%;
+      }
+    }
+  }
+}
+</style>
+<template>
+  <view class="settle">
+    <view class="section sectionAddress">
+      <view class="addressInfo" wx:if="{{addressDetail.length > 0}}" @tap="gotoAddress">
+        <text class="namePhone">{{addressDetail[0].name}} {{addressDetail[0].phone}}</text>
+        <text class="addressDetail">{{addressDetail[0].province}} {{addressDetail[0].city}} {{addressDetail[0].street}} {{addressDetail[0].detail}}</text>
+      </view>
+      <view class="addressInfo" wx:if="{{addressDetail.length <= 0}}" @tap="gotoAddress">
+        <text class="namePhone">{{addressDetail[0].name}} {{addressDetail[0].phone}}请选择收货人</text>
+        <text class="addressDetail">{{addressDetail[0].province}} {{addressDetail[0].city}} {{addressDetail[0].street}} {{addressDetail[0].detail}}</text>
+      </view>
+    </view>
+    <view class="weui-panel__bd weui-panel__hot">
+      <block wx:for="{{list}}" wx:key="key">
+      <view class="weui-media-box weui-media-box_appmsg" >
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image mode="aspectFill"  class="weui-media-box__thumb" src="{{item.image}}" ></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__desc">{{item.title}}</view>
+            <view class="weui-media-box__title">{{item.color}} {{item.size}}<view class="proPrice"><text>￥</text>{{item.price}}</view></view>
+        </view>
+        <!-- <view class="postageFree">包邮</view> -->
+      </view>
+      </block>
+    </view>
+    <view class="section cardView" @tap="goCard">
+      优惠券<text>{{couponName}}</text>
+    </view>
+    <view class="fixWrap">
+      <view class="videoBtn" >
+        实付：<view class="proPriceAll" ><text>￥</text>{{price}} </view>
+        <view class="proPriceAllMoney {{getCoupon == false ? 'hidden' : ''}}" ><text>已优惠￥</text>{{reprice}} </view>
+        <view class="postageFree">包邮</view> </view>
+      <view class="buyBtn" @tap="creatOrder" hover-class="view_active">结账</view>
+    </view>
+  </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class settle extends wepy.page {
+        config = {
+            'navigationBarTitleText': '结算',
+            'navigationBarTextStyle': 'black',
+            'navigationBarBackgroundColor': '#fff',
+            'backgroundTextStyle':'dark',
+        };
+        components = {
+
+        };
+        props = {
+
+        };
+        data = {
+          isIpx: wepy.$instance.globalData.isIpx?true:false,
+          screenW: wepy.$instance.globalData.screenW,
+          screenH: wepy.$instance.globalData.screenH,
+          list:[
+          ],
+          addressDetail:[],
+          price:'',
+          reprice:'',
+          couponId:'',
+          commodityid:'',
+          commodityskuid:'',
+          addressId:'',
+          getCoupon:false,
+          couponName:'',
+        };
+        methods = {
+          gotoAddress(){
+            wepy.navigateTo({
+              url:"/pages/address?select=true"
+            })
+          },
+          goCard(){
+            wepy.navigateTo({
+              url:'/pages/card?select=true'
+            })
+          },
+          goSettle(){
+            wepy.navigateTo({
+              url:'/pages/settle'
+            })
+          },
+          async creatOrder(){
+            let _this=this;
+            if(_this.addressDetail <= 0){
+              tip.alert('请选择收货人')
+              return false;
+            }
+            console.log(_this.addressDetail);
+            let getData=await wepy.request({
+              url: API+'/order/addOrder',
+              data: {
+                "memberId":wepy.getStorageSync('token'),
+                "skuId":_this.commodityskuid,
+                "couponId":_this.couponId,
+                "addressId":_this.addressDetail[0].addressId
+              },
+              method:'POST',
+              header: {
+                  'content-type': 'application/json' // 默认值
+              },
+              success: function(res) {
+                let getVideo=res.data;
+                if(getVideo.info.returnCode == 200){
+                  let getList=typeof getVideo.data.list != 'undefined' ? getVideo.data.list : [];
+                  //tip.confirm('创建成功',false);
+                  if(getVideo.data.status == 1){
+                    tip.alert('支付成功');
+                    wepy.navigateTo({
+                      url:'/pages/pay?paystatus=1'
+                    })
+                  }else{
+                    _this.runRequestPayment(getVideo.data.orderNumber);
+                  }
+
+                }else{
+                  tip.confirm(getVideo.info.returnMessage,false);
+                }
+              },
+              fail:function(){
+                tip.confirm('系统出小差了',false);
+              }
+            })
+          }
+        };
+        runRequestPayment(getOrderNumber){
+          let _this=this;
+          wepy.request({
+            url: API+'/weChatPay/pay', //仅为示例，并非真实的接口地址
+            data: {
+              orderNumber:getOrderNumber,
+              openid:wepy.getStorageSync('openid')
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              wx.requestPayment({
+                'timeStamp': getData.timeStamp,
+                'nonceStr': getData.nonceStr,
+                'package': getData.package,
+                'signType': "MD5",
+                'paySign': getData.sign,
+                'success':function(res){
+                  //_this.checkoutOrder(getOrderNumber)
+                  tip.loading();
+                  setTimeout(() => {
+                    wepy.navigateTo({
+                      url:'/pages/pay?getorder='+getOrderNumber
+                    })
+                    tip.loaded();
+                  }, 3000);
+
+                },
+                'fail':function(res){
+                  console.log(res)
+                  //tip.alert('支付失败');
+                  tip.loading();
+                  setTimeout(() => {
+                    wepy.navigateTo({
+                      url:'/pages/pay?getorder='+getOrderNumber
+                    })
+                    tip.loaded();
+                  }, 3000);
+                }
+              })
+            },
+            fail:function(){
+              tip.confirm('获取失败',false);
+            }
+          })
+        };
+        checkoutOrder(getOrderId) {
+          let _this = this;
+          wepy.request({
+            url: API+'/order/searchOrderStatus', //仅为示例，并非真实的接口地址
+            data: {
+              orderNumber:getOrderId
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                //tip.confirm('支付成功',false);
+                if(getData.data.status == 1){
+                  tip.alert('支付成功');
+                  wepy.navigateTo({
+                    url:'/pages/pay?paystatus=1'
+                  })
+                }else{
+                  tip.alert('支付失败');
+                  // wepy.navigateTo({
+                  //   url:'/pages/pay?paystatus=0'
+                  // })
+                }
+                _this.$apply();
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('获取失败',false);
+            }
+          })
+        };
+        checkoutRun() {
+          let _this = this;
+          let setData= {
+            "memberId":wepy.getStorageSync('token'),
+            "commoditySkuId":_this.commodityskuid,
+            "commodityId":_this.commodityid
+          }
+          if(_this.getCoupon){
+            setData= {
+              "memberId":wepy.getStorageSync('token'),
+              "commoditySkuId":_this.commodityskuid,
+              "commodityId":_this.commodityid,
+              "couponId":_this.couponId,
+              'addressId':_this.addressDetail[0].addressId
+            }
+          }
+          wepy.request({
+            url: API+'/order/settleAccount', //仅为示例，并非真实的接口地址
+            data:setData,
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                _this.list=[{
+                  title:getData.data.commodityModel.commodityName,
+                  price:getData.data.commodityModel.price,
+                  image:getData.data.commodityModel.minImage,
+                  color:getData.data.commodityskuModel.color,
+                  size:getData.data.commodityskuModel.size
+                }]
+                if(getData.data.addressModel != null){
+                  _this.addressDetail.push(getData.data.addressModel);
+                }else{
+                  _this.getAddressList();
+                }
+                if(getData.data.useCoupon != null){
+                  //_this.addressDetail.push(getData.data.addressModel);
+                  _this.reprice=getData.data.useCoupon.couponPrice;
+                  _this.price=getData.data.useCoupon.payPrice;
+                  _this.couponName=getData.data.useCoupon.schemeName || '';
+                }else{
+                  _this.price=getData.data.commodityModel.price;
+                }
+                _this.$apply();
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('获取失败',false);
+            }
+          })
+        };
+        onLoad(option) {
+          let _this = this;
+          _this.commodityid=option.commodityid;
+          _this.commodityskuid=option.commodityskuid;
+          // _this.list=[{
+          //   title:option.name,
+          //   price:option.price,
+          //   image:option.img,
+          //   color:option.color,
+          //   size:option.size
+          // }]\
+
+          console.log(option);
+          //_this.getAddressList();
+          _this.$apply()
+          _this.checkoutRun();
+        }
+        onShow() {
+          let that = this;
+          //that.getGoodList();
+        }
+        //加载更多
+        onReachBottom() {
+
+        };
+        getCardId(id){
+          this.couponId=id;
+          this.getCoupon=true;
+          this.$apply();
+          this.checkoutRun();
+          console.log(this.couponId)
+        };
+        async getAddressId(id){
+          let _this=this;
+          let getData=await wepy.request({
+            url: API+'/address/addressDetail', //仅为示例，并非真实的接口地址
+            data: {
+              memberId: wepy.getStorageSync('token'),
+              addressId:id
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                _this.addressDetail=[];
+                _this.$apply();
+                _this.addressDetail.push(getData.data);
+                _this.$apply();
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('获取失败',false);
+            }
+          })
+        };
+        async getAddressList(){
+          let _this=this;
+          let getData=await wepy.request({
+            url: API+'/address/addressList', //仅为示例，并非真实的接口地址
+            data: {
+              memberId:wepy.getStorageSync('token')
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                let getList=typeof getData.data.list != 'undefined' ? getData.data.list : [];
+                if(getList.length>0){
+                  getList.map((item,index,input) =>{
+                    if(item.defaultStatus == 1){
+                      _this.addressDetail.push(item);
+                    }
+                  })
+                  if(_this.addressDetail.length<=0){
+                    _this.addressDetail.push(getList[0]);
+                  }
+                }
+                _this.$apply();
+              }else{
+                tip.confirm('获取失败',false);
+              }
+            },
+            fail:function(){
+              tip.confirm('获取失败',false);
+            }
+          })
+        };
+        onPullDownRefresh(){
+
+        }
+    }
+</script>

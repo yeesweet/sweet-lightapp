@@ -1,0 +1,357 @@
+<template>
+  <view class="share">
+    <image class="shareTop" mode="widthFix" src="../images/Invitation-banner.png"></image>
+    <view class="phoneWrap">
+      <!-- <text selectable="true">{{shareIdShow}}</text>
+      <text selectable="true">{{memberIdShow}}</text> -->
+      <!-- <input class="phoneInput" placeholder-style="color:#999;" type="number" placeholder="请输入手机号" focus="{{focus}}" /> -->
+      <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler"  class="weui-btn button-hover getFree">免费领取</button>
+    </view>
+    <!-- <view class="hailFellow">
+      <view class="hailFellowTitle"><text class="hailFellowTitleText">好友动态</text></view>
+      <view class="hailFellowBuy">
+        <view class="hailFellowBuyInfo">张三 买了件套装</view>
+        <image mode="widthFix" class="avatarUrl" src="https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/My-head.png"></image>
+        <view class="hailFellowBuyProList">
+          <view class="hailFellowBuyProItem"><image mode="widthFix" src="https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/My-head.png"></image></view>
+          <view class="hailFellowBuyProItem"><image mode="widthFix" src="https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/My-head.png"></image></view>
+        </view>
+      </view>
+    </view> -->
+    <view class="height18"></view>
+    <view class="codeShow phoneWrap">
+      <button @tap="gotoindex"  class="weui-btn button-hover getFree">去首页</button>
+      <!-- <text>长按识别二维码</text>
+      <image class="codeImg" mode="widthFix" src="../images/code.jpg"></image>
+      <text>关注微信</text>
+      <text>了解更多福利</text> -->
+    </view>
+  </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class invite extends wepy.page {
+        config = {
+            'navigationBarTitleText': '分享',
+            'navigationBarTextStyle': 'black',
+            'navigationBarBackgroundColor': '#fff',
+            'enablePullDownRefresh':true,
+            'backgroundTextStyle':'dark',
+        };
+        components = {
+
+        };
+        props = {
+
+        };
+        data = {
+          shareId:'',
+          memberId:'',
+          shareIdShow:'',
+          memberIdShow:''
+        };
+        methods = {
+          gotoindex(){
+            wepy.switchTab({
+              url:'/pages/index'
+            })
+          },
+          getCrad(){
+            this.getCard();
+          },
+          userInfoHandler(e){
+            var _this = this
+            wx.getUserInfo({
+              success: function(res) {
+                console.log(res.userInfo);
+                _this.avatarUrl=res.userInfo.avatarUrl;
+                _this.nickName=res.userInfo.nickName;
+                _this.$apply();//member/updateUser
+                wepy.request({
+                  url: API+'/member/updateUser', //仅为示例，并非真实的接口地址
+                  data: {
+                    avatar:res.userInfo.avatarUrl,
+                    openId:wepy.getStorageSync('openid'),
+                    nickName:res.userInfo.nickName
+                    //mobile:'18600000000'
+                  },
+                  method:'POST',
+                  header: {
+                    'content-type': 'application/json' // 默认值
+                  },
+                  success: function(getres) {
+                    let getVideo=getres.data;
+                    console.log(getVideo);
+                    if(getVideo.info.returnCode == 200){
+                      wepy.setStorageSync('avatar',res.userInfo.avatarUrl);
+                      wepy.setStorageSync('nickName',res.userInfo.nickName);
+                      _this.getCard();
+                    }else{
+                      tip.confirm(getVideo.info.returnMessage,false);
+                    }
+                  },
+                  fail:function(){
+                    tip.confirm('系统出小差了',false);
+                  }
+                })
+              }
+            })
+          }
+        };
+        async getCard(){
+          let _this=this;
+          if(_this.shareId == ''){
+            tip.alert('分享id为空')
+            return false;
+          }
+          // _this.shareIdShow='领券接口传参数shareId：'+_this.shareId;
+          // _this.memberIdShow='领券接口传参数memberId：'+wepy.getStorageSync('token');
+          _this.$apply()
+          let getData=await wepy.request({
+            url: API+'/inviteFriend/addInviteFriend',
+            data: {
+              memberId:wepy.getStorageSync('token'),
+              shareId:_this.shareId
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                tip.alert('领取成功');
+              }else if(getData.info.returnCode == 200){
+                tip.alert('领取成功');
+              }else if(getData.info.returnCode == 200){
+                tip.alert('领取成功');
+              }else if(getData.info.returnCode == 200){
+                tip.alert('领取成功');
+              }else if(getData.info.returnCode == 200){
+                tip.alert('领取成功');
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+          // (11030,"活动已经结束！"),
+          // (11039,"活动未开启！"),
+          // (11034,"方案中的优惠券已经发完了！"),
+          // (11032,"本次分享活动的优惠券已经发完了！"),
+          // (11033,"本周期内已经领过优惠券！"),
+        };
+        shareLogin(){
+          wx.login({
+            success: function(res) {
+              console.log(res.code)
+              //return false;
+              if (res.code) {
+                wepy.request({
+                  url: API+'/member/login', //仅为示例，并非真实的接口地址
+                  data: {
+                    code:res.code,
+                    channelSource:'shareActivity'
+                  },
+                  method:'POST',
+                  header: {
+                      'content-type': 'application/json' // 默认值
+                  },
+                  success: function(res) {
+                    let getVideo=res.data;
+                    console.log(getVideo)
+                    console.log('----')
+                    if(getVideo.info.returnCode == 200){
+                      let token = getVideo.data.memberId || '';
+                      let openid=getVideo.data.openId || '';
+                      let avatar=getVideo.data.avatar || '';
+                      let nickName=getVideo.data.nickName || '';
+                      let mobile=getVideo.data.mobile || '';
+                      wepy.setStorageSync('token',token);
+                      wepy.setStorageSync('openid',openid);
+                      wepy.setStorageSync('avatar',avatar);
+                      wepy.setStorageSync('nickName',nickName);
+                      wepy.setStorageSync('mobile',mobile);
+                    }else{
+                      tip.confirm(getVideo.info.returnMessage,false);
+                    }
+                  },
+                  fail:function(){
+                    tip.confirm('系统出小差了',false);
+                  }
+                })
+              } else {
+                tip.confirm('系统出小差了',false);
+              }
+            }
+          });
+        }
+        onLoad(option) {
+          let _this = this;
+          _this.shareId=option.shareid || '';
+          _this.shareLogin();
+          _this.$apply()
+        }
+        onShow() {
+          let that = this;
+          //that.getGoodList();
+
+        }
+        //加载更多
+        onReachBottom() {
+
+        };
+        onShareAppMessage(){
+          return {
+            title: '爱享秀',
+            path: '/pages/index',
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        }
+        onPullDownRefresh(){
+
+        }
+    }
+</script>
+<style lang="less">
+page{
+  background:#fff;
+  .shareTop{
+    width:100%;
+    display:block;
+  }
+  .height18{
+    height:18rpx;
+  }
+  .phoneWrap{
+    display:block;
+    position: relative;
+    padding:58rpx 115rpx;
+    background:#fff;
+    font-size: 32rpx;
+    .getFree{
+      color:#fff;
+      background:#f85497;
+      border:0 none;
+      height:88rpx;
+      line-height:88rpx;
+      border-radius:6rpx;
+      margin-top:40rpx;
+    }
+    .phoneInput{
+      display:block;
+      height:88rpx;
+      line-height:88rpx;
+      text-align:center;
+      border:1px solid #f85497;
+      border-radius:6rpx;
+    }
+  }
+  .hailFellow{
+    padding:0 93rpx 64rpx;
+    background:#fff;
+    .hailFellowTitle{
+      text-align: center;
+      font-size:30rpx;
+      font-weight:bold;
+      color:#333;
+      padding:30rpx 0;
+      .hailFellowTitleText{
+        display:inline-block;
+        padding:0 20rpx;
+        position: relative;
+      }
+      .hailFellowTitleText:after,.hailFellowTitleText:before{
+        content:'';
+        height:1px;
+        background:#ddd;
+        width:45rpx;
+        position: absolute;
+        top:50%;
+        transform:translateY(-50%);
+      }
+      .hailFellowTitleText:after{
+        left:-45rpx;
+      }
+      .hailFellowTitleText:before{
+        right:-45rpx;
+      }
+    }
+    .hailFellowBuy{
+      padding:60rpx 64rpx;
+      border-radius:6rpx;
+      box-shadow:4rpx 4rpx 15rpx rgba(223, 223, 223, 0.75);
+      font-size:24rpx;
+      position: relative;
+      .hailFellowBuyInfo{
+        color:#666;
+        padding:0 30rpx;
+        margin-bottom:28rpx;
+      }
+      .avatarUrl{
+        width:88rpx;
+        height:88rpx;
+        position: absolute;
+        top:-44rpx;
+        left:0;
+        border-radius:88rpx;
+        overflow: hidden;
+        box-shadow:4rpx 4rpx 15rpx rgba(223, 223, 223, 0.75);
+      }
+      .hailFellowBuyProList{
+        overflow: hidden;
+        position: relative;
+        width:100%;
+        .hailFellowBuyProItem{
+          float: left;
+          width:50%;
+          box-sizing:border-box;
+          padding:0 30rpx;
+          border-radius:10rpx;
+          image{
+            display:block;
+            width:100%;
+          }
+        }
+
+      }
+    }
+  }
+  .codeShow{
+    background:#fff;
+    text{
+      display:block;
+      text-align:center;
+      font-size: 28rpx;
+      color:#333;
+    }
+    .codeImg{
+      width:226rpx;
+      display:block;
+      margin:30rpx auto 24rpx;
+    }
+  }
+
+
+}
+</style>

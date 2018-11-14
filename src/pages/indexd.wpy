@@ -1,0 +1,947 @@
+<style lang="less">
+page{
+  background:#fff;
+  .index{
+    display:block;
+    height:100%;
+  }
+  .iconBtn{
+    width:82rpx;
+    height:82rpx;
+    position: fixed;
+    right:30rpx;
+    z-index:100;
+  }
+  .changeIcon{
+    width:108rpx;
+    height:94rpx;
+    padding: 20rpx;
+    position: fixed;
+    left:50%;
+    bottom:10rpx;
+    z-index:105;
+    transform: translate(-50%,0);
+  }
+  .changeIconPro{
+    width:86rpx;
+    height:86rpx;
+    margin-left:70rpx;
+    bottom:40rpx;
+  }
+  .changeIconNext{
+    width:86rpx;
+    height:86rpx;
+    margin-left:-70rpx;
+    bottom:40rpx;
+  }
+  .buyGift{
+    width:68rpx;
+    height:85rpx;
+    position: fixed;
+    left:30rpx;
+    bottom:20rpx;
+    z-index:100;
+    display:block;
+  }
+  .hidden{
+    display:none;
+  }
+  .iconBtnChopping{
+    bottom:290rpx;
+  }
+  .iconBtnPicture{
+    bottom:442rpx;
+  }
+  .iconBtnGood{
+    bottom:612rpx;
+    position: fixed;
+    width:82rpx;
+    right:30rpx;
+    z-index:100;
+    .iconBtnGoodImg{
+      width:82rpx;
+      height:82rpx;
+      display:block;
+      margin:0 auto;
+    }
+    .iconBtnGoodText{
+      color:#fff;
+      font-size:24rpx;
+      padding-top:10rpx;
+      text-align: center;
+    }
+  }
+  .portrait{
+    left:30rpx;
+    bottom:80%;
+    width:118rpx;
+    height:118rpx;
+    border-radius:118rpx;
+    overflow: hidden;
+    position: fixed;
+    z-index:100;
+    background:#fff;
+    border:2rpx solid #fff;
+  }
+  .indexShare{
+    right:30rpx;
+    bottom:80%;
+    display:block;
+    width:88rpx;
+    height:88rpx;
+    position: fixed;
+    z-index:100;
+    color:#fff;
+  }
+  .bottompx{
+    bottom:85%;
+  }
+  .rightpx{
+    right:20rpx;
+  }
+  .myVideo{
+    display:block;
+  }
+  .nothingWrap{
+    padding-top:200rpx;
+    image{
+      width:462rpx;
+      margin:0 auto;
+      display:block;
+    }
+  }
+  .buyGiftWrap{
+    background:rgba(0, 0, 0, 0.8);
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    display:block;
+    z-index:1100;
+    color:#fff;
+    .buyGiftTi{
+      padding:30rpx;
+      font-size: 32rpx;
+      color:#fff;
+      text-align: left;
+      display:block;
+      border-bottom:3rpx solid #fff;
+    }
+    .buyGiftList{
+      display:block;
+      position: relative;
+      overflow: hidden;
+      height:195rpx;
+      padding-left:225rpx;
+    }
+
+    .buyGiftImgWrap{
+      position: absolute;
+      display:block;
+      width:195rpx;
+      height:195rpx;
+      top:38rpx;
+      left:30rpx;
+    }
+    .buyGiftName,.buyGiftShortName,.buyGiftPrice{
+      font-size: 28rpx;
+      color:#fff;
+      padding:8rpx 20rpx;
+      display:block;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      text-overflow:ellipsis;
+    }
+    .buyGiftName{
+      padding-top:20rpx;
+    }
+    .buyGiftPrice{
+      font-size:40rpx;
+      padding:20rpx 20rpx;
+      color:#f85497;
+    }
+    .buyGiftImg{
+      width:195rpx;
+      margin-right:10rpx;
+    }
+    .buyGiftList{
+      padding:38rpx 30rpx 34rpx;
+      padding-left:225rpx;
+    }
+    .buyGiftClose{
+      width:28rpx;
+      height:28rpx;
+      padding:10rpx;
+      position: absolute;
+      top:20rpx;
+      right:20rpx;
+    }
+  }
+  .share-con{
+    display: flex;
+    position: relative;
+    .share-list{
+      border:none;
+      background-color: #fff;
+      outline: none;
+      flex: 1;
+      text-align: center;
+      padding: 40rpx 0rpx 40rpx 80rpx;
+      box-sizing: border-box;
+      position: static;
+      line-height: 1;
+      width: 50%;
+      image{
+        width: 100rpx;
+        height: 100rpx;
+      }
+      text{
+        display: block;
+        font-size: 24rpx;
+        color: #666;
+        margin-top: 15rpx;
+      }
+    }
+    .list2{
+      z-index: 1;
+      text-align: center;
+      padding: 40rpx 80rpx 40rpx 0rpx;
+      box-sizing: border-box;
+    }
+  }
+  .share-cancle{
+    width: 100%;
+    height:98rpx;
+    background: #F4F4F4;
+    font-size:36rpx;
+    color: #666;
+    text-align: center;
+    line-height: 100rpx;
+    z-index: 1;
+    position: relative;
+  }
+  .shareClose{
+    position: absolute;
+    top:10rpx;
+    right:10rpx;
+    width:26rpx;
+    height:26rpx;
+    z-index:1000;
+    padding:20rpx;
+  }
+  .proInfo{
+    position:fixed;
+    width:100%;
+    bottom:0;
+    display:block;
+    background:#fff;
+    box-sizing: border-box;
+    padding:38rpx;
+    border-top-left-radius:10rpx;
+    border-top-right-radius:10rpx;
+    .offBtn{
+      position: absolute;
+      top:0;
+      right:0;
+      padding:18rpx;
+      image{
+        display:block;
+        width:26rpx;
+      }
+    }
+    .selectOk{
+      width:50%;
+      display:block;
+      height:72rpx;;
+      line-height:72rpx;
+      text-align: center;
+      font-size: 30rpx;
+      color:#fff;
+      background:#f85497;
+      border-radius:10rpx;
+      margin:0 auto 40rpx;
+    }
+    .priceInfo{
+      font-size: 38rpx;
+      display:block;
+      font-weight:bold;
+      color:#f85497;
+      margin-bottom:50rpx;
+      padding-left:205rpx;
+      position: relative;
+      .proSmallImg{
+        padding:12rpx;
+        background:#fff;
+        position: absolute;
+        top:-120rpx;
+        left:0;
+        width:165rpx;
+        height:165rpx;
+        overflow: hidden;
+        image{
+          width:165rpx;
+        }
+      }
+      text{
+        font-size:26rpx;
+        font-weight:normal;
+      }
+    }
+    .postageFree{
+      font-size:24rpx;
+      display: inline-block;
+      line-height:28rpx;
+      padding:4rpx 21rpx;
+      background:#ffe8ee;
+      color:#f85497;
+      border-radius:10rpx;
+      vertical-align: middle;
+      margin-left:20rpx;
+    }
+    .colorList{
+      padding-left:108rpx;
+      position: relative;
+      margin-bottom:20rpx;
+      min-height:74rpx;
+      text{
+        position:absolute;
+        top:0;
+        left:0;
+      }
+      .sizeInfo{
+        display:inline-block;
+        border-radius:10rpx;
+        border:1rpx solid #666;
+        padding:0 36rpx;
+        color:#666;
+        background:#fff;
+        margin-right:20rpx;
+        margin-bottom:20rpx;
+      }
+      .hoverInfo{
+        background:#f85497;
+        border:1rpx solid #f85497;
+        color:#fff;
+      }
+    }
+    .sizeList{
+      margin-bottom:40rpx;
+    }
+  }
+  .indexMask{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+  }
+  .hidden{
+    display:none;
+  }
+}
+
+
+
+</style>
+<template>
+  <!-- <scroll-view scroll-y="true" bindscrolltoupper="upper" @touchstart="touchS" @touchmove="touchM" bindscrolltolower="lower" class="index" style="height:{{screenH}}px"> -->
+<view class="indexWrap" style="height:{{indexWrapHeight}}px" >
+  <view class="index" style="height:{{indexscreenH}}px" >
+    <view class="nothingWrap" wx:if="{{getList.length<=0}}">
+      <image mode="widthFix" src="../images/Empty-.png"></image>
+    </view>
+    <video show-center-play-btn="{{true}}" muted="{{mutedStatus}}" objectFit="{{cover}}" controls="{{false}}" autoplay="{{true}}" loop="{{true}}" enable-progress-gesture="{{false}}" wx:if="{{getList.length>0}}" id="myVideo"  style="width:{{screenW}}px;height:{{indexscreenH}}px;"  src="{{videoSrc}}">
+    <cover-image class="portrait bottompx" mode="widthFix" src="{{portraitUrl}}"></cover-image>
+    <cover-view class="iconBtnGood rightpx"  @tap="tapGood">
+      <cover-image class="iconBtnGoodImg" mode="widthFix" src="../images/index-Fabulous.png"></cover-image>
+      <cover-view class="iconBtnGoodText">{{videoClickCount}}</cover-view>
+    </cover-view>
+    <cover-image class="iconBtn indexShare rightpx bottompx" @tap="indexShareClick" mode="widthFix" src="../images/detail-share.png"></cover-image>
+    <cover-image @tap="gotoDeatil" class="iconBtn iconBtnPicture {{shareShowPay == true ? 'hidden' : ''}} rightpx" mode="widthFix" src="../images/index-Chopping-hands.png"></cover-image>
+    <cover-image class="iconBtn iconBtnChopping {{shareShowPay == true ? 'hidden' : ''}} rightpx" @tap="gotopay" mode="widthFix" src="../images/index-picture.png"></cover-image>
+    <cover-image class="changeIcon {{shareShowPay == true ? 'hidden' : '' }}" wx:if="{{!isAndroid}}" @tap="changeVideo" mode="widthFix" src="../images/back.png"></cover-image>
+    <cover-image class="changeIcon changeIconPro {{shareShowPay == true ? 'hidden' : '' }}" wx:if="{{isAndroid}}" @tap="changeProVideo" mode="widthFix" src="../images/down.png"></cover-image>
+    <cover-image class="changeIcon changeIconNext {{shareShowPay == true  ? 'hidden' : '' }}" wx:if="{{isAndroid}}" @tap="changeVideo" mode="widthFix" src="../images/up.png"></cover-image>
+      <!-- <cover-image class="buyGift {{giftShow == false ? '' : 'hidden'}}" @tap="buyGift" mode="widthFix" src="../images/gift.png"></cover-image>
+      <cover-view  class="buyGiftWrap {{giftShow == false ? 'hidden' : ''}}" >
+        <cover-view class="buyGiftTi" >相关商品</cover-view>
+        <cover-image class="buyGiftClose" @tap="buyGiftClose"  mode="widthFix" src="../images/close_f.png"></cover-image>
+        <cover-view class="buyGiftList" >
+          <cover-view class="buyGiftImgWrap" ><cover-image class="buyGiftImg" mode="aspectFill" src="{{getProInfo.minImage}}"></cover-image></cover-view>
+          <cover-view class="buyGiftName" >{{getProInfo.shortName}}</cover-view>
+          <cover-view class="buyGiftShortName" >{{getProInfo.commodityName}}</cover-view>
+          <cover-view class="buyGiftPrice" >￥{{getProInfo.price}}</cover-view>
+        </cover-view>
+      </cover-view> -->
+  <!-- </scroll-view> -->
+    </video>
+  </view>
+</view>
+  <!-- <view class="layout {{shareShow == false ? 'hidden' : ''}}">
+    <view class="share-con">
+      <button class="share-list list1" hover-class='change-opacity' open-type='share' hover-stop-propagation='true'>
+        <image src="../images/share.jpg" />
+        <text>微信好友/群</text>
+      </button>
+      <view class="share-list list2" hover-class='change-opacity' @tap="saveImgToPhotos">
+        <image src="../images/f_icon.png" />
+        <text>朋友圈</text>
+      </view>
+      <image mode="widthFix" @tap="shareClose"  class="shareClose" src="../images/off.jpg" />
+    </view>
+  </view> -->
+  <view class="proInfo {{layoutData == 'showPro' ? '' : 'hidden'}}">
+    <view class="offBtn" @tap="offShowImg"><image mode="widthFix" src="../images/off.jpg"></image></view>
+    <view class="priceInfo">
+      <view class="proSmallImg"><image mode="widthFix" src="{{getProInfo.minImage}}"></image></view>
+      <text>￥</text>{{getProInfo.price}}<view class="postageFree">包邮</view>
+    </view>
+    <view class="colorList">
+      <text>颜色：</text>
+      <block wx:for="{{getColor}}" wx:key="item">
+        <view class="sizeInfo {{getColorIndex == index ? 'hoverInfo' : ''}}" data-index="{{index}}" data-getcolor="{{item}}" @tap="colorSelect">{{item}}</view>
+      </block>
+    </view>
+    <view class="colorList sizeList">
+      <text>尺码：</text>
+      <block wx:for="{{getSize}}" wx:key="item">
+        <view class="sizeInfo {{getSizeIndex == index ? 'hoverInfo' : ''}}" data-index="{{index}}" data-size="{{item}}" @tap="sizeSelect">{{item}}</view>
+      </block>
+    </view>
+    <view class="selectOk {{getSkuId == '' ? 'selectNo':''}}" @tap="goSettle">选好了！</view>
+  </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class indexd extends wepy.page {
+        config = {
+            'navigationBarTitleText': '爱享秀',
+            'navigationBarTextStyle': 'black',
+            'navigationBarBackgroundColor': '#fff',
+            'backgroundTextStyle':'dark'
+        };
+        components = {
+
+        };
+        props = {
+
+        };
+        data = {
+          screenH:wepy.$instance.globalData.screenH,
+          screenW:wepy.$instance.globalData.screenW,
+          videoId:'',
+          videoSrc:'',
+          videoClickCount:0,
+          getList:[],
+          getListIndex:-1,
+          commodityId:'',
+          getSkuId:'',
+          curPage:1,
+          allPage:1,
+          cover: "cover",
+          portraitUrl:'../images/index-Head-portrait.png',
+          giftShow:false,
+          indexscreenH:wepy.$instance.globalData.screenH,
+          indexWrapHeight:wepy.$instance.globalData.screenH,
+          windowHeight:wepy.$instance.globalData.screenH,
+          shareShow:false,
+          shareShowPay:false,
+          layoutData:'',
+          proImgHeight:100,
+          getProInfo:{},
+          getColor:[],
+          getColorIndex:0,
+          getSizeIndex:-1,
+          proId:'',
+          proColor:'',
+          proSize:'',
+          getSize:[],
+          getSkuId:'',
+          getProImg:'',
+          userid:'',
+          moveY:'',
+          getVideoStatus:true,
+          scrollStatus:true,
+          proType:'',
+          mutedStatus:false,
+          isAndroid:true
+        };
+        async colorSelectF(getColor){
+          let _this=this;
+          _this.proColor=getColor;
+          let getData=await wepy.request({
+            url: API+'/commoditysku/size', //仅为示例，并非真实的接口地址
+            data: {
+              commodityId:_this.proId,
+              color:getColor
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              if(getData.info.returnCode == 200){
+                let getSize=typeof getData.data.sizeList != 'undefined' ? getData.data.sizeList : [];
+                _this.getSize=getSize;
+                //_this.getSizeIndex=0;
+                _this.$apply();
+                //_this.sizeSelectF(_this.getSize[0]);
+              }
+            }
+          })
+        }
+        async sizeSelectF(proSize){
+          let _this=this;
+          _this.proSize=proSize;
+          let getData=await wepy.request({
+            url: API+'/commoditysku/detail', //仅为示例，并非真实的接口地址
+            data: {
+              commodityId:_this.proId,
+              color:_this.proColor,
+              size:proSize
+            },
+            method:'POST',
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              console.log(res)
+              let getData=res.data;
+              if(getData.info.returnCode == 200){
+                let getSkuId=getData.data.commoditysku.skuId
+                _this.getSkuId=getSkuId;
+                _this.$apply();
+                console.log(_this.getSkuId)
+              }
+            }
+          })
+        };
+        async getPro(getId){
+          let _this=this;
+          let getData=await wepy.request({
+            url: API+'/commodity/detail', //仅为示例，并非真实的接口地址
+            data: {
+              commodityId:getId
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              _this.getProInfo=res.data.data.detail || {};
+              let getImgArr=res.data.data.detail.descImage || '';
+              _this.getProImg=getImgArr != "" ? getImgArr.split(',') : '';
+              _this.getColor=res.data.data.colorList || [];
+              _this.$apply()
+              if(_this.proType == 'getcolor'){
+                _this.showPro();
+              }else if(_this.proType == 'getdetail'){
+                _this.showProDetail()
+              }
+              console.log(_this.getColor[0])
+              if(_this.getColor.length>0){
+                _this.colorSelectF(_this.getColor[0]);
+              }
+
+            }
+          })
+        };
+        showPro(){
+          if(this.getColor.length <=0){
+            return false;
+          }
+          this.layoutData="showPro";
+          this.$apply();
+        };
+        showProDetail(){
+          this.giftShow=true;
+          this.$apply();
+        };
+        methods = {
+          sizeSelect(e){
+            let _this=this;
+            let getSize=e.currentTarget.dataset.size;
+            _this.getSizeIndex=e.currentTarget.dataset.index;
+            this.$apply();
+            _this.sizeSelectF(getSize);
+          },
+          async colorSelect(e){
+            let _this=this;
+            let getColor=e.currentTarget.dataset.getcolor;
+            _this.getColorIndex=e.currentTarget.dataset.index;
+            this.$apply();
+            _this.colorSelectF(getColor);
+          },
+          changeProVideo(){
+            let _this=this;
+            console.log(_this.getListIndex+'---'+_this.getList.length)
+            if(_this.getListIndex<_this.getList.length && _this.getVideoStatus){
+              console.log(_this.getListIndex)
+              _this.getVideoStatus=false;
+              _this.indexWrapHeight=_this.windowHeight;
+              _this.$apply();
+              _this.getVideoInfo();
+            }
+          },
+          changeVideo(e){
+            //console.log('lower');
+            let _this=this;
+            if(_this.getListIndex > 0 && _this.getVideoStatus){
+              console.log(_this.getListIndex)
+              _this.getVideoStatus=false;
+              _this.indexWrapHeight=_this.windowHeight;
+              _this.getVideoInfoBack();
+            }
+          },
+          touchS(e){
+            let _this=this;
+            this.moveY=e.changedTouches[0].pageY;
+            _this.$apply();
+            console.log(e)
+          },
+          touchM(e){
+            console.log(e)
+            let _this=this;
+            this.moveY=e.changedTouches[0].pageY;
+            let getY=this.moveY-e.changedTouches[0].clientY;
+            // console.log(e.changedTouches[0].clientY+'---'+this.moveY)
+            console.log(getY)
+            if(getY>3 && _this.getVideoStatus){
+              if(_this.getListIndex<_this.getList.length){
+                _this.getVideoStatus=false;
+                _this.$apply();
+                _this.getVideoInfo();
+              }
+            }
+          },
+          offShowImg(){
+            this.layoutData="";
+            this.shareShowPay=false;
+            this.indexscreenH=this.screenH;
+            this.$apply();
+          },
+          indexShareClick(){
+            // if(this.shareShow){
+            //   this.shareShow=false;
+            //   this.indexscreenH=this.screenH;
+            // }else{
+            //   this.shareShow=true;
+            //   this.indexscreenH=this.screenH-111;
+            // }
+            // this.$apply();
+            wepy.navigateTo({
+              url:'/pages/share'
+            })
+          },
+          gotopay(){
+            let _this=this;
+            if(this.shareShowPay){
+              this.shareShowPay=false;
+              this.indexscreenH=this.screenH;
+            }else{
+              this.shareShowPay=true;
+              this.indexscreenH=this.screenH-300;
+            }
+            this.proType="getcolor";
+            this.$apply();
+            this.getPro(_this.proId);
+            console.log(_this.proId);
+          },
+          goSettle(){
+            let _this=this;
+            console.log(_this.getSkuId);
+            console.log(_this.proId);
+            if(_this.getSize.length<=0){
+              tip.confirm('尺码为空',false);
+              return false;
+            }
+            if(_this.getSkuId == ''){
+              tip.confirm('请选择尺码',false);
+              return false;
+            }
+            if(_this.getSkuId != ''){
+              wepy.navigateTo({
+                url:'/pages/settle?commodityskuid='+_this.getSkuId+'&commodityid='+_this.proId
+              })
+            }
+          },
+          shareClose(){
+            this.shareShow=false;
+            this.indexscreenH=this.screenH;
+            this.$apply();
+          },
+          buyGift(){
+            this.proType="getdetail";
+            this.$apply();
+            this.getPro(this.proId);
+          },
+          buyGiftClose(){
+            this.giftShow=false;
+            this.$apply();
+          },
+          gotoIndexd(){
+            wx.navigateTo({
+              url: '/pages/indexd?userid='+this.userid
+            })
+          },
+          gotoDeatil(){
+            let _this=this;
+            wx.navigateTo({
+              url: '/pages/detail?proid='+_this.commodityId,
+            })
+          },
+          async tapGood(){
+            let _this=this;
+            let getData=await wepy.request({
+              url: API+'/video/addCount', //仅为示例，并非真实的接口地址
+              data: {
+                	// "browseCount":1,
+                  // "shareCount":0,
+                  "clickCount":1,
+                  "id":_this.videoId
+              },
+              method:'POST',
+              header: {
+                  'content-type': 'application/json' // 默认值
+              },
+              success: function(res) {
+                let getVideo=res.data;
+                if(getVideo.info.returnCode == 200){
+                  _this.videoClickCount=_this.videoClickCount+1;
+                  _this.$apply();
+                }else{
+                  tip.confirm(getVideo.info.returnMessage,false);
+                }
+              },
+              fail:function(){
+                tip.confirm('系统出小差了',false);
+              }
+            })
+          },
+          upper(){
+            console.log('upper');
+            let _this=this;
+            console.log(_this.getListIndex);
+            _this.getListIndex=_this.getListIndex <= 0 ? 0 : _this.getListIndex-1;
+            _this.$apply();
+            _this.getVideoInfo();
+          },
+          lower(){
+            console.log('lower');
+            let _this=this;
+            console.log(_this.getListIndex)
+            if(_this.getListIndex<_this.getList.length){
+              _this.$apply();
+              _this.getVideoInfo();
+            }
+          }
+        };
+        onReachTop(){
+          console.log('top')
+        }
+        onReady() {
+          this.videoContext = wx.createVideoContext('myVideo');
+        };
+        onHide(){
+          this.videoContext.pause();
+          this.videoSrc="";
+          this.mutedStatus=true;
+          this.$apply();
+        }
+        onunload(){
+          this.videoContext.pause();
+          this.videoSrc="";
+          this.mutedStatus=true;
+          this.$apply();
+        };
+        onPageScroll(e){
+          let _this=this;
+          console.log('--onPageScroll--')
+          console.log(_this.getListIndex)
+          console.log(_this.getVideoStatus)
+          if(_this.isAndroid){
+            return false;
+          }
+          if(_this.getListIndex<_this.getList.length && _this.getVideoStatus && e.scrollTop>5){
+            _this.getVideoStatus=false;
+             _this.indexWrapHeight=_this.windowHeight;
+            _this.$apply();
+            _this.getVideoInfo();
+          }
+        };
+        getVideoInfo(){
+          let _this=this;
+          if(_this.getListIndex>_this.getList.length-1){
+            _this.curPage=_this.curPage+1;
+            _this.$apply();
+            console.log('最大数')
+            _this.getVideoList();
+          }else{
+            _this.videoArr=_this.getList[_this.getListIndex];
+            _this.videoId=_this.getList[_this.getListIndex].id;
+            _this.commodityId=_this.getList[_this.getListIndex].commodityId;
+            _this.proId=_this.getList[_this.getListIndex].commodityId;
+            _this.videoSrc=_this.getList[_this.getListIndex].videoUrl;
+            _this.videoClickCount=_this.getList[_this.getListIndex].clickCount;
+            _this.portraitUrl=_this.getList[_this.getListIndex].avatar || '../images/My-head.png';
+            _this.userid=_this.getList[_this.getListIndex].memberId || '';
+            _this.getListIndex=  _this.getListIndex >= _this.getList.length ? _this.getListIndex :  _this.getListIndex+1;
+            _this.$apply();
+            setTimeout(() => {
+              _this.getVideoStatus=true;
+              _this.$apply();
+            },1000);
+          }
+        };
+         getVideoInfoBack(){
+          let _this=this;
+          console.log('--getVideoInfoBack--')
+          console.log(_this.getListIndex)
+          if(_this.getListIndex < 2 && !_this.getVideoStatus ){
+            _this.getVideoStatus=true;
+            _this.$apply();
+            return false;
+          }
+          _this.getListIndex= _this.getListIndex-2;
+          _this.$apply();
+          _this.videoArr=_this.getList[_this.getListIndex];
+          _this.videoId=_this.getList[_this.getListIndex].id;
+          _this.commodityId=_this.getList[_this.getListIndex].commodityId;
+          _this.proId=_this.getList[_this.getListIndex].commodityId;
+          _this.videoSrc=_this.getList[_this.getListIndex].videoUrl;
+          _this.portraitUrl=_this.getList[_this.getListIndex].avatar || '../images/My-head.png';
+          _this.videoClickCount=_this.getList[_this.getListIndex].clickCount;
+          _this.userid=_this.getList[_this.getListIndex].memberId || '';
+          _this.getListIndex=_this.getListIndex+1;
+          _this.$apply();
+          console.log(_this.getListIndex)
+          setTimeout(() => {
+            _this.getVideoStatus=true;
+            _this.$apply();
+          },1000);
+        };
+        async getVideoList(userid){
+          let _this=this;
+          _this.userid=userid;
+          _this.$apply();
+          tip.loading();
+          let getData=await wepy.request({
+            url: API+'/video/list', //仅为示例，并非真实的接口地址
+            data: {
+              curPage:_this.curPage,
+              memberId:_this.userid
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getVideo=res.data;
+              tip.loaded();
+              if(getVideo.info.returnCode == 200){
+                let getList=typeof getVideo.data.list != 'undefined' ? getVideo.data.list : [];
+                if(getList.length>0){
+                  //console.log(getList)
+                  _this.getList=getList;
+                  _this.getListIndex=0;
+                  // _this.allPage=getVideo.data.pageSize;
+                  _this.getVideoStatus=true;
+                  _this.$apply();
+                  _this.getVideoInfo();
+                }else if(getList.length <= 0){
+                  _this.getList=getList;
+                  _this.getListIndex=0;
+                  _this.$apply();
+                  tip.alert('视频为空',false);
+                }
+              }else{
+                tip.confirm('系统出小差了',false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        async onLoad(option) {
+          let _this = this;
+          // util.upDateToken(0,function(){
+          //   _this.getVideoList();
+          // })
+          wx.getSystemInfo({
+            success: (res) => {
+              this.screenH = res.windowHeight;
+              this.screenW = res.windowWidth;
+              this.indexscreenH = res.windowHeight;
+              if(res.model.indexOf('iPhone X')>=0){
+                this.isIpx = true;
+              }else{
+                this.isIpx = false;
+              }
+              if(res.system.indexOf('Android')>=0){
+                  this.isAndroid= true;
+                }else{
+                  this.isAndroid = false;
+                }
+              this.$apply();
+            }
+          })
+          //this.isAndroid=wepy.$instance.globalData.isAndroid;
+          //_this.portraitUrl=wepy.getStorageSync('avatar') == '' ? _this.portraitUrl : wepy.getStorageSync('avatar');
+          _this.$apply();
+          console.log('userid:'+option.userid)
+          util.upDateToken(0,function(){
+            _this.getVideoList(option.userid);
+          })
+        }
+        getLoadVideo(){
+          let getThis=this.videoArr;
+          this.getListIndex=this.getListIndex <=0 ? 0 : this.getListIndex-1;
+          this.$apply();
+          this.videoArr=this.getList[this.getListIndex];
+          this.videoId=this.getList[this.getListIndex].id;
+          this.commodityId=this.getList[this.getListIndex].commodityId;
+          this.proId=this.getList[this.getListIndex].commodityId;
+          this.videoSrc=this.getList[this.getListIndex].videoUrl;
+          this.videoClickCount=this.getList[this.getListIndex].clickCount;
+          this.portraitUrl=this.getList[this.getListIndex].avatar || '../images/My-head.png';
+          this.userid=this.getList[this.getListIndex].memberId || '';
+          this.getListIndex=  this.getListIndex >= this.getList.length ? this.getListIndex :  this.getListIndex+1;
+          this.$apply();
+        };
+        onShow() {
+          let that = this;
+          this.mutedStatus=false;
+          this.layoutData="";
+          this.shareShowPay=false;
+          this.indexscreenH=this.screenH;
+          this.$apply();
+        }
+        onShareAppMessage(){
+          let _this=this;
+          return {
+            title: '爱享秀',
+            url: '/pages/index',
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        }
+    }
+</script>

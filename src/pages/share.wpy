@@ -1,0 +1,178 @@
+<style lang="less">
+page{
+  background:#fff;
+  .shareTop{
+    width:100%;
+    display:block;
+  }
+  .invite{
+    margin:-20rpx 28rpx 0;
+    background:#fff;
+    padding-bottom:50rpx;
+    border-radius:10rpx;
+    box-shadow:4rpx 4rpx 15rpx rgba(223, 223, 223, 0.75);
+    .inviteText{
+      color:#1a1615;
+      font-size:32rpx;
+      padding:60rpx 0;
+      text-align: center;
+      text{
+        font-size:44rpx;
+        display:block;
+        font-weight:bold;
+      }
+    }
+    button::after{
+      border: none;
+    }
+    .shareWrap{
+      overflow: hidden;
+      position: relative;
+      padding:0 50rpx;
+      .shareItem{
+        width:50%;
+        display:block;
+        box-sizing:border-box;
+        padding:0 40rpx;
+        border:0 none;
+        background:none;
+        outline:none;
+        border-radius:0;
+        margin:0 auto;
+        image{
+          width:88rpx;
+          height:88rpx;
+          display:block;
+          margin:0 auto 24rpx;
+        }
+        text{
+          font-size:24rpx;
+          display:block;
+          color:#1a1615;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .shareRuleTitle{
+    font-size:32rpx;
+    text-align: center;
+    padding:30rpx 0 60rpx;
+    text{
+      display:block;
+    }
+  }
+
+.change-opacity{
+    opacity: 0.9;
+  }
+
+}
+</style>
+<template>
+  <view class="share">
+    <image class="shareTop" mode="widthFix" src="../images/share-banner.png"></image>
+    <view class="invite">
+      <view class="inviteText"><text>送给好友一张5折券</text></view>
+      <view class="shareWrap">
+        <button hover-class='change-opacity' open-type='share' hover-stop-propagation='true' class="shareItem"><image src="../images/share.jpg"></image><text>微信好友</text></button>
+        <!-- <view class="shareItem"><image src="../images/f_icon.png"></image><text>微信朋友圈</text></view> -->
+      </view>
+    </view>
+    <view class="shareRuleTitle"><text>10名新用户领券，即有概率赢取免单！</text><text>保底5折！速速分享！</text></view>
+  </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import {
+      USERID,
+      USERSESSION,
+      USER_INFO,
+      USER_CODE,
+      USER_TOKEN,
+      API,
+    } from "../utils/constant"
+    import api from '../api/api';
+    import tip from '../utils/tip'
+    import util from '../utils/util'
+    export default class share extends wepy.page {
+        config = {
+          'navigationBarTitleText': '抢五折券！视频购物新玩法',
+          'navigationBarTextStyle': 'black',
+          'navigationBarBackgroundColor': '#fff',
+          'enablePullDownRefresh':true,
+          'backgroundTextStyle':'dark',
+        };
+        components = {
+
+        };
+        props = {
+
+        };
+        data = {
+          shareId:''
+        };
+        methods = {
+
+        };
+        async getShareId(){
+          let _this=this;
+          let getData=await wepy.request({
+            url: API+'/share/addShareGetCoupon', //仅为示例，并非真实的接口地址
+            data: {
+              memberId:wepy.getStorageSync('token')
+            },
+            method:'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+              let getData=res.data;
+              console.log(res);
+              if(getData.info.returnCode == 200){
+                _this.shareId=getData.data.shareId;
+                // _this.allPage=getData.data.pageSize;
+                _this.$apply();
+              }else{
+                tip.confirm(getData.info.returnMessage,false);
+              }
+            },
+            fail:function(){
+              tip.confirm('系统出小差了',false);
+            }
+          })
+        };
+        onLoad(option) {
+          let _this = this;
+          util.upDateToken(0,function(){
+            _this.getShareId();
+          })
+          _this.$apply()
+        }
+        onShow() {
+          let that = this;
+          //that.getGoodList();
+        }
+        //加载更多
+        onReachBottom() {
+
+        };
+        onShareAppMessage(){
+          console.log('分享id:'+this.shareId)
+          return {
+            title: '抢五折券！视频购物新玩法',
+            path: '/pages/invite?shareid='+this.shareId,
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        }
+        onPullDownRefresh(){
+
+        }
+    }
+</script>
