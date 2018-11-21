@@ -26,10 +26,11 @@
   </view>
   <view class="hot">
     <view class="tab">
-      <view @tap="sortBySale" wx:if="{{sortType!=2}}"><text class="sale-num blur-item">销量</text></view>
-      <view wx:else><text class="sale-num focus-item">销量</text></view>
-      <view @tap="sortByPrice" wx:if="{{sortType!=3}}"><text class="price blur-item">价格</text></view>
-      <view wx:else><text class="price focus-item">价格</text></view>
+      <view @tap="sortBySale" wx:if="{{sortOrder!=1}}"><text class="sale-num blur-item">销量</text></view>
+      <view @tap="sortBySale" wx:else><text class="sale-num focus-item">销量</text></view>
+      <view @tap="sortByPrice" wx:if="{{sortOrder==3}}"><text class="price focus-item">价格</text><image class="mini-icon" src="../images/tab_icon_up.png"></image></view>
+      <view @tap="sortByPrice" wx:elif="{{sortOrder==4}}"><text class="price focus-item">价格</text><image class="mini-icon" src="../images/tab_icon_down.png"></image></view>
+      <view @tap="sortByPrice" wx:else><text class="price blur-item">价格</text><image class="mini-icon" src="../images/tab_icon_sort.png"></image></view>
       <view class="change-btn" @tap="changeViewMode" wx:if="{{viewMode==1}}"><image src="../images/tab_icon_show1.png"/> </view>
       <view class="change-btn" @tap="changeViewMode" wx:if="{{viewMode==2}}"><image src="../images/tab_icon_show2.png"/> </view>
     </view>
@@ -103,22 +104,19 @@
       isIpx: wepy.$instance.globalData.isIpx?true:false,
       screenW: wepy.$instance.globalData.screenW,
       screenH: wepy.$instance.globalData.screenH,
-      list:[{commodityNo:10002897,defaultPic:'http://47.95.213.244/pics/commodity/test/1538110633783.jpeg',commodityName:'曼诺 10频震动发音加温凯特口交杯飞机杯 ',salePrice:'239'},
-        {commodityNo:10002908,defaultPic:'http://47.95.213.244/pics/commodity/test/1538109907602.jpeg',commodityName:'万乐 小蛮腰口阴双穴真人叫床飞机杯 ',salePrice:'159'},
-        {commodityNo:10002907,defaultPic:'http://47.95.213.244/pics/commodity/test/1538109063315.jpeg',commodityName:'雷霆 头等舱高速活塞全自动抽插互动发声飞机杯',salePrice:'479'},
-        {commodityNo:10002906,defaultPic:'http://47.95.213.244/pics/commodity/test/1537927464253.jpeg',commodityName:'嘉媚乐 丰盈美胸紧致增大精油15ml',salePrice:'479'},
-
-      ],
-
+      list:[],
+      sortOrder:1,
       curPage:1,
       allPage:1,
       getListIndex:0,
       paramId:'',
       type:2,
       viewMode:1,
-      sortType:2,
       isShowNavMenu:false,
-      scrollTop:false
+      scrollTop:false,
+      isNoMore:false,
+      pageSize:10,
+      isLoading:false,
     };
     //监听屏幕滚动 判断上下滚动
     onPageScroll(ev) {
@@ -163,12 +161,24 @@
       },
       sortBySale(){
         let _this = this;
-        _this.sortType = 2;
-
+        if(_this.sortOrder!=1){
+          _this.sortOrder = 1;
+          _this.curPage = 1;
+          _this.$apply();
+          _this.getList();
+        }
       },
       sortByPrice(){
         let _this = this;
-        _this.sortType = 3;
+        let sortOrder = _this.sortOrder;
+        if(sortOrder==3){
+          _this.sortOrder = 4;
+        }else{
+          _this.sortOrder = 3;
+        }
+        _this.curPage = 1;
+        _this.$apply();
+        _this.getList();
       },
       changeViewMode(){
         let _this = this;
@@ -177,6 +187,7 @@
         }else{
           _this.viewMode = 1;
         }
+        _this.$apply();
       },
       gotoIndex(){
         wepy.switchTab({
@@ -191,49 +202,66 @@
       openNavMenu(){
         let _this =  this;
         _this.isShowNavMenu = true;
+        _this.$apply();
       },
       closeNavMenu(){
         let _this =  this;
         _this.isShowNavMenu = false;
+        _this.$apply();
       }
 
     };
-    async getList(){
+    async getList(isGetMore){
       let _this=this;
-      //tip.loading();
-      return;
+      let offset = _this.list.length;
+      if(typeof isGetMore !='boolean'){
+        offset = 0;
+      }else if(_this.isNoMore){
+        //没有更多了
+        return;
+      }
+      if(_this.isLoading)return;
+      _this.isLoading = true;
       let getData=await wepy.request({
         url: API+'/commodity/getCommodityList', //仅为示例，并非真实的接口地址
         data: {
           type:_this.type,
-          paramId:_this.paramId
+          paramId:_this.paramId,
+          sortOrder:_this.sortOrder,
         },
-        method:'POST',
+        method:'GET',
         header: {
           'content-type': 'application/json' // 默认值
+          'offset':offset,
+          'pageSize':pageSize
         },
         success: function(res) {
+          _this.isLoading = false;
           tip.loaded();
           if(res.data.message == 'success'){
             let getList=res.data.data || [];
+            if(getList.length<_this.pageSize){
+              _this.isNoMore = true;
+            }
             if(_this.curPage == 1){
+              _this.curPage++
               _this.list=getList;
-              // _this.curPage=res.data.data.pageNumber;
-              // _this.allPage=res.data.data.pageSize;
             }else if(_this.curPage >1){
               _this.list.push(res.data.data.list);
             }
             _this.$apply();
-            console.log(_this.allPage);
           }
-
+        },
+        fail:function () {
+          _this.isLoading = false;
         }
       })
     }
     onLoad(option) {
       let _this = this;
       _this.paramId=option.paramId;
-      _this.$apply()
+      _this.$apply();
+      _this.getList();
     }
     onTabItemTap(){
       console.log('点击了列表')
@@ -249,16 +277,15 @@
     //加载更多
     onReachBottom(res) {
       let _this=this;
-      if(_this.curPage<_this.allPage){
-        _this.curPage=_this.curPage+1;
+      if(!_this.isNoMore){
         _this.$apply();
-        _this.getList();
+        _this.getList(true);
       }
       console.log(res);
     }
     onShareAppMessage(){
       return {
-        title: '夜来香',
+        title: '十点趣动',
         path: '/pages/index',
         success: function(res) {
           // 转发成功
@@ -338,6 +365,9 @@
         width:250rpx;
         height:86rpx;
         background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items:center;
         .focus-item{
           color: #ff0000;
         }
@@ -346,11 +376,15 @@
         }
         text{
           display: block;
-          width:250rpx;
           height:86rpx;
           line-height: 86rpx;
           vertical-align: middle;
           text-align: center;
+        }
+        .mini-icon{
+          width:16rpx;
+          height: 22rpx;
+          margin-left: 10rpx;
         }
       }
       .change-btn{

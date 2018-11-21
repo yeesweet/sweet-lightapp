@@ -1,6 +1,6 @@
 <template>
   <view class="detail">
-    <!--<image class="proImage" @load="proImagesLoad" mode="widthFix" src="{{getProInfo.defaultPic}}"></image>-->
+    <UserLogin></UserLogin>
     <!-- <button class="shareBtn" open-type="share"></button> -->
     <scroll-view class="proScroll" scroll-y="{{layoutData == '' ? true : false}}" style="height:{{screenH}}px;">
       <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}"  duration="{{duration}}" bindchange="bindChange" style="height:{{imgHeightArr[current]}}rpx;">
@@ -42,7 +42,12 @@
     <view class="fixWrap">
       <view class="homeBtn" @tap="switchHome"  hover-class="view_active"><image mode="widthFix" src="../images/detail_icon_home.png"></image><text>首页</text></view>
       <view class="shoppingCartBtn" @tap="switchShoppingcart"  hover-class="view_active"><image mode="widthFix" src="../images/detail_icon_shop.png"></image><text>购物车</text></view>
-      <view class="buyBtns {{getSpec.length <=0 ? 'selectNo' : ''}}" @tap="showPro" hover-class="view_active">
+
+      <button class="buyBtns {{getSpec.length <=0 ? 'selectNo' : ''}}"  hover-class="view_active" wx:if="{{nickName == ''}}" bindgetuserinfo="userInfoHandler" open-type="getUserInfo" bindgetuserinfo="userInfoHandler" >
+        <view class="add-shoppingcart-btn">加入购物车</view>
+        <view class="checkout-btn">去结算</view>
+      </button>
+      <view class="buyBtns {{getSpec.length <=0 ? 'selectNo' : ''}}" @tap="showPro" hover-class="view_active" wx:if="{{nickName != ''}}">
         <view class="add-shoppingcart-btn">加入购物车</view>
         <view class="checkout-btn">去结算</view>
       </view>
@@ -92,6 +97,7 @@
     import api from '../api/api';
     import tip from '../utils/tip'
     import util from '../utils/util'
+    import UserLogin from "../components/common/user_login";
     export default class detail extends wepy.page {
         config = {
             'navigationBarTitleText': '商品详情',
@@ -100,12 +106,13 @@
             'backgroundTextStyle':'dark',
         };
         components = {
-
+          UserLogin
         };
         props = {
 
         };
         data = {
+          nickName:'',
           isIpx: wepy.$instance.globalData.isIpx?true:false,
           screenW: wepy.$instance.globalData.screenW,
           screenH: wepy.$instance.globalData.screenH,
@@ -229,6 +236,7 @@
               url: '/pages/index'
             })
           },
+
           addProNum(){
             let _this=this;
             let proNum = _this.proNum
@@ -282,11 +290,16 @@
             this.$apply();
           },
           showPro(){
-            this.layoutData="showPro";
-            this.$apply();
-            if(this.getSpec.length>0){
-              this.specSelectF(this.getSpec[0]);
+            if(this.nickName==''){
+              this.userInfoHandler();
+            }else{
+              this.layoutData="showPro";
+              this.$apply();
+              if(this.getSpec.length>0){
+                this.specSelectF(this.getSpec[0]);
+              }
             }
+
           },
           goSettle(){
             let _this=this;
@@ -308,6 +321,50 @@
             }
           }
         };
+      async userInfoHandler(){
+        let _this = this
+        wx.getUserInfo({
+          success: function(res) {
+            console.log(res.userInfo);
+
+            _this.avatarUrl=res.userInfo.avatarUrl;
+            _this.nickName=res.userInfo.nickName;
+            _this.$apply();//member/updateUser
+            console.log(wepy.getStorageSync('token'))
+            let avatar=res.userInfo.avatarUrl || '';
+            let nickName=res.userInfo.nickName || '';
+            let mobile=res.userInfo.mobile || '';
+            wepy.setStorageSync('avatar',avatar);
+            wepy.setStorageSync('nickName',nickName);
+            wepy.setStorageSync('mobile',mobile);
+
+            util.upDateToken(0,function(){
+              wepy.request({
+                url: API+'/userInfo/updateUserInfo', //仅为示例，并非真实的接口地址
+                data: {
+                  // Token: wepy.getStorageSync('token'),
+                  avatarUrl:wepy.getStorageSync('avatar'),
+                  userName:wepy.getStorageSync('nickName'),
+                  //mobile:'18600000000'
+                },
+                method:'GET',
+                header: {
+                  'content-type': 'application/json',// 默认值
+                  'Token': wepy.getStorageSync('token'),
+                },
+                success: function(getres) {
+                  console.log('updateUserInfo',getres);
+                },
+                fail:function(){
+                  tip.confirm('系统出小差了',false);
+                }
+              })
+            })
+
+          }
+        })
+      };
+
         async getPro(getId){
           console.log('getPro getId',getId);
           let _this=this;

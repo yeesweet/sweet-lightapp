@@ -351,9 +351,9 @@ page{
                   <block wx:for="{{cmsBoard.rows}}"  wx:key="{{cmsBoard.rows}}"  wx:for-item="rowIndex" wx:for-index="rowIndex">
                     <view class="icon{{cmsBoard.cols}}">
                       <block wx:for="{{cmsBoard.cols}}"  wx:key="{{cmsBoard.cols}}"  wx:for-item="colIndex" wx:for-index="colIndex">
-                        <view class="icon"  data-sub-Type="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].subType}}" data-common-Id="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].commonId}}" mode="widthFix" bindload="imageLoad" @tap="switchAction">
-                          <image src="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].imgUrl}}" />
-                          <text wx:if="{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].name!=''}}">{{cmsBoard.list[(pageIndex-1)*cmsBoard.rows*cmsBoard.cols + (rowIndex-1)*cmsBoard.cols + colIndex-1].name}}</text>
+                        <view class="icon"  data-sub-Type="{{cmsBoard.moduleDetails[(pageIndex)*cmsBoard.rows*cmsBoard.cols + (rowIndex)*cmsBoard.cols + colIndex].subType}}" data-common-Id="{{cmsBoard.moduleDetails[(pageIndex)*cmsBoard.rows*cmsBoard.cols + (rowIndex)*cmsBoard.cols + colIndex].commonId}}" mode="widthFix" bindload="imageLoad" @tap="switchAction">
+                          <image src="{{cmsBoard.moduleDetails[(pageIndex)*cmsBoard.rows*cmsBoard.cols + (rowIndex)*cmsBoard.cols + colIndex].imgUrl}}" />
+                          <text wx:if="{{cmsBoard.moduleDetails[(pageIndex)*cmsBoard.rows*cmsBoard.cols + (rowIndex)*cmsBoard.cols + colIndex].name!=''}}">{{cmsBoard.moduleDetails[(pageIndex)*cmsBoard.rows*cmsBoard.cols + (rowIndex)*cmsBoard.cols + colIndex].name}}</text>
                         </view>
                       </block>
 
@@ -363,6 +363,22 @@ page{
               </swiper-item>
             </block>
           </swiper>
+
+          <view class="modle icon-modle" wx:else @tap="switchList">
+            <block wx:for="{{cmsBoard.rows}}"  wx:key="{{cmsBoard.rows}}"  wx:for-item="rowIndex" wx:for-index="rowIndex">
+              <view class="icon{{cmsBoard.cols}}">
+                <block wx:for="{{cmsBoard.cols}}"  wx:key="{{cmsBoard.cols}}"  wx:for-item="colIndex" wx:for-index="colIndex">
+                  <view class="icon"  data-sub-Type="{{cmsBoard.moduleDetails[(rowIndex)*cmsBoard.cols + colIndex].subType}}" data-common-Id="{{cmsBoard.moduleDetails[(rowIndex)*cmsBoard.cols + colIndex].commonId}}" mode="widthFix" bindload="imageLoad" @tap="switchAction">
+                    <image src="{{cmsBoard.moduleDetails[(rowIndex)*cmsBoard.cols + colIndex].imgUrl}}" />
+                    <text wx:if="{{cmsBoard.moduleDetails[(rowIndex)*cmsBoard.cols + colIndex].name!=''}}">{{cmsBoard.moduleDetails[(rowIndex)*cmsBoard.cols + colIndex].name}}</text>
+                  </view>
+                </block>
+
+              </view>
+            </block>
+
+          </view>
+
         </view>
 
         <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 1}}">
@@ -404,33 +420,33 @@ page{
           </view>
         </view>
 
-        <view class="modle" wx:elif="{{msBoard.moduleStyle == 4}}" >
+        <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 4}}" >
           <view class="model4">
             <text class="title" wx:if="{{cmsBoard.boardName!=''}}">{{cmsBoard.boardName}}</text>
             <view class="modle1-view">
-              <block wx:for="{{cmsBoard.list}}"  wx:key="{{cmsBoard.list}}"  wx:for-item="item" wx:for-index="index">
+              <block wx:for="{{cmsBoard.moduleDetails}}"  wx:key="{{cmsBoard.moduleDetails}}"  wx:for-item="item" wx:for-index="index">
                 <image src="{{item.imgUrl}}" mode="widthFix" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction"/>
               </block>
             </view>
           </view>
         </view>
 
-        <!--<view class="modle" wx:elif="{{msBoard.moduleStyle == 16}}">-->
-          <!--<view class="modle-list">-->
-            <!--<text class="title" wx:if="{{cmsBoard.boardName!=''}}">{{cmsBoard.boardName}}</text>-->
-            <!--<view class="model-view">-->
-              <!--<block wx:for="{{cmsBoard.list}}"  wx:key="{{cmsBoard.list}}"  wx:for-item="item" wx:for-index="index">-->
-              <!--<view class="commodity" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction">-->
-                <!--<image src="{{item.imgUrl}}"/>-->
-                <!--<view class="text">-->
-                  <!--<text class="name">{{item.commodityName}} </text>-->
-                  <!--<text class="price">{{item.salePrice}}</text>-->
-                <!--</view>-->
-              <!--</view>-->
-              <!--</block>-->
-            <!--</view>-->
-          <!--</view>-->
-        <!--</view>-->
+        <view class="modle" wx:elif="{{cmsBoard.moduleStyle == 16}}">
+          <view class="modle-list">
+            <text class="title" wx:if="{{cmsBoard.boardName!=''}}">{{cmsBoard.boardName}}</text>
+            <view class="model-view">
+              <block wx:for="{{cmsBoard.moduleDetails}}"  wx:key="{{cmsBoard.moduleDetails}}"  wx:for-item="item" wx:for-index="index">
+              <view class="commodity" data-sub-Type="{{item.subType}}" data-common-Id="{{item.commonId}}"  @tap="switchAction">
+                <image src="{{item.imgUrl}}"/>
+                <view class="text">
+                  <text class="name">{{item.commodityName}} </text>
+                  <text class="price">{{item.salePrice}}</text>
+                </view>
+              </view>
+              </block>
+            </view>
+          </view>
+        </view>
       </block>
     </view>
     <!--<view class="modle" >-->
@@ -499,19 +515,19 @@ page{
         <!--</view>-->
       <!--</view>-->
     <!--</view>-->
-    <view class="modle" wx:if="{{isShow}}">
-      <view class="modle1">
-        <text class="title">延时助情</text>
-        <view class="modle1-view">
-          <image src="http://i2.tiimg.com/652563/603053cc763de345.png"/>
-          <view class="modle1-right">
-            <image src="http://i2.tiimg.com/652563/23beca1c9570ea68.jpg"/>
-            <image src="http://i2.tiimg.com/652563/09271cd163b040b2.jpg"/>
-          </view>
-        </view>
-      </view>
+    <!--<view class="modle" wx:if="{{isShow}}">-->
+      <!--<view class="modle1">-->
+        <!--<text class="title">延时助情</text>-->
+        <!--<view class="modle1-view">-->
+          <!--<image src="http://i2.tiimg.com/652563/603053cc763de345.png"/>-->
+          <!--<view class="modle1-right">-->
+            <!--<image src="http://i2.tiimg.com/652563/23beca1c9570ea68.jpg"/>-->
+            <!--<image src="http://i2.tiimg.com/652563/09271cd163b040b2.jpg"/>-->
+          <!--</view>-->
+        <!--</view>-->
+      <!--</view>-->
 
-    </view>
+    <!--</view>-->
     <!--<view class="modle icon-modle" wx:if="{{isShow}}" @tap="switchList">-->
       <!--<view class="icon4">-->
         <!--<view class="icon">-->
@@ -696,7 +712,8 @@ page{
             'navigationBarTitleText': '十点趣动',
             'navigationBarTextStyle': 'white',
             'navigationBarBackgroundColor': '#fd4444',
-            'backgroundTextStyle':'dark'
+            'backgroundTextStyle':'dark',
+            'enablePullDownRefresh': true
         };
         components = {
 
@@ -976,182 +993,9 @@ page{
             this.$apply();
             _this.colorSelectF(getColor);
           },
-          changeProVideo(){
-            let _this=this;
-            console.log(_this.getListIndex+'---'+_this.getList.length)
-            if(_this.getListIndex<_this.getList.length && _this.getVideoStatus){
-              console.log(_this.getListIndex)
-              _this.getVideoStatus=false;
-              _this.indexWrapHeight=_this.windowHeight;
-              _this.$apply();
-              _this.getVideoInfo();
-            }
-          },
-          changeVideo(e){
-            //console.log('lower');
-            let _this=this;
-            if(_this.getListIndex > 0 && _this.getVideoStatus){
-              console.log(_this.getListIndex)
-              _this.getVideoStatus=false;
-              _this.indexWrapHeight=_this.windowHeight;
-              _this.getVideoInfoBack();
-            }
-          },
-          touchS(e){
-            let _this=this;
-            this.moveY=e.changedTouches[0].pageY;
-            _this.$apply();
-            console.log(e)
-          },
-          touchM(e){
-            console.log(e)
-            let _this=this;
-            this.moveY=e.changedTouches[0].pageY;
-            let getY=this.moveY-e.changedTouches[0].clientY;
-            // console.log(e.changedTouches[0].clientY+'---'+this.moveY)
-            console.log(getY)
-            if(getY>3 && _this.getVideoStatus){
-              if(_this.getListIndex<_this.getList.length){
-                _this.getVideoStatus=false;
-                _this.$apply();
-                _this.getVideoInfo();
-              }
-            }
-          },
-          offShowImg(){
-            this.layoutData="";
-            this.shareShowPay=false;
-            this.indexscreenH=this.screenH;
-            this.$apply();
-          },
-          indexShareClick(){
-            // if(this.shareShow){
-            //   this.shareShow=false;
-            //   this.indexscreenH=this.screenH;
-            // }else{
-            //   this.shareShow=true;
-            //   this.indexscreenH=this.screenH-111;
-            // }
-            // this.$apply();
-            wepy.navigateTo({
-              url:'/pages/share'
-            })
-          },
-          gotopay(){
-            let _this=this;
-            if(this.shareShowPay){
-              this.shareShowPay=false;
-              this.indexscreenH=this.screenH;
-            }else{
-              this.shareShowPay=true;
-              this.indexscreenH=this.screenH-300;
-            }
-            this.proType="getcolor";
-            this.$apply();
-            this.getPro(_this.proId);
-            console.log(_this.proId);
-          },
-          goSettle(){
-            let _this=this;
-            console.log(_this.getSkuId);
-            console.log(_this.proId);
-            if(_this.getSize.length<=0){
-              tip.confirm('尺码为空',false);
-              return false;
-            }
-            if(_this.getSkuId == ''){
-              tip.confirm('请选择尺码',false);
-              return false;
-            }
-            if(_this.getSkuId != ''){
-              wepy.navigateTo({
-                url:'/pages/settle?commodityskuid='+_this.getSkuId+'&commodityid='+_this.proId
-              })
-            }
-          },
-          shareClose(){
-            this.shareShow=false;
-            this.indexscreenH=this.screenH;
-            this.$apply();
-          },
-          buyGift(){
-            this.proType="getdetail";
-            this.$apply();
-            this.getPro(this.proId);
-          },
-          buyGiftClose(){
-            this.giftShow=false;
-            this.$apply();
-          },
-          gotoIndexd(){
-            console.log('indexd：'+this.userid)
-            wx.navigateTo({
-              url: '/pages/indexd?userid='+this.userid
-            })
-          },
-          gotoDeatil(){
-            let _this=this;
-            wx.navigateTo({
-              url: '/pages/detail?proid='+_this.commodityId,
-            })
-          },
-          async tapGood(){
-            let _this=this;
-            let getData=await wepy.request({
-              url: API+'/video/addCount', //仅为示例，并非真实的接口地址
-              data: {
-                	// "browseCount":1,
-                  // "shareCount":0,
-                  "clickCount":1,
-                  "id":_this.videoId
-              },
-              method:'POST',
-              header: {
-                  'content-type': 'application/json' // 默认值
-              },
-              success: function(res) {
-                let getVideo=res.data;
-                if(getVideo.info.returnCode == 200){
-                  _this.videoClickCount=_this.videoClickCount+1;
-                  _this.$apply();
-                }else{
-                  tip.confirm(getVideo.info.returnMessage,false);
-                }
-              },
-              fail:function(){
-                tip.confirm('系统出小差了',false);
-              }
-            })
-          },
-          upper(){
-            console.log('upper');
-            let _this=this;
-            console.log(_this.getListIndex);
-            _this.getListIndex=_this.getListIndex <= 0 ? 0 : _this.getListIndex-1;
-            _this.$apply();
-            _this.getVideoInfo();
-          },
-          lower(){
-            console.log('lower');
-            let _this=this;
-            console.log(_this.getListIndex)
-            if(_this.getListIndex<_this.getList.length){
-              _this.$apply();
-              _this.getVideoInfo();
-            }
-          },
-          backTop(){
-            if (wx.pageScrollTo) {
-              wx.pageScrollTo({
-                scrollTop: 0
-              })
-            } else {
-              wx.showModal({
-                title: '提示',
-                content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
-              })
-            }
-          }
+
+
+
         };
         onReachTop(){
           console.log('top')
@@ -1230,99 +1074,8 @@ page{
           this.getListIndex=  this.getListIndex >= this.getList.length ? this.getListIndex :  this.getListIndex+1;
           this.$apply();
         };
-        getVideoInfo(){
-          return;
-          let _this=this;
-          if(_this.getListIndex>_this.getList.length-1){
-            _this.curPage=_this.curPage+1;
-            _this.$apply();
-            console.log('最大数')
-            _this.getVideoList();
-          }else{
-            _this.videoArr=_this.getList[_this.getListIndex];
-            _this.videoId=_this.getList[_this.getListIndex].id;
-            _this.commodityId=_this.getList[_this.getListIndex].commodityId;
-            _this.proId=_this.getList[_this.getListIndex].commodityId;
-            _this.videoSrc=_this.getList[_this.getListIndex].videoUrl;
-            _this.videoClickCount=_this.getList[_this.getListIndex].clickCount;
-            _this.portraitUrl=_this.getList[_this.getListIndex].avatar || '../images/My-head.png';
-            _this.userid=_this.getList[_this.getListIndex].memberId || '';
-            _this.getListIndex=  _this.getListIndex >= _this.getList.length ? _this.getListIndex :  _this.getListIndex+1;
-            _this.$apply();
-            setTimeout(() => {
-              _this.getVideoStatus=true;
-              _this.$apply();
-            },1000);
-          }
-        };
-         getVideoInfoBack(){
-          let _this=this;
-          console.log('--getVideoInfoBack--')
-          console.log(_this.getListIndex)
-          if(_this.getListIndex < 2 && !_this.getVideoStatus ){
-            _this.getVideoStatus=true;
-            _this.$apply();
-            return false;
-          }
-          _this.getListIndex= _this.getListIndex-2;
-          _this.$apply();
-          _this.videoArr=_this.getList[_this.getListIndex];
-          _this.videoId=_this.getList[_this.getListIndex].id;
-          _this.commodityId=_this.getList[_this.getListIndex].commodityId;
-          _this.proId=_this.getList[_this.getListIndex].commodityId;
-          _this.videoSrc=_this.getList[_this.getListIndex].videoUrl;
-          _this.portraitUrl=_this.getList[_this.getListIndex].avatar;
-          _this.videoClickCount=_this.getList[_this.getListIndex].clickCount;
-          _this.userid=_this.getList[_this.getListIndex].memberId || '';
-          _this.getListIndex=_this.getListIndex+1;
-          _this.$apply();
-          console.log(_this.getListIndex)
-          setTimeout(() => {
-            _this.getVideoStatus=true;
-            _this.$apply();
-          },1000);
-        };
-        async getVideoList(){
-          return;
-          let _this=this;
-          tip.loading();
-          let getData=await wepy.request({
-            url: API+'/video/list', //仅为示例，并非真实的接口地址
-            data: {
-              curPage:_this.curPage
-            },
-            method:'POST',
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            success: function(res) {
-              let getVideo=res.data;
-              tip.loaded();
-              if(getVideo.info.returnCode == 200){
-                let getList=typeof getVideo.data.list != 'undefined' ? getVideo.data.list : [];
-                if(getList.length>0){
-                  //console.log(getList)
-                  _this.getList=getList;
-                  _this.getListIndex=0;
-                  // _this.allPage=getVideo.data.pageSize;
-                  _this.getVideoStatus=true;
-                  _this.$apply();
-                  _this.getVideoInfo();
-                }else if(getList.length <= 0){
-                  _this.getList=getList;
-                  _this.getListIndex=0;
-                  _this.$apply();
-                  tip.alert('视频为空',false);
-                }
-              }else{
-                tip.confirm('系统出小差了',false);
-              }
-            },
-            fail:function(){
-              tip.confirm('系统出小差了',false);
-            }
-          })
-        };
+
+
         async onLoad(option) {
           if(typeof option == 'object' && option && typeof option.pageManagerId == 'string'  && typeof option.pageManagerId != ''){
             this.pageManagerId = option.pageManagerId;
@@ -1331,11 +1084,12 @@ page{
           }
           console.log('onLoad')
           this.getPageData();
-          return;
+
           let _this = this;
-          // util.upDateToken(0,function(){
-          //   _this.getVideoList();
-          // })
+          util.upDateToken(0,function(){
+            console.log('callBack token',wepy.getStorageSync('token'))
+          })
+          return;
           wx.getSystemInfo({
             success: (res) => {
               this.screenH = res.windowHeight;
@@ -1352,9 +1106,11 @@ page{
           this.isAndroid=wepy.$instance.globalData.isAndroid;
           //_this.portraitUrl=wepy.getStorageSync('avatar') == '' ? _this.portraitUrl : wepy.getStorageSync('avatar');
           _this.$apply();
-          util.upDateToken(0,function(){
-            _this.getVideoList();
-          })
+
+        }
+        onPullDownRefresh(){
+          console.log('onPullDownRefresh')
+          this.getPageData();
         }
         onShow() {
           let _this = this;

@@ -41,35 +41,36 @@ function imageUtil(e) {
   return imageSize;
 }
 const checkToken = async(codeType,runFunction) => {
-  let _this=this;
-  if(wepy.getStorageSync('token') == '' || codeType === 1003){
+  console.log('checkToken token',wepy.getStorageSync('token'))
+
+  let login = function () {
     wx.login({
       success: function(res) {
-        console.log(res.code)
+        console.log('checkToken code',res.code)
         //return false;
         if (res.code) {
           wepy.request({
-            url: API+'/member/login', //仅为示例，并非真实的接口地址
+            url: API+'/login', //仅为示例，并非真实的接口地址
             data: {
               code:res.code
             },
             method:'POST',
             header: {
-                'content-type': 'application/json' // 默认值
+              'content-type': 'application/json' // 默认值
             },
             success: function(res) {
-              let getVideo=res.data;
-              if(getVideo.info.returnCode == 200){
-                let token = getVideo.data.memberId || '';
-                let openid=getVideo.data.openId || '';
-                let avatar=getVideo.data.avatar || '';
-                let nickName=getVideo.data.nickName || '';
-                let mobile=getVideo.data.mobile || '';
+              let getData=res.data;
+              if(getData.message == 'success'){
+                let token = getData.data.token || '';
+                // let openid=getData.data.openId || '';
+                // let avatar=getData.data.avatar || '';
+                // let nickName=getData.data.nickName || '';
+                // let mobile=getData.data.mobile || '';
                 wepy.setStorageSync('token',token);
-                wepy.setStorageSync('openid',openid);
-                wepy.setStorageSync('avatar',avatar);
-                wepy.setStorageSync('nickName',nickName);
-                wepy.setStorageSync('mobile',mobile);
+                // wepy.setStorageSync('openid',openid);
+                // wepy.setStorageSync('avatar',avatar);
+                // wepy.setStorageSync('nickName',nickName);
+                // wepy.setStorageSync('mobile',mobile);
                 runFunction();
               }else{
                 tip.confirm(getVideo.info.returnMessage,false);
@@ -84,8 +85,20 @@ const checkToken = async(codeType,runFunction) => {
         }
       }
     });
+  }
+  if(wepy.getStorageSync('token') == '' || codeType === 1003){
+    login();
   }else{
-    runFunction();
+    wx.checkSession({
+      success:function(res){
+        console.log(res,'登录未过期')
+        runFunction();
+      },
+      fail:function(res){
+        //再次调用wx.login()
+        login();
+      }
+    })
   }
 };
 const goToOtherProgram = async(pagePath) => {
@@ -125,6 +138,8 @@ const goToOtherProgram = async(pagePath) => {
     await tip.confirm('跳转出错',false);
   }
 }
+
+
 function getCurrentTime(oldTime) {
   var keep = '';
   var date = new Date();
@@ -142,9 +157,69 @@ function getCurrentTime(oldTime) {
 }
 
 
+function paramData(data,callBackFun){
+  let code = data.code;
+  let message = data.message;
+  let temp = true;
+  if(code==1001){
+    tip.confirm(message,false);
+  }else if(code==1002){
+    tip.confirm(message,false);
+  }else if(code==1003){
+    if(typeof callBackFun == 'function'){
+      wepy.setStorageSync('token','');
+      callBackFun();
+    }
+  }else if(code==1004){
+    tip.confirm(message,false);
+  }else{
+    temp = false;
+  }
+  return temp;
+}
+
+function httpRequest(option){
+  let getDataAction = function(){
+    checkToken(0,function(){
+      wepy.request({
+        url: option.url, //仅为示例，并非真实的接口地址
+        data: option.data,
+        method:(option.method=='POST' || option.method=='post')?'POST':'GET',
+        header: {
+          'content-type': 'application/json', // 默认值
+          'Token': wepy.getStorageSync('token'),
+        },
+        success: function(res) {
+          let getData=res.data;
+          console.log('success',res);
+          if(getData.code == 0){
+            if(typeof option.success == 'function'){
+              option.success(getData);
+            }
+          }else if(paramData(getData,getDataAction)){
+          }else{
+            tip.confirm('获取失败',false);
+          }
+        },
+        fail:function(){
+          if(typeof option.fail == 'function'){
+            option.fail();
+          }else{
+            tip.confirm('获取失败',false);
+          }
+
+        }
+      })
+    })
+  }
+  getDataAction();
+}
+
 module.exports = {
   imageUtil:imageUtil, ////图片的自适应
   getCurrentTime:getCurrentTime,
   upDateToken:checkToken,
-  goToOtherProgram:goToOtherProgram
+  goToOtherProgram:goToOtherProgram,
+  paramData:paramData,
+  httpRequest:httpRequest,
 }

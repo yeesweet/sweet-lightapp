@@ -2,23 +2,27 @@
   <view class="address">
     <view class="nothingWrap" wx:if="{{addressList.length<=0}}" style="width:{{screenW}}px;height:{{screenH}}px;">
       <image mode="widthFix" src="../images/Empty-.png"></image>
-      <view class="addAddress" @tap="add">新增地址</view>
+      <!--<view class="addAddress" @tap="add">新增地址</view>-->
     </view>
     <repeat for="{{addressList}}" key="item" index="index" item="item">
       <view class="list_box" data-id="{{item.addressId}}" @tap="addressSelect">
-        <view class="user_info" >
-          <text class="name">{{item.name}} {{item.phone}}</text>
-          <text class="phone">{{item.province}} {{item.city}} {{item.street}} {{item.detail}}</text>
+        <view class="info">
+          <image class="select" src="../images/order_control_selct.png" ></image>
+          <view class="user_info" >
+            <text class="name">{{item.name}} {{item.phone}}</text>
+            <text class="phone">{{item.province}} {{item.city}} {{item.street}} {{item.detail}}</text>
+          </view>
         </view>
-        <view class="manageAddress">
-          <view class="defalutAddress"><image mode="widthFix" src="{{item.defaultStatus == 0 ? '../images/round.png' : '../images/round-check.png'}}"></image>默认</view>
-          <view class="delAddress" data-index="{{index}}" data-id="{{item.addressId}}" @tap.stop="delAddress"><image mode="widthFix" src="../images/delete.png"></image></view>
-          <view class="editAddress" @tap.stop="edit" data-id="{{item.addressId}}"><image mode="widthFix" src="../images/edit.png"></image></view>
-        </view>
+        <image class="edit-btn" @tap.stop="edit" data-id="{{item.addressId}}" src="../images/order_icon_edit.png"></image>
+        <!--<view class="manageAddress">-->
+          <!--<view class="defalutAddress"><image mode="widthFix" src="{{item.defaultStatus == 0 ? '../images/round.png' : '../images/round-check.png'}}"></image>默认</view>-->
+          <!--<view class="delAddress" data-index="{{index}}" data-id="{{item.addressId}}" @tap.stop="delAddress"><image mode="widthFix" src="../images/delete.png"></image></view>-->
+          <!--<view class="editAddress" @tap.stop="edit" data-id="{{item.addressId}}"><image mode="widthFix" src="../images/edit.png"></image></view>-->
+        <!--</view>-->
       </view>
     </repeat>
   </view>
-  <view class="add_wrap" wx:if="{{addressList.length>0}}">
+  <view class="add_wrap" wx:if="{{addressList.length>=0}}">
     <view class="button type_red" @tap="add">新增地址</view>
   </view>
 </template>
@@ -184,49 +188,45 @@ export default class AddressList extends wepy.component {
   border-radius:15rpx;
 }
 .address {
-  padding: 12rpx;
+  /*padding: 12rpx;*/
   padding-bottom:95rpx;
   height:100%;
   .list_box {
-    display:block;
-    border-radius:10rpx;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    /*border-radius:10rpx;*/
     position: relative;
     overflow: hidden;
     background:#fff;
-    padding: 40rpx 0rpx 20rpx 85rpx;
+    padding: 40rpx 0rpx 40rpx 0rpx;
     border-top: 1px solid #efefef;
     margin-bottom: 12rpx;
-    background:#fff url(https://aibuyshow-test.oss-cn-beijing.aliyuncs.com/btn/Address-bar.png) left bottom repeat-x;
-    background-size:725rpx auto;
-    // .arrow {
-    //   height: 150rpx;
-    //   line-height: 150rpx;
-    //   width: 150rpx;
-    //   text-align: center;
-    //   color: #9a9a9a;
-    // }
-    .user_info {
-      padding-right:130rpx;
-      position: relative;
-      color:#666;
-      text{
-        display:block;
-        font-size: 28rpx;
+    .info{
+      display: flex;
+      align-items: center;
+      .select{
+        width: 40rpx;
+        height: 40rpx;
+        margin-left: 48rpx;
+        margin-right: 48rpx;
+      }
+      .user_info {
+        position: relative;
+        color:#666;
+        text{
+          display:block;
+          font-size: 28rpx;
+          color:#333333;
+          font-weight: 520;
+          width:514rpx;
+        }
       }
     }
-    .user_info:after{
-      content: '';
-      display:block;
-      position: absolute;
-      width:24rpx;
-      height:24rpx;
-      border-top: 2rpx solid #666;
-      border-right: 2rpx solid #666;
-      top:50%;
-      right:40rpx;
-      margin-top:-8rpx;
-      transform:rotate(45deg);
-      transform:translate(0 -50%)
+    .edit-btn{
+      width: 40rpx;
+      height: 40rpx;
+      margin-right: 30rpx;
     }
     .active_address {
       margin-top: 20rpx;
@@ -241,13 +241,25 @@ export default class AddressList extends wepy.component {
 }
 
 .add_wrap {
-  display: block;
-  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 750rpx;
+  height: 126rpx;
   left: 0;
   right: 0;
-  position: absolute;
-  bottom: 20rpx;
+  position: fixed;
+  bottom:0rpx;
   margin: 0 auto;
+  text-align: center;
+  background-color: #fff;
+  view,button{
+    border-radius: 10rpx;
+    width:690rpx;
+    height: 86rpx;
+    line-height: 86rpx;
+    position: initial;
+  }
 }
 .title{
   display:block;

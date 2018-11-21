@@ -1,0 +1,80 @@
+<style lang="less">
+
+
+</style>
+<template>
+  <view class="addressAdd">
+
+  </view>
+
+</template>
+<script>
+  import wepy from 'wepy';
+  import tip from '../../utils/tip';
+  import api from "../../api/api";
+  import {
+    USER_TOKEN,
+    API
+  } from '../../utils/constant';
+  export default class UserLogin extends wepy.component {
+    data = {
+      isShow:false,
+    };
+
+    login(){
+      wx.login({
+        success: function(res) {
+          console.log('login code',res.code)
+          //return false;
+          if (res.code) {
+            wepy.request({
+              url: API+'/login', //仅为示例，并非真实的接口地址
+              data: {
+                code:res.code,
+                // channelSource:'shareActivity'
+              },
+              method:'POST',
+              header: {
+                'content-type': 'application/json' // 默认值
+              },
+              success: function(res) {
+                let getData=res.data;
+                console.log('login token data',getData)
+                if(getData.message == 'success'){
+                  let token = getData.data.token || '';
+
+                  wepy.setStorageSync('token',token);
+
+                }else{
+                  tip.confirm(getData.info.returnMessage,false);
+                }
+              },
+              fail:function(){
+                tip.confirm('系统出小差了',false);
+              }
+            })
+          } else {
+            tip.confirm('系统出小差了',false);
+          }
+        }
+      });
+    }
+    methods = {
+      receiverNameInput(e){
+        console.log(e.detail.value);
+        this.receiverName=e.detail.value;
+        this.$apply();
+      },
+    };
+
+    onLoad() {
+      let token = wepy.getStorageSync('token');
+      console.log('onLoad token',token)
+      if(typeof(token) != 'string' || token.length<=0){
+        this.login();
+      }
+    }
+
+  }
+
+</script>

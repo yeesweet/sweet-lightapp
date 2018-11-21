@@ -12,6 +12,7 @@
 </template>
 <script>
 import wepy from 'wepy';
+import util from '../utils/util'
 import AddressList from "../components/address_list";
 import AddressAdd from "../components/address_add";
 import AddressEdit from "../components/address_edit";
@@ -23,9 +24,9 @@ import {
 } from '../utils/constant';
 export default class address extends wepy.page {
   config = {
-    'navigationBarTitleText': '地址管理',
-    'navigationBarTextStyle': 'black',
-    'navigationBarBackgroundColor': '#fff',
+    'navigationBarTitleText': '收货地址',
+    'navigationBarTextStyle': 'white',
+    'navigationBarBackgroundColor': '#fd4444',
     'backgroundTextStyle':'dark',
   }
   data = {
@@ -39,36 +40,48 @@ export default class address extends wepy.page {
   }
 
   async getUserAddress(phone,code) {
-    let that = this;
     let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
     let _this=this;
-    let getData=await wepy.request({
-      url: API+'/address/addressList', //仅为示例，并非真实的接口地址
+    util.httpRequest({
+      url: API+'/userAddress/getUserAddressList',
       data: {
-        memberId:wepy.getStorageSync('token')
       },
-      method:'POST',
-      header: {
-        'content-type': 'application/json' // 默认值
+      method:'GET',
+      success: function(getData) {
+        console.log('getData',getData);
+        let getList=typeof getData.data != 'undefined' ? getData.data : [];
+
+        getList=[{
+          addressId:'1',
+          name:'张三',
+          phone:'15110268943',
+          province:'河北省',
+          city:'邢台市',
+          street:'桥西区',
+          detail:'南大郭乡永丰路43号第二个岔道口左拐，100米后右拐',
+          defaultStatus:0,
+        },
+          {
+          addressId:'2',
+          name:'李四',
+          phone:'13313351133',
+          province:'北京',
+          city:'北京',
+          street:'海淀区',
+          detail:'祁家豁子8号',
+          defaultStatus:1,
       },
-      success: function(res) {
-        let getData=res.data;
-        console.log(res);
-        if(getData.info.returnCode == 200){
-          let getList=typeof getData.data.list != 'undefined' ? getData.data.list : [];
-          _this.addressList=getList;
-          console.log(getList)
-          _this.$apply();
-          _this.$invoke("addressList","refreshList", _this.addressList);
-          _this.$invoke("addressList","selectSet", _this.select);
-        }else{
-          tip.confirm('获取失败',false);
-        }
+        ];
+        _this.addressList=getList;
+        console.log(getList)
+        _this.$apply();
+        _this.$invoke("addressList","refreshList", _this.addressList);
+        _this.$invoke("addressList","selectSet", _this.select);
       },
       fail:function(){
         tip.confirm('获取失败',false);
       }
-    })
+    });
   }
 
   async receiverInf(id) {
@@ -119,8 +132,6 @@ export default class address extends wepy.page {
   }
 
   onShow(){
-    let that = this;
-    //this.getUserAddress();
   }
   computed = {
 
@@ -134,18 +145,12 @@ export default class address extends wepy.page {
     }
   }
   onUnload() {
-    // if (this.currentPage !== 0) {
-    //   wx.navigateTo({
-    //     url: "/pages/address"
-    //   })
-    // }
   }
   events = {
     refreshAddList(msg){
         this.getUserAddress();
     }
   }
-
 }
 
 </script>

@@ -11,6 +11,7 @@
     USER_INFO,
     USER_CODE,
     USER_TOKEN,
+    API
   } from './utils/constant';
   import api from './api/api';
   import tip from './utils/tip';
@@ -88,30 +89,39 @@
           screenW:0
       }
       onLaunch () {
-        //wepy.setStorageSync('token','10000');//wepy.getStorageSync('token');
-        // wx.getSystemInfo({
-        //     success: (res) => {
-        //         console.log(res)
-        //         this.globalData.screenH = res.windowHeight;
-        //         this.globalData.screenW = res.windowWidth;
-        //         if(res.model.indexOf('iPhone X')>=0){
-        //           this.globalData.isIpx = true;
-        //         }else{
-        //           this.globalData.isIpx = false;
-        //         }
-        //         if(res.system.indexOf('Android')>=0){
-        //           this.globalData.isAndroid = true;
-        //         }else{
-        //           this.globalData.isAndroid = false;
-        //         }
-        //     }
-        // })
-        // let that = this;
-        // let userId = wepy.getStorageSync(USERID) || {};
-        // let userSession = wepy.getStorageSync(USERSESSION) || {};
-        // if (wepy.getStorageSync(USERSESSION) === '' && wepy.getStorageSync(USERID) === '') {
-        //     //that.uniteLogin();
-        // }
+        let token = wepy.getStorageSync('token');
+        if(typeof(token) != 'string' || token.length<=0){
+          wx.login({
+            success: function(res) {
+              if (res.code) {
+                wepy.request({
+                  url: API+'/login', //仅为示例，并非真实的接口地址
+                  data: {
+                    code:res.code,
+                  },
+                  method:'POST',
+                  header: {
+                    'content-type': 'application/json' // 默认值
+                  },
+                  success: function(res) {
+                    let getData=res.data;
+                    if(getData.message == 'success'){
+                      let token = getData.data.token || '';
+                      wepy.setStorageSync('token',token);
+                    }else{
+                      tip.confirm(getData.info.returnMessage,false);
+                    }
+                  },
+                  fail:function(){
+                    tip.confirm('系统出小差了',false);
+                  }
+                })
+              } else {
+                tip.confirm('系统出小差了',false);
+              }
+            }
+          });
+        }
       }
   }
 

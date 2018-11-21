@@ -258,7 +258,7 @@
     }
     onShareAppMessage(){
       return {
-        title: '夜来香',
+        title: '十点趣动',
         path: '/pages/index',
         success: function(res) {
           // 转发成功

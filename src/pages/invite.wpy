@@ -163,32 +163,31 @@
               //return false;
               if (res.code) {
                 wepy.request({
-                  url: API+'/member/login', //仅为示例，并非真实的接口地址
+                  url: API+'/login', //仅为示例，并非真实的接口地址
                   data: {
                     code:res.code,
-                    channelSource:'shareActivity'
+                    // channelSource:'shareActivity'
                   },
                   method:'POST',
                   header: {
                       'content-type': 'application/json' // 默认值
                   },
                   success: function(res) {
-                    let getVideo=res.data;
-                    console.log(getVideo)
-                    console.log('----')
-                    if(getVideo.info.returnCode == 200){
-                      let token = getVideo.data.memberId || '';
-                      let openid=getVideo.data.openId || '';
-                      let avatar=getVideo.data.avatar || '';
-                      let nickName=getVideo.data.nickName || '';
-                      let mobile=getVideo.data.mobile || '';
+                    let getData=res.data;
+                    console.log(getData)
+                    if(getData.message == 'success'){
+                      let token = getData.data.token || '';
+                      let openid=getData.data.openId || '';
+                      let avatar=getData.data.avatar || '';
+                      let nickName=getData.data.nickName || '';
+                      let mobile=getData.data.mobile || '';
                       wepy.setStorageSync('token',token);
                       wepy.setStorageSync('openid',openid);
                       wepy.setStorageSync('avatar',avatar);
                       wepy.setStorageSync('nickName',nickName);
                       wepy.setStorageSync('mobile',mobile);
                     }else{
-                      tip.confirm(getVideo.info.returnMessage,false);
+                      tip.confirm(getData.info.returnMessage,false);
                     }
                   },
                   fail:function(){

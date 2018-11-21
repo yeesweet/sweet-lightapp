@@ -37,11 +37,24 @@ page{
     }
 
     .btn_box {
-      //margin:10rpx;
-      display:block;
-      height: 95rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 750rpx;
+      height: 126rpx;
+      left: 0;
+      right: 0;
+      position: fixed;
+      bottom:0rpx;
+      margin: 0 auto;
+      text-align: center;
+      background-color: #fff;
       .button{
-
+        border-radius: 10rpx;
+        width:690rpx;
+        height: 86rpx;
+        line-height: 86rpx;
+        position: initial;
       }
     }
 
@@ -53,19 +66,19 @@ page{
   <view class="addressAdd">
   <form bindsubmit="formSubmitAdd">
       <view class="list_item list_item_no_border">
-        <view class="title">姓 名</view>
+        <view class="title">收货人</view>
         <view class="input">
           <input type="text" bindinput="receiverNameInput" placeholder="请输入姓名" name="receiverName" value="" />
         </view>
       </view>
       <view class="list_item">
-        <view class="title">手机号码</view>
+        <view class="title">联系方式</view>
         <view class="input">
           <input maxlength="11" type="number" bindinput="mobileInput" placeholder="请输入手机号码" name="mobile" />
         </view>
       </view>
       <view class="list_item">
-        <view class="title">选择地区</view>
+        <view class="title">所在地区</view>
         <view class="input">
           <view @tap="openAddressPicker">{{province ? province.name : '省'}} - {{city ? city.name : '市' }} - {{area ? area.name : '区' }}</view>
           <areaPicker @areaArray.user="areaPickerArray"></areaPicker>
@@ -78,14 +91,14 @@ page{
         </view>
       </view>
       <view class="list_item">
-        <view class="title">设置默认地址:</view>
+        <view class="title">设为默认:</view>
         <view class="input tr" @tap="changeCheckBoxState">
           <icon type="success" size="20" color="{{isDefult? 'red':'#999'}}" />
         </view>
       </view>
   </form>
   </view>
-  <view class="btn_box">
+  <view class="add_wrap">
     <button class="button type_red" @tap="submitForm" formType="submit">完成</button>
   </view>
 </template>

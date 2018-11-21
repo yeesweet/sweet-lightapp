@@ -1,6 +1,53 @@
 <template>
   <view class="mine">
-    <image src="http://i2.tiimg.com/652563/e0d1f37b53035890.png" class="slide-image"  mode="widthFix" />
+    <view class="cur">
+      <view class="user-info" wx:if="{{nickName != ''}}">
+        <image class="avatarUrl" src="{{avatarUrl}}"></image>
+        <view class="nickName"  >{{nickName}}</view>
+      </view>
+
+      <button class="user-info" wx:if="{{nickName == ''}}" bindgetuserinfo="userInfoHandler" open-type="getUserInfo" bindgetuserinfo="userInfoHandler" >
+        <image class="avatarUrl" src="../images/avatar.jpg"></image>
+        <view class="nickName"  >登录></view>
+      </button>
+      <view class="orders">
+        <view class="order-item">
+          <image  src="../images/mine_icon_pay.png" mode="widthFix"></image>
+          <text>待付款</text>
+        </view>
+        <view class="order-item">
+          <image  src="../images/mine_icon_car.png" mode="widthFix"></image>
+          <text>待收货</text>
+        </view>
+        <view class="order-item">
+          <image  src="../images/mine_icon_order.png" mode="widthFix"></image>
+          <text>全部订单</text>
+        </view>
+      </view>
+    </view>
+    <view class="my-list">
+      <view class="item line" @tap="switchAddress">
+        <view class="pic-box">
+          <image class="icon" src="../images/mine_icon_place.png" mode="widthFix"></image>
+          <text>我的地址</text>
+        </view>
+        <image class="arr" src="../images/icon_arrow.png" mode="widthFix"></image>
+      </view>
+      <view class="item line">
+        <button class="pic-box" open-type="contact">
+          <image class="icon" src="../images/mine_icon_service.png" mode="widthFix"></image>
+          <text>联系客服</text>
+        </button>
+        <image class="arr" src="../images/icon_arrow.png" mode="widthFix"></image>
+      </view>
+      <view class="item">
+        <view class="pic-box">
+          <image class="icon" src="../images/mine_icon_help.png" mode="widthFix"></image>
+          <text>帮助中心</text>
+        </view>
+        <image class="arr" src="../images/icon_arrow.png" mode="widthFix"></image>
+      </view>
+    </view>
   </view>
 </template>
 <script>
@@ -14,6 +61,7 @@
   import tip from '../utils/tip'
   import util from '../utils/util'
   import BottomLoadMore from "../components/common/bottomLoadMore"
+  import UserLogin from "../components/common/user_login";
   export default class hot extends wepy.page {
     config = {
       'navigationBarTitleText': '我的',
@@ -23,6 +71,7 @@
     };
     components = {
       bottomLoadMore: BottomLoadMore,
+      UserLogin:UserLogin,
     };
     props = {
 
@@ -34,173 +83,81 @@
       isIpx: wepy.$instance.globalData.isIpx?true:false,
       screenW: wepy.$instance.globalData.screenW,
       screenH: wepy.$instance.globalData.screenH,
-      tabIndex:0,
-      tabs:[{name:'男性用品'},{name:'女性用品'},{name:'男性用品'},{name:'延时助情'},{name:'丰胸缩阴'},{name:'SM调教'},{name:'情趣服饰'},{name:'润滑液'},],
-      list:[{commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
-        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
-        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
-        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
-        {commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
-        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
-        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
-        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
-        {commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
-        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
-        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
-        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
-        {commodityId:239,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'自慰飞机杯 ',salePrice:'239'},
-        {commodityId:10002908,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'臀胸倒模 ',salePrice:'159'},
-        {commodityId:10002907,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'女优名器',salePrice:'479'},
-        {commodityId:10002906,defaultPic:'http://i1.fuimg.com/652563/c2afb02accac2b85.jpg',commodityName:'实体玩偶',salePrice:'479'},
-      ],
-
-      curPage:1,
-      allPage:1,
-      getListIndex:0,
-
-      viewMode:2,
-      sortType:2,
-      isShowNavMenu:false,
-      scrollTop:false
+      nickName:'',
+      avatarUrl:'',
     };
     //监听屏幕滚动 判断上下滚动
     onPageScroll(ev) {
-      var _this = this;
-      //当滚动的top值最大或最小时，为什么要做这一步是因为在手机实测小程序的时候会发生滚动条回弹，所以为了处理回弹，设置默认最大最小值
-      // console.log('ev.scrollTop:'+ev.scrollTop);
-      if (ev.scrollTop <= 0) {
-        ev.scrollTop = 0;
-      } else if (ev.scrollTop > wx.getSystemInfoSync().windowHeight) {
-        ev.scrollTop = wx.getSystemInfoSync().windowHeight;
-      }
-      //判断浏览器滚动条上下滚动
-      if (ev.scrollTop > this.data.scrollTop || ev.scrollTop == wx.getSystemInfoSync().windowHeight) {
-        //向下滚动
-      } else {
-        //向上滚动
-      }
-      //给scrollTop重新赋值
-      setTimeout(function () {
-        _this.setData({
-          scrollTop: ev.scrollTop
-        })
-      }, 0)
+
     };
     methods = {
-      goShare(){
+      switchAddress(){
         wepy.navigateTo({
-          url:'/pages/share'
+          url:'/pages/address'
         })
       },
-      backTop(){
-        if (wx.pageScrollTo) {
-          wx.pageScrollTo({
-            scrollTop: 0
-          })
-        } else {
-          wx.showModal({
-            title: '提示',
-            content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
-          })
-        }
-      },
-      sortBySale(){
-        let _this = this;
-        _this.sortType = 2;
+      async userInfoHandler(){
+        let _this = this
+        wx.getUserInfo({
+          success: function(res) {
+            console.log(res.userInfo);
 
-      },
-      sortByPrice(){
-        let _this = this;
-        _this.sortType = 3;
-      },
-      changeViewMode(){
-        let _this = this;
-        if(_this.viewMode==1){
-          _this.viewMode = 2;
-        }else{
-          _this.viewMode = 1;
-        }
-      },
-      gotoIndex(){
-        wepy.switchTab({
-          url:'/pages/index'
+            _this.avatarUrl=res.userInfo.avatarUrl;
+            _this.nickName=res.userInfo.nickName;
+            _this.$apply();//member/updateUser
+            console.log(wepy.getStorageSync('token'))
+            let avatar=res.userInfo.avatarUrl || '';
+            let nickName=res.userInfo.nickName || '';
+            let mobile=res.userInfo.mobile || '';
+            wepy.setStorageSync('avatar',avatar);
+            wepy.setStorageSync('nickName',nickName);
+            wepy.setStorageSync('mobile',mobile);
+
+            util.upDateToken(0,function(){
+              wepy.request({
+                url: API+'/userInfo/updateUserInfo', //仅为示例，并非真实的接口地址
+                data: {
+                  // Token: wepy.getStorageSync('token'),
+                  avatarUrl:wepy.getStorageSync('avatar'),
+                  userName:wepy.getStorageSync('nickName'),
+                  //mobile:'18600000000'
+                },
+                method:'GET',
+                header: {
+                  'content-type': 'application/json',// 默认值
+                  'Token': wepy.getStorageSync('token'),
+                },
+                success: function(getres) {
+                  console.log('updateUserInfo',getres);
+                },
+                fail:function(){
+                  tip.confirm('系统出小差了',false);
+                }
+              })
+            })
+
+          }
         })
-      },
-      gotoCategory(){
-        wepy.switchTab({
-          url:'/pages/hot'
-        })
-      },
-      openNavMenu(){
-        let _this =  this;
-        _this.isShowNavMenu = true;
-      },
-      closeNavMenu(){
-        let _this =  this;
-        _this.isShowNavMenu = false;
       }
 
     };
-    async getList(){
-      let _this=this;
-      //tip.loading();
-      return;
-      let getData=await wepy.request({
-        url: API+'/commodity/list', //仅为示例，并非真实的接口地址
-        data: {
-          curPage:_this.curPage,
-          memberId:wepy.getStorageSync('token')
-        },
-        method:'POST',
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success: function(res) {
-          tip.loaded();
-          let getList=res.data.data.list || [];
-          if(_this.curPage == 1){
-            _this.list=getList;
-            _this.curPage=res.data.data.pageNumber;
-            _this.allPage=res.data.data.pageSize;
-          }else if(_this.curPage >1){
-            _this.list.push(res.data.data.list);
-          }
-          _this.$apply();
-          console.log(_this.allPage);
-        }
-      })
-    }
+
     onLoad(option) {
-      // let _this = this;
-      // _this.$apply();
-      // util.upDateToken(0,function(){
-      //   _this.getList();
-      // })
+
     }
     onTabItemTap(){
-      console.log('点击了列表')
+
     }
     onShow() {
-      let that = this;
-      that.curPage = 1;
-      that.$apply();
-      // util.upDateToken(0,function(){
-      //   that.getList();
-      // })
+
     }
     //加载更多
     onReachBottom(res) {
-      let _this=this;
-      if(_this.curPage<_this.allPage){
-        _this.curPage=_this.curPage+1;
-        _this.$apply();
-        _this.getList();
-      }
-      console.log(res);
+
     }
     onShareAppMessage(){
       return {
-        title: '夜来香',
+        title: '十点趣动',
         path: '/pages/index',
         success: function(res) {
           // 转发成功
@@ -220,18 +177,102 @@ page{
   min-height: 100%;
   background-color: #f0f0f0;
 }
-
   .mine{
     min-width: 100%;
     max-width: 100%;
     overflow-x: hidden;
     min-height: 100%;
-
-    image{
-      width:100%;
+    .cur{
+      padding: 30rpx;
+      margin-bottom: 20rpx;
+      background-color: #fff;
+      .user-info{
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border: 0rpx;
+        padding: 0rpx;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        .avatarUrl{
+          width: 150rpx;
+          height: 150rpx;
+          border-radius: 50%;
+        }
+        .nickName{
+          margin-left: 30rpx;
+          font-size: 34rpx;
+          color:#333333;
+          font-weight: 580;
+        }
+      }
+      button::after{
+        border: none;
+      }
+      .orders{
+        margin-top: 50rpx;
+        display: flex;
+        .order-item{
+          width: 250rpx;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          image{
+            width:65rpx;
+          }
+          .text{
+            color: #4c4c4c;
+            font-weight: 550;
+            margin-top: 12rpx;
+            font-size: 26rpx;
+          }
+        }
+      }
     }
-
-
+    .my-list{
+      background-color: #fff;
+      .item{
+        width:100%;
+        height: 106rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .pic-box{
+          display: flex;
+          align-items: center;
+          .icon{
+            width: 40rpx;
+            margin-left: 33rpx;
+            margin-right: 33rpx;
+          }
+          .text{
+            color: #4c4c4c;
+            font-size: 28rpx;
+            font-weight: 550;
+          }
+        }
+        button{
+          padding:0rpx;
+          margin: 0rpx;
+          font-size: 30rpx;
+          /*position: initial;*/
+          background-color: #fff;
+          border:0rpx solid #fff;
+          color: #4c4c4c;
+        }
+        button::after{
+          border: none;
+        }
+        .arr{
+          width: 18rpx;
+          margin-right: 30rpx;
+        }
+      }
+      .line{
+        border-bottom: 1px solid #ebebeb;
+      }
+    }
   }
 
 
